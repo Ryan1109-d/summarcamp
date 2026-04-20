@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清華大學羽球夏令營 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0C447C; --navy-dark: #0A3660; --navy-deep: #071F3A;
+    --blue: #185FA5; --blue-light: #378ADD; --blue-pale: #B5D4F4;
+    --amber: #EF9F27; --amber-light: #FAC775;
+    --white: #FFFFFF; --text-muted: #85B7EB; --teal: #1D9E75;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--navy-deep); color: var(--white); overflow-x: hidden; }
+
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(7,31,58,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(55,138,221,0.2);
+    padding: 0 2rem; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: 0.05em; cursor: pointer; }
+  .nav-logo span { color: var(--amber); }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.05em; transition: color 0.2s; cursor: pointer; }
+  nav a:hover { color: var(--white); }
+  .nav-register { background: var(--amber); color: #412402 !important; padding: 0.4rem 1.2rem; border-radius: 6px; font-weight: 700; }
+  .nav-register:hover { background: var(--amber-light) !important; color: #412402 !important; }
+
+  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(24,95,165,0.4) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 80% 80%, rgba(239,159,39,0.15) 0%, transparent 60%); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(55,138,221,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(55,138,221,0.06) 1px, transparent 1px); background-size: 60px 60px; }
+  .shuttlecock { font-size: 4rem; margin-bottom: 1.5rem; animation: float 3s ease-in-out infinite; position: relative; z-index: 1; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .hero-tag { display: inline-block; background: rgba(239,159,39,0.15); border: 1px solid rgba(239,159,39,0.4); color: var(--amber-light); font-size: 0.8rem; letter-spacing: 0.15em; padding: 0.35rem 1.2rem; border-radius: 20px; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+  .hero h1 { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: clamp(2.8rem,8vw,5rem); line-height: 1.1; letter-spacing: 0.05em; position: relative; z-index: 1; margin-bottom: 0.5rem; }
+  .hero h1 .accent { color: var(--amber); }
+  .hero-sub { font-size: clamp(1rem,2.5vw,1.3rem); color: var(--blue-pale); letter-spacing: 0.2em; margin-bottom: 1rem; position: relative; z-index: 1; }
+  .hero-location { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2.5rem; position: relative; z-index: 1; }
+  .hero-badge { display: inline-block; background: var(--amber); color: #412402; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.08em; padding: 0.5rem 1.8rem; border-radius: 30px; margin-bottom: 2.5rem; position: relative; z-index: 1; }
+  .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+
+  .btn-primary { background: var(--amber); color: #412402; font-weight: 700; font-size: 1rem; padding: 0.85rem 2.5rem; border-radius: 8px; text-decoration: none; letter-spacing: 0.05em; transition: transform 0.2s, background 0.2s; display: inline-block; cursor: pointer; border: none; font-family: inherit; }
+  .btn-primary:hover { background: var(--amber-light); transform: translateY(-2px); }
+  .btn-secondary { background: transparent; color: var(--blue-pale); font-size: 1rem; padding: 0.85rem 2rem; border-radius: 8px; border: 1px solid rgba(181,212,244,0.3); text-decoration: none; letter-spacing: 0.05em; transition: border-color 0.2s, color 0.2s; cursor: pointer; font-family: inherit; }
+  .btn-secondary:hover { border-color: var(--blue-pale); color: var(--white); }
+
+  section { padding: 6rem 2rem; max-width: 960px; margin: 0 auto; }
+  .section-label { font-size: 0.75rem; letter-spacing: 0.25em; color: var(--amber); font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; }
+  .section-title { font-family: 'Noto Serif TC', serif; font-size: clamp(1.8rem,4vw,2.5rem); font-weight: 900; margin-bottom: 1rem; line-height: 1.2; }
+  .section-desc { color: var(--text-muted); line-height: 1.9; font-size: 0.95rem; max-width: 640px; }
+  hr.section-line { border: none; border-top: 1px solid rgba(55,138,221,0.2); margin: 0; }
+
+  .about-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; margin-top: 3rem; }
+  .about-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s; }
+  .about-card:hover { border-color: rgba(55,138,221,0.4); transform: translateY(-4px); }
+  .about-card::before { content:''; position: absolute; top:0; left:0; right:0; height:3px; }
+  .about-card.blue::before { background: var(--blue-light); }
+  .about-card.amber::before { background: var(--amber); }
+  .about-card.teal::before { background: var(--teal); }
+  .about-card h3 { font-family: 'Noto Serif TC', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .about-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+  .schedule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 2.5rem; }
+  .schedule-item { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 10px; padding: 1rem 1.4rem; display: flex; align-items: center; gap: 1rem; transition: border-color 0.2s; }
+  .schedule-item:hover { border-color: rgba(239,159,39,0.4); }
+  .schedule-num { font-family: 'Noto Serif TC', serif; font-size: 1.5rem; font-weight: 900; color: rgba(55,138,221,0.3); min-width: 2rem; }
+  .schedule-dates { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; }
+  .schedule-time { font-size: 0.8rem; color: var(--text-muted); }
+  .schedule-note { margin-top: 1.5rem; padding: 1rem 1.4rem; background: rgba(239,159,39,0.08); border: 1px solid rgba(239,159,39,0.2); border-radius: 10px; font-size: 0.85rem; color: var(--amber-light); line-height: 1.6; }
+
+  .pricing-wrap { margin-top: 2.5rem; background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 16px; overflow: hidden; }
+  .pricing-header { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; background: var(--blue); padding: 0.9rem 1.5rem; font-size: 0.85rem; font-weight: 700; text-align: center; }
+  .pricing-header div:first-child { text-align: left; }
+  .pricing-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; padding: 1.1rem 1.5rem; border-top: 1px solid rgba(55,138,221,0.1); align-items: center; text-align: center; }
+  .pricing-row .label { text-align: left; font-size: 0.9rem; color: var(--blue-pale); font-weight: 500; }
+  .pricing-row .price { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 1rem; }
+  .pricing-row.discount { background: rgba(239,159,39,0.05); }
+  .pricing-row.discount .price { color: var(--amber); }
+  .pricing-row.discount .label { color: var(--amber-light); }
+  .discount-note { padding: 1rem 1.5rem; border-top: 1px solid rgba(55,138,221,0.1); font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
+
+  .register-cta { margin-top: 2.5rem; background: var(--blue); border-radius: 16px; padding: 3rem 2.5rem; text-align: center; }
+  .register-cta h3 { font-family: 'Noto Serif TC', serif; font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; }
+  .register-cta p { color: var(--blue-pale); font-size: 0.9rem; margin-bottom: 2rem; }
+
+  footer { background: var(--navy-deep); border-top: 1px solid rgba(55,138,221,0.15); text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--text-muted); line-height: 2; }
+
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* REGISTER PAGE */
+  .reg-page-wrap { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+  .reg-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; margin-bottom: 2rem; transition: color 0.2s; background: none; border: none; font-family: inherit; }
+  .reg-back:hover { color: var(--white); }
+  .reg-title { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
+  .reg-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.8; }
+
+  .notice-box { background: rgba(239,159,39,0.08); border: 1px solid rgba(239,159,39,0.25); border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 2rem; font-size: 0.875rem; color: var(--amber-light); line-height: 2; }
+  .notice-box strong { color: var(--amber); }
+
+  .form-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 14px; padding: 1.8rem; margin-bottom: 1.2rem; }
+  .form-card-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 1.4rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(239,159,39,0.15); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label { font-size: 0.82rem; color: var(--blue-pale); }
+  .req { color: var(--amber); }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(181,212,244,0.18);
+    border-radius: 8px; padding: 0.7rem 1rem; color: white;
+    font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s; appearance: none; width: 100%;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(181,212,244,0.35); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue-light); background: rgba(255,255,255,0.09); }
+  .form-group select option { background: var(--navy-dark); color: white; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .submit-btn { width: 100%; padding: 1.1rem; font-size: 1.05rem; border: none; cursor: pointer; border-radius: 10px; margin-top: 0.8rem; }
+
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.2rem; }
+  .check-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .check-item { display: flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(181,212,244,0.15); border-radius: 8px; padding: 0.6rem 0.9rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .check-item:hover { border-color: rgba(181,212,244,0.35); background: rgba(255,255,255,0.08); }
+  .check-item input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--amber); cursor: pointer; flex-shrink: 0; }
+  .check-item span { font-size: 0.85rem; color: var(--blue-pale); line-height: 1.4; }
+  .check-item:has(input:checked) { border-color: var(--amber); background: rgba(239,159,39,0.1); }
+  .check-item:has(input:checked) span { color: white; }
+
+  /* ADMIN upgraded */
+  .admin-section { margin-bottom: 2.5rem; }
+  .admin-section-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(239,159,39,0.15); }
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1rem; }
+  .stats-row.two { grid-template-columns: repeat(2,1fr); }
+  .mini-bar-wrap { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; padding: 1.2rem 1.4rem; }
+  .mini-bar-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.7rem; font-size: 0.83rem; }
+  .mini-bar-row:last-child { margin-bottom: 0; }
+  .mini-bar-label { min-width: 140px; color: var(--blue-pale); }
+  .mini-bar-track { flex: 1; background: rgba(255,255,255,0.07); border-radius: 4px; height: 8px; overflow: hidden; }
+  .mini-bar-fill { height: 100%; border-radius: 4px; background: var(--blue-light); transition: width 0.4s ease; }
+  .mini-bar-fill.amber { background: var(--amber); }
+  .mini-bar-fill.teal { background: var(--teal); }
+  .mini-bar-num { min-width: 28px; text-align: right; font-weight: 700; font-size: 0.85rem; }
+  .filter-row { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.2rem; align-items: center; }
+  .filter-row select, .filter-row input { background: rgba(255,255,255,0.07); border: 1px solid rgba(181,212,244,0.2); border-radius: 8px; padding: 0.5rem 0.9rem; color: white; font-family: inherit; font-size: 0.85rem; appearance: none; }
+  .filter-row select option { background: var(--navy-dark); }
+  .badge { display: inline-block; font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700; }
+  .badge.am { background: rgba(55,138,221,0.2); color: #B5D4F4; }
+  .badge.pm { background: rgba(29,158,117,0.2); color: #9FE1CB; }
+  .badge.full { background: rgba(239,159,39,0.2); color: #FAC775; }
+
+  .success-wrap { text-align: center; padding: 4rem 2rem; max-width: 560px; margin: 0 auto; }
+  .success-wrap .icon { font-size: 4rem; margin-bottom: 1.5rem; }
+  .success-wrap h2 { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 900; margin-bottom: 1rem; }
+  .success-wrap p { color: var(--blue-pale); line-height: 2; font-size: 0.95rem; margin-bottom: 2rem; }
+  .success-info { background: var(--navy-dark); border-radius: 12px; padding: 1.2rem 1.6rem; font-size: 0.85rem; color: var(--text-muted); line-height: 2.2; margin-bottom: 2rem; text-align: left; }
+  .success-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ADMIN */
+  .admin-wrap { max-width: 1100px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+  .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+  .admin-header h2 { font-family: 'Noto Serif TC', serif; font-size: 1.6rem; font-weight: 900; }
+  .admin-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 10px; padding: 1rem 1.2rem; }
+  .stat-card .num { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 900; color: var(--amber); }
+  .stat-card .lbl { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+  .admin-table-wrap { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; overflow: auto; }
+  .admin-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 1000px; }
+  .admin-table th { background: var(--blue); padding: 0.75rem 1rem; text-align: left; font-weight: 700; white-space: nowrap; }
+  .admin-table td { padding: 0.7rem 1rem; border-top: 1px solid rgba(55,138,221,0.1); color: var(--blue-pale); }
+  .admin-table tr:hover td { background: rgba(55,138,221,0.05); }
+
+  @media (max-width: 640px) {
+    .about-grid, .schedule-grid { grid-template-columns: 1fr; }
+    .pricing-header, .pricing-row { grid-template-columns: 1.2fr 1fr 1fr; }
+    .pricing-header div:nth-child(3), .pricing-row div:nth-child(3) { display: none; }
+    nav ul { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+    .admin-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('main')">清大<span>羽球</span>夏令營</div>
+  <ul>
+    <li><a onclick="showPage('main'); scrollTo('about')">活動介紹</a></li>
+    <li><a onclick="showPage('main'); scrollTo('schedule')">梯次時間</a></li>
+    <li><a onclick="showPage('main'); scrollTo('pricing')">費用</a></li>
+    <li><a onclick="showPage('register')" class="nav-register">立即報名</a></li>
+  </ul>
+</nav>
+
+<!-- ══ 主頁 ══ -->
+<div id="page-main" class="page active">
+  <section class="hero" style="max-width:100%; padding-top:5rem;">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="shuttlecock">🏸</div>
+    <div class="hero-tag">BADMINTON SUMMER CAMP 2026</div>
+    <h1>國立清華大學<br><span class="accent">羽球夏令營</span></h1>
+    <p class="hero-sub">南大校區體健大樓五樓體育館</p>
+    <p class="hero-location">清華大學羽球校隊 主辦</p>
+    <div class="hero-badge">揮拍釋放活力　迎接最熱血的夏天</div>
+    <div class="hero-cta">
+      <button onclick="showPage('register')" class="btn-primary">立即報名 →</button>
+      <button onclick="scrollTo('schedule')" class="btn-secondary">查看梯次</button>
+    </div>
+  </section>
+
+  <hr class="section-line">
+
+  <section id="about" style="padding-top:5rem;">
+    <div class="fade-up">
+      <div class="section-label">關於活動</div>
+      <h2 class="section-title">以球會友，揮灑夏日汗水</h2>
+      <p class="section-desc">清華大學羽球校隊致力於將羽球運動帶入社區，讓更多人體驗運動的樂趣。不論是第一次拿起球拍，還是想在暑假保持規律訓練，這裡都有適合你的位置。</p>
+    </div>
+    <div class="about-grid fade-up" style="transition-delay:0.15s;">
+      <div class="about-card blue"><h3>專業教練</h3><p>清大羽球校隊學員親自帶領，依程度分組，讓每位學員都能在合適的步調下穩定進步。</p></div>
+      <div class="about-card amber"><h3>五天課程</h3><p>涵蓋步法、技術與體能訓練，每日追蹤學習進度，最後以結業對抗賽展現一週成果。</p></div>
+      <div class="about-card teal"><h3>活力滿載</h3><p>輕鬆無壓力的學習氛圍，在揮灑汗水的同時交到新朋友，培養長期運動的好習慣。</p></div>
+    </div>
+  </section>
+
+  <hr class="section-line">
+
+  <section id="schedule">
+    <div class="fade-up">
+      <div class="section-label">活動梯次</div>
+      <h2 class="section-title">2026 年夏季　共 8 梯次</h2>
+      <p class="section-desc">每梯次為期五天，週一至週五，09:00 – 16:30，可依個人行程彈性選擇。</p>
+    </div>
+    <div class="schedule-grid fade-up" style="transition-delay:0.1s;">
+      <div class="schedule-item"><div class="schedule-num">01</div><div><div class="schedule-dates">7/06（一）－ 7/10（五）</div><div class="schedule-time">09:00 – 16:30　第一梯次</div></div></div>
+      <div class="schedule-item"><div class="schedule-num">02</div><div><div class="schedule-dates">7/13（一）－ 7/17（五）</div><div class="schedule-time">09:00 – 16:30　第二梯次</div></div></div>
+      <div class="schedule-item"><div class="schedule-num">03</div><div><div class="schedule-dates">7/20（一）－ 7/24（五）</div><div class="schedule-time">09:00 – 16:30　第三梯次</div></div></div>
+      <div class="schedule-item"><div class="schedule-num">04</div><div><div class="schedule-dates">7/27（一）－ 7/31（五）</div><div class="schedule-time">09:00 – 16:30　第四梯次</div></div></div>
+      <div class="schedule-item"><div class="schedule-num">05</div><div><div class="schedule-dates">8/03（一）－ 8/07（五）</div><div class="schedule-time">09:00 – 16:30　第五梯次</div></div></div>
+      <div class="schedule-item"><div class="schedule-num">06</div><div><div class="schedule-dates">8/10（一）－ 8/14（五）</div><div class="schedule-time">09:00 – 16:30　第六梯次</div></div></div>
+      <div class="schedule-item"><div class="schedule-num">07</div><div><div class="schedule-dates">8/17（一）－ 8/21（五）</div><div class="schedule-time">09:00 – 16:30　第七梯次</div></div></div>
+      <div class="schedule-item"><div class="schedule-num">08</div><div><div class="schedule-dates">8/24（一）－ 8/28（五）</div><div class="schedule-time">09:00 – 16:30　第八梯次</div></div></div>
+    </div>
+    <div class="schedule-note fade-up" style="transition-delay:0.2s;">
+      ※ 每梯次限額 30 名，額滿即止。各梯次報名人數未達 20 人者，該梯次課程將不予開設。
+    </div>
+  </section>
+
+  <hr class="section-line">
+
+  <section id="pricing">
+    <div class="fade-up">
+      <div class="section-label">報名費用</div>
+      <h2 class="section-title">費用一覽</h2>
+      <p class="section-desc">提供上午班、下午班及全天班三種選擇，符合資格者享有優惠價格。</p>
+    </div>
+    <div class="pricing-wrap fade-up" style="transition-delay:0.1s;">
+      <div class="pricing-header"><div>方案</div><div>上午班</div><div>下午班</div><div>全天班</div></div>
+      <div class="pricing-row"><div class="label">一般報名</div><div class="price">$4,000</div><div class="price">$4,000</div><div class="price">$7,600</div></div>
+      <div class="pricing-row discount"><div class="label">⭐ 優惠價</div><div class="price">$3,500</div><div class="price">$3,500</div><div class="price">$7,000</div></div>
+      <div class="discount-note">⭐ 優惠適用：五人（含）以上團體報名 / 清大在校學生 / 清大教職員工<br>上午班 09:00–12:00　·　下午班 13:30–16:30　·　全天班 09:00–16:30</div>
+    </div>
+  </section>
+
+  <hr class="section-line">
+
+  <section>
+    <div class="register-cta fade-up">
+      <h3>🏸 準備好了嗎？</h3>
+      <p>名額有限，填寫報名表後我們將於一週內寄送確認通知至您的信箱。</p>
+      <button onclick="showPage('register')" class="btn-primary">前往報名頁面 →</button>
+    </div>
+  </section>
+
+  <footer>
+    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
+    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
+    <div style="margin-top:0.5rem; font-size:0.75rem; opacity:0.6;">實際課程內容以現場教練安排為主，主辦單位保有調整活動內容之權利</div>
+  </footer>
+</div>
+
+
+<!-- ══ 報名頁 ══ -->
+<div id="page-register" class="page">
+  <div class="reg-page-wrap">
+    <button class="reg-back" onclick="showPage('main')">← 返回首頁</button>
+
+    <div id="regFormArea">
+      <div class="section-label">立即報名</div>
+      <h1 class="reg-title">填寫報名資料</h1>
+      <p class="reg-subtitle">請確實填寫以下資料，送出後我們將於<strong style="color:white;">一週內</strong>寄送成班通知。若該梯次額滿，將另行寄送候補通知，請收到確認信後再完成繳費。</p>
+
+      <div class="notice-box">
+        <strong>📋 報名前請注意</strong><br>
+        活動地點：清華大學南大校區體健大樓五樓體育館，請提前確認前往方式。<br>
+        上課當天請攜帶球拍、球鞋、運動服及水壺，現場設有飲水機。<br>
+        選擇全天班者可自備環保餐具；如需代訂午餐，請於第一天課程時告知教練並繳交餐費。<br>
+        <strong>團體報名請注意：每位學員皆須個別填寫本表單。</strong><br>
+        班別分配將由教練依學員實際程度決定，報名時選填的班別僅供參考。
+      </div>
+
+      <form id="regForm" onsubmit="submitForm(event)">
+        <div class="form-card">
+          <div class="form-card-title">🧒 學員資訊</div>
+          <div class="form-grid">
+            <div class="form-group"><label>學員姓名 <span class="req">*</span></label><input type="text" name="name" placeholder="請輸入學員姓名" required></div>
+            <div class="form-group"><label>性別 <span class="req">*</span></label><select name="gender" required><option value="">請選擇</option><option>男</option><option>女</option><option>不便透露</option></select></div>
+            <div class="form-group"><label>年齡 <span class="req">*</span></label><input type="number" name="age" placeholder="例：10" min="4" max="60" required></div>
+            <div class="form-group"><label>就讀年級</label><input type="text" name="grade" placeholder="例：國小四年級"></div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">📱 聯絡資訊</div>
+          <div class="form-grid">
+            <div class="form-group"><label>聯絡電話 <span class="req">*</span></label><input type="tel" name="phone" placeholder="請輸入聯絡電話" required></div>
+            <div class="form-group"><label>電子信箱 <span class="req">*</span></label><input type="email" name="email" placeholder="用於接收成班通知" required></div>
+            <div class="form-group"><label>緊急聯絡人姓名 <span class="req">*</span></label><input type="text" name="emergency_name" placeholder="請輸入姓名" required></div>
+            <div class="form-group"><label>緊急聯絡人電話 <span class="req">*</span></label><input type="tel" name="emergency_phone" placeholder="請輸入電話" required></div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">💳 繳款人資料</div>
+          <div class="form-grid">
+            <div class="form-group"><label>繳款人姓名 <span class="req">*</span></label><input type="text" name="payer_name" placeholder="若與學員相同請重填" required></div>
+            <div class="form-group"><label>繳款人電話 <span class="req">*</span></label><input type="tel" name="payer_phone" placeholder="請輸入電話" required></div>
+            <div class="form-group"><label>與學員關係</label><select name="payer_relation"><option value="">請選擇</option><option>本人</option><option>父母</option><option>監護人</option><option>其他</option></select></div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">🏸 報名選擇</div>
+          <div class="form-grid">
+
+            <div class="form-group full">
+              <label>報名梯次 <span class="req">*</span>（可複選）</label>
+              <div class="check-grid" id="sessionChecks">
+                <label class="check-item"><input type="checkbox" name="sessions" value="第1梯｜7/06－7/10"><span>第 1 梯｜7/06（一）－ 7/10（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第2梯｜7/13－7/17"><span>第 2 梯｜7/13（一）－ 7/17（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第3梯｜7/20－7/24"><span>第 3 梯｜7/20（一）－ 7/24（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第4梯｜7/27－7/31"><span>第 4 梯｜7/27（一）－ 7/31（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第5梯｜8/03－8/07"><span>第 5 梯｜8/03（一）－ 8/07（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第6梯｜8/10－8/14"><span>第 6 梯｜8/10（一）－ 8/14（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第7梯｜8/17－8/21"><span>第 7 梯｜8/17（一）－ 8/21（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第8梯｜8/24－8/28"><span>第 8 梯｜8/24（一）－ 8/28（五）</span></label>
+              </div>
+            </div>
+
+            <div class="form-group full">
+              <label>上下午班 <span class="req">*</span></label>
+              <div class="check-grid three">
+                <label class="check-item"><input type="checkbox" name="time_slots" value="上午班｜$4,000"><span>上午班<br>09:00–12:00｜$4,000</span></label>
+                <label class="check-item"><input type="checkbox" name="time_slots" value="下午班｜$4,000"><span>下午班<br>13:30–16:30｜$4,000</span></label>
+                <label class="check-item"><input type="checkbox" name="time_slots" value="全天班｜$7,600"><span>全天班<br>09:00–16:30｜$7,600</span></label>
+              </div>
+            </div>
+
+            <div class="form-group full">
+              <label>希望班別（教練將依程度最終決定，可複選）</label>
+              <div class="check-grid three">
+                <label class="check-item"><input type="checkbox" name="class_prefs" value="探索班"><span>探索班<br>零基礎 / 初學</span></label>
+                <label class="check-item"><input type="checkbox" name="class_prefs" value="進階班"><span>進階班<br>已有基礎</span></label>
+                <label class="check-item"><input type="checkbox" name="class_prefs" value="菁英班"><span>菁英班<br>競賽經驗</span></label>
+              </div>
+            </div>
+
+            <div class="form-group full">
+              <label>優惠資格</label>
+              <select name="discount"><option value="無">不符合，以一般價格報名</option>
+                <option>五人以上團體報名</option><option>清大在校學生</option><option>清大教職員工</option>
+              </select>
+            </div>
+
+            <div class="form-group full" id="groupMemberWrap" style="display:none;">
+              <label>同行團報成員姓名 <span class="req">*</span></label>
+              <textarea name="group_members" placeholder="請填寫同行成員的姓名，每人一行&#10;例：&#10;王小明&#10;李小華&#10;陳大中"></textarea>
+              <span style="font-size:0.78rem; color:var(--text-muted); margin-top:0.3rem;">每位成員皆需個別填寫報名表單，此欄僅供核對團體資格</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">📝 其他說明</div>
+          <div class="form-group full"><label>運動傷害或注意事項（選填）</label><textarea name="notes" placeholder="如有舊傷、過敏或其他需告知教練的事項，請填寫於此"></textarea></div>
+        </div>
+
+        <button type="submit" class="btn-primary submit-btn">送出報名資料 →</button>
+      </form>
+    </div>
+
+    <div id="successArea" style="display:none;">
+      <div class="success-wrap">
+        <div class="icon">🎉</div>
+        <h2>報名完成！</h2>
+        <p>感謝您的報名，我們已收到您的資料。</p>
+        <div class="success-info">
+          📬 請於<strong style="color:white;">一週內</strong>留意信箱，我們將寄送成班確認通知。<br>
+          🔔 若該梯次名額已滿，將另寄候補通知，請於收到確認信後再完成繳費。<br>
+          📧 wcsports02@gmail.com<br>
+          💬 LINE ID：941109chang
+        </div>
+        <div class="success-btns">
+          <button onclick="showPage('main')" class="btn-secondary">返回首頁</button>
+          <button onclick="registerAnother()" class="btn-primary">再填一份（團體報名）</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
+    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
+  </footer>
+</div>
+
+
+<!-- ══ 後台（?admin）══ -->
+<div id="page-admin" class="page">
+  <div class="admin-wrap">
+    <div id="adminLoginArea">
+      <div class="section-label">管理後台</div>
+      <h2 style="font-family:'Noto Serif TC',serif; font-size:1.8rem; font-weight:900; margin-bottom:1.5rem;">報名資料管理</h2>
+      <div style="max-width:320px;">
+        <div class="form-group" style="margin-bottom:1rem;"><label>管理密碼</label><input type="password" id="adminPwd" placeholder="請輸入密碼" onkeydown="if(event.key==='Enter')checkAdmin()"></div>
+        <button onclick="checkAdmin()" class="btn-primary" style="width:100%; border:none; cursor:pointer; padding:0.8rem;">進入後台</button>
+        <p id="adminErr" style="color:#E24B4A; font-size:0.85rem; margin-top:0.6rem; display:none;">密碼錯誤，請再試一次</p>
+      </div>
+    </div>
+
+    <div id="adminPanel" style="display:none;">
+      <div class="admin-header">
+        <h2>報名資料管理</h2>
+        <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+          <button onclick="exportCSV()" class="btn-primary" style="border:none; cursor:pointer; font-size:0.9rem; padding:0.6rem 1.4rem;">匯出 CSV</button>
+          <button onclick="clearData()" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">清除資料</button>
+          <button onclick="showPage('main')" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">返回首頁</button>
+        </div>
+      </div>
+
+      <!-- 總覽統計 -->
+      <div class="admin-section">
+        <div class="admin-section-title">📊 總覽</div>
+        <div class="stats-row" id="adminStatsTop"></div>
+      </div>
+
+      <!-- 梯次分佈 + 班別/時段分佈 -->
+      <div style="display:grid; grid-template-columns:1.6fr 1fr; gap:1.2rem; margin-bottom:2rem;">
+        <div>
+          <div class="admin-section-title">📅 各梯次報名人數</div>
+          <div class="mini-bar-wrap" id="sessionBars"></div>
+        </div>
+        <div>
+          <div class="admin-section-title">⏰ 時段 / 班別</div>
+          <div class="mini-bar-wrap" id="slotBars"></div>
+        </div>
+      </div>
+
+      <!-- 篩選 + 表格 -->
+      <div class="admin-section">
+        <div class="admin-section-title">📋 報名名單</div>
+        <div class="filter-row">
+          <select id="filterSession" onchange="renderTable()">
+            <option value="">全部梯次</option>
+            <option>第1梯</option><option>第2梯</option><option>第3梯</option><option>第4梯</option>
+            <option>第5梯</option><option>第6梯</option><option>第7梯</option><option>第8梯</option>
+          </select>
+          <select id="filterSlot" onchange="renderTable()">
+            <option value="">全部時段</option>
+            <option>上午班</option><option>下午班</option><option>全天班</option>
+          </select>
+          <select id="filterClass" onchange="renderTable()">
+            <option value="">全部班別</option>
+            <option>探索班</option><option>進階班</option><option>菁英班</option>
+          </select>
+          <input type="text" id="filterSearch" placeholder="搜尋姓名 / Email" oninput="renderTable()" style="min-width:180px;">
+          <span id="filterCount" style="font-size:0.82rem; color:var(--text-muted); margin-left:0.4rem;"></span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr>
+              <th>#</th><th>時間</th><th>學員</th><th>性別</th><th>年齡</th><th>年級</th>
+              <th>電話</th><th>Email</th><th>緊急聯絡</th><th>緊急電話</th>
+              <th>繳款人</th><th>繳款電話</th><th>關係</th>
+              <th>梯次</th><th>時段</th><th>班別偏好</th><th>優惠</th><th>團報成員</th><th>備注</th>
+            </tr></thead>
+            <tbody id="adminBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ── PAGES ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'main') setTimeout(initFade, 50);
+}
+function scrollTo(id) {
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
+}
+
+// ── FADE ──
+function initFade() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+}
+initFade();
+
+// ── 團報欄位 ──
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'discount') {
+    const wrap = document.getElementById('groupMemberWrap');
+    if (wrap) wrap.style.display = e.target.value.includes('團體') ? 'flex' : 'none';
+  }
+});
+
+// ── FORM ──
+function submitForm(e) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const sessions = fd.getAll('sessions');
+  if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
+  const timeSlots = fd.getAll('time_slots');
+  if (!timeSlots.length) { alert('請至少選擇一個時段'); return; }
+  const classPrefs = fd.getAll('class_prefs');
+  const entry = {
+    time: new Date().toLocaleString('zh-TW'),
+    name: fd.get('name'), gender: fd.get('gender'), age: fd.get('age'), grade: fd.get('grade') || '—',
+    phone: fd.get('phone'), email: fd.get('email'),
+    emergency_name: fd.get('emergency_name'), emergency_phone: fd.get('emergency_phone'),
+    payer_name: fd.get('payer_name'), payer_phone: fd.get('payer_phone'),
+    payer_relation: fd.get('payer_relation') || '—',
+    sessions: sessions.join('、'),
+    time_slots: timeSlots.join('、'),
+    class_prefs: classPrefs.length ? classPrefs.join('、') : '待評估',
+    discount: fd.get('discount') || '無',
+    group_members: fd.get('group_members') || '—',
+    notes: fd.get('notes') || '—'
+  };
+  try {
+    const list = JSON.parse(localStorage.getItem('reg') || '[]');
+    list.push(entry);
+    localStorage.setItem('reg', JSON.stringify(list));
+  } catch(err) {}
+  document.getElementById('regFormArea').style.display = 'none';
+  document.getElementById('successArea').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function registerAnother() {
+  document.getElementById('regForm').reset();
+  document.querySelectorAll('#regForm input[type=checkbox]').forEach(cb => cb.checked = false);
+  const wrap = document.getElementById('groupMemberWrap');
+  if (wrap) wrap.style.display = 'none';
+  document.getElementById('regFormArea').style.display = 'block';
+  document.getElementById('successArea').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+// ── ADMIN ──
+const PWD = 'nthu2026';
+let allData = [];
+
+function checkAdmin() {
+  if (document.getElementById('adminPwd').value === PWD) {
+    document.getElementById('adminLoginArea').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAdmin();
+  } else {
+    document.getElementById('adminErr').style.display = 'block';
+  }
+}
+
+function loadAdmin() {
+  try { allData = JSON.parse(localStorage.getItem('reg') || '[]'); } catch(e) { allData = []; }
+  renderStats();
+  renderTable();
+}
+
+function renderStats() {
+  const total = allData.length;
+  const am = allData.filter(r => (r.time_slots||'').includes('上午')).length;
+  const pm = allData.filter(r => (r.time_slots||'').includes('下午')).length;
+  const full = allData.filter(r => (r.time_slots||'').includes('全天')).length;
+  document.getElementById('adminStatsTop').innerHTML = `
+    <div class="stat-card"><div class="num">${total}</div><div class="lbl">總報名人數</div></div>
+    <div class="stat-card"><div class="num">${am}</div><div class="lbl">上午班 人次</div></div>
+    <div class="stat-card"><div class="num">${pm}</div><div class="lbl">下午班 人次</div></div>
+    <div class="stat-card"><div class="num">${full}</div><div class="lbl">全天班 人次</div></div>
+  `;
+  const sessionKeys = ['第1梯','第2梯','第3梯','第4梯','第5梯','第6梯','第7梯','第8梯'];
+  const sessionDates = ['7/06','7/13','7/20','7/27','8/03','8/10','8/17','8/24'];
+  const sc = sessionKeys.map(k => allData.filter(r => (r.sessions||'').includes(k)).length);
+  const maxS = Math.max(...sc, 1);
+  document.getElementById('sessionBars').innerHTML = sessionKeys.map((k,i) => `
+    <div class="mini-bar-row">
+      <div class="mini-bar-label">${k}｜${sessionDates[i]}</div>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${(sc[i]/maxS*100).toFixed(0)}%"></div></div>
+      <div class="mini-bar-num">${sc[i]}</div>
+    </div>`).join('');
+  const slots = [{k:'上午班',c:''},{k:'下午班',c:'teal'},{k:'全天班',c:'amber'}];
+  const classes = [{k:'探索班',c:''},{k:'進階班',c:'teal'},{k:'菁英班',c:'amber'}];
+  const maxSlot = Math.max(...slots.map(s=>allData.filter(r=>(r.time_slots||'').includes(s.k)).length),1);
+  const maxCls = Math.max(...classes.map(c=>allData.filter(r=>(r.class_prefs||'').includes(c.k)).length),1);
+  document.getElementById('slotBars').innerHTML =
+    `<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.6rem;letter-spacing:0.1em;">時段</div>` +
+    slots.map(s=>{const n=allData.filter(r=>(r.time_slots||'').includes(s.k)).length; return `<div class="mini-bar-row"><div class="mini-bar-label">${s.k}</div><div class="mini-bar-track"><div class="mini-bar-fill ${s.c}" style="width:${(n/maxSlot*100).toFixed(0)}%"></div></div><div class="mini-bar-num">${n}</div></div>`;}).join('') +
+    `<div style="font-size:0.75rem;color:var(--text-muted);margin:1rem 0 0.6rem;letter-spacing:0.1em;">班別偏好</div>` +
+    classes.map(c=>{const n=allData.filter(r=>(r.class_prefs||'').includes(c.k)).length; return `<div class="mini-bar-row"><div class="mini-bar-label">${c.k}</div><div class="mini-bar-track"><div class="mini-bar-fill ${c.c}" style="width:${(n/maxCls*100).toFixed(0)}%"></div></div><div class="mini-bar-num">${n}</div></div>`;}).join('');
+}
+
+function renderTable() {
+  const fS = document.getElementById('filterSession').value;
+  const fT = document.getElementById('filterSlot').value;
+  const fC = document.getElementById('filterClass').value;
+  const fQ = document.getElementById('filterSearch').value.toLowerCase();
+  const filtered = allData.filter(r => {
+    if (fS && !(r.sessions||'').includes(fS)) return false;
+    if (fT && !(r.time_slots||'').includes(fT)) return false;
+    if (fC && !(r.class_prefs||'').includes(fC)) return false;
+    if (fQ && !r.name.toLowerCase().includes(fQ) && !(r.email||'').toLowerCase().includes(fQ)) return false;
+    return true;
+  });
+  document.getElementById('filterCount').textContent = `顯示 ${filtered.length} 筆 / 共 ${allData.length} 筆`;
+  const tbody = document.getElementById('adminBody');
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="19" style="text-align:center;padding:2rem;color:var(--text-muted)">無符合條件的資料</td></tr>'; return; }
+  const badge = s => !s ? '—' : s.split('、').map(v => {
+    const c = v.includes('上午')?'am':v.includes('下午')?'pm':'full';
+    return `<span class="badge ${c}">${v.replace('｜$4,000','').replace('｜$7,600','')}</span>`;
+  }).join(' ');
+  tbody.innerHTML = filtered.map((r,i) => `<tr>
+    <td>${i+1}</td>
+    <td style="white-space:nowrap;font-size:0.78rem">${r.time}</td>
+    <td><strong style="color:white">${r.name}</strong></td>
+    <td>${r.gender}</td><td>${r.age}</td><td>${r.grade}</td>
+    <td>${r.phone}</td><td style="font-size:0.8rem">${r.email}</td>
+    <td>${r.emergency_name}</td><td>${r.emergency_phone}</td>
+    <td>${r.payer_name}</td><td>${r.payer_phone}</td><td>${r.payer_relation}</td>
+    <td style="font-size:0.8rem">${r.sessions||'—'}</td>
+    <td>${badge(r.time_slots)}</td>
+    <td style="font-size:0.8rem">${r.class_prefs||'—'}</td>
+    <td style="font-size:0.8rem">${r.discount}</td>
+    <td style="font-size:0.78rem;color:var(--text-muted)">${r.group_members||'—'}</td>
+    <td style="font-size:0.8rem;color:var(--text-muted)">${r.notes}</td>
+  </tr>`).join('');
+}
+
+function exportCSV() {
+  if (!allData.length) { alert('目前沒有報名資料'); return; }
+  const headers = ['#','報名時間','學員姓名','性別','年齡','年級','聯絡電話','Email','緊急聯絡人','緊急電話','繳款人','繳款電話','關係','報名梯次','時段','班別偏好','優惠','團報成員','備注'];
+  const rows = allData.map((r,i)=>[i+1,r.time,r.name,r.gender,r.age,r.grade,r.phone,r.email,r.emergency_name,r.emergency_phone,r.payer_name,r.payer_phone,r.payer_relation,r.sessions,r.time_slots,r.class_prefs,r.discount,r.group_members,r.notes]);
+  const csv = '\uFEFF'+[headers,...rows].map(row=>row.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  a.download = `羽球夏令營報名_${new Date().toLocaleDateString('zh-TW').replace(/\//g,'-')}.csv`;
+  a.click();
+}
+
+function clearData() {
+  if (confirm('確定清除所有報名資料？此操作無法復原。')) {
+    localStorage.removeItem('reg'); allData = [];
+    renderStats(); renderTable();
+  }
+}
+
+if (location.search === '?admin') showPage('admin');
+</script>
+</body>
+</html>
