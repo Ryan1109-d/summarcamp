@@ -358,12 +358,11 @@
 
             <div class="form-group full">
               <label>上下午班 <span class="req">*</span></label>
-              <div class="check-grid three" id="timeSlotChecks">
-                <label class="check-item" id="slot-am"><input type="checkbox" name="time_slots" value="上午班｜$4,000" onchange="handleSlot(this)"><span>上午班<br>09:00–12:00｜$4,000</span></label>
-                <label class="check-item" id="slot-pm"><input type="checkbox" name="time_slots" value="下午班｜$4,000" onchange="handleSlot(this)"><span>下午班<br>13:30–16:30｜$4,000</span></label>
-                <label class="check-item" id="slot-full"><input type="checkbox" name="time_slots" value="全天班｜$7,600" onchange="handleSlot(this)"><span>全天班<br>09:00–16:30｜$7,600</span></label>
+              <div class="check-grid three">
+                <label class="check-item" id="slot-am"><input type="radio" name="time_slots" value="上午班｜$4,000" required><span>上午班<br>09:00–12:00｜$4,000</span></label>
+                <label class="check-item" id="slot-pm"><input type="radio" name="time_slots" value="下午班｜$4,000"><span>下午班<br>13:30–16:30｜$4,000</span></label>
+                <label class="check-item" id="slot-full"><input type="radio" name="time_slots" value="全天班｜$7,600"><span>全天班<br>09:00–16:30｜$7,600</span></label>
               </div>
-              <span id="slotWarning" style="font-size:0.78rem; color:#E24B4A; margin-top:0.3rem; display:none;">全天班已包含上午及下午，請擇一選擇</span>
             </div>
 
             <div class="form-group full">
@@ -541,31 +540,6 @@ function initFade() {
 }
 initFade();
 
-// ── 時段互斥邏輯 ──
-function handleSlot(cb) {
-  const amCb = document.querySelector('input[value="上午班｜$4,000"]');
-  const pmCb = document.querySelector('input[value="下午班｜$4,000"]');
-  const fullCb = document.querySelector('input[value="全天班｜$7,600"]');
-  const slotAm = document.getElementById('slot-am');
-  const slotPm = document.getElementById('slot-pm');
-  const slotFull = document.getElementById('slot-full');
-  const warning = document.getElementById('slotWarning');
-
-  if (cb.value === '全天班｜$7,600' && cb.checked) {
-    amCb.checked = false;
-    pmCb.checked = false;
-  } else if (cb.checked) {
-    fullCb.checked = false;
-  }
-
-  const hasAmOrPm = amCb.checked || pmCb.checked;
-  slotFull.classList.toggle('disabled', hasAmOrPm);
-  const hasFull = fullCb.checked;
-  slotAm.classList.toggle('disabled', hasFull);
-  slotPm.classList.toggle('disabled', hasFull);
-  warning.style.display = 'none';
-}
-
 
 document.addEventListener('change', function(e) {
   if (e.target.name === 'discount') {
@@ -580,8 +554,8 @@ function submitForm(e) {
   const fd = new FormData(e.target);
   const sessions = fd.getAll('sessions');
   if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
-  const timeSlots = fd.getAll('time_slots');
-  if (!timeSlots.length) { alert('請至少選擇一個時段'); return; }
+  const timeSlots = [fd.get('time_slots')].filter(Boolean);
+  if (!timeSlots.length) { alert('請選擇一個時段'); return; }
   const classPrefs = fd.getAll('class_prefs');
   const classPref = fd.get('class_pref') || '待評估';
   const entry = {
