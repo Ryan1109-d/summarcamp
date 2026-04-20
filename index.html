@@ -128,10 +128,11 @@
   .check-grid.three { grid-template-columns: 1fr 1fr 1fr; }
   .check-item { display: flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(181,212,244,0.15); border-radius: 8px; padding: 0.6rem 0.9rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
   .check-item:hover { border-color: rgba(181,212,244,0.35); background: rgba(255,255,255,0.08); }
-  .check-item input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--amber); cursor: pointer; flex-shrink: 0; }
+  .check-item input[type=checkbox], .check-item input[type=radio] { width: 16px; height: 16px; accent-color: var(--amber); cursor: pointer; flex-shrink: 0; }
   .check-item span { font-size: 0.85rem; color: var(--blue-pale); line-height: 1.4; }
   .check-item:has(input:checked) { border-color: var(--amber); background: rgba(239,159,39,0.1); }
   .check-item:has(input:checked) span { color: white; }
+  .check-item.disabled { opacity: 0.35; pointer-events: none; }
 
   /* ADMIN upgraded */
   .admin-section { margin-bottom: 2.5rem; }
@@ -191,9 +192,9 @@
 <nav>
   <div class="nav-logo" onclick="showPage('main')">清大<span>羽球</span>夏令營</div>
   <ul>
-    <li><a onclick="showPage('main'); scrollTo('about')">活動介紹</a></li>
-    <li><a onclick="showPage('main'); scrollTo('schedule')">梯次時間</a></li>
-    <li><a onclick="showPage('main'); scrollTo('pricing')">費用</a></li>
+    <li><a onclick="goTo('about')">活動介紹</a></li>
+    <li><a onclick="goTo('schedule')">梯次時間</a></li>
+    <li><a onclick="goTo('pricing')">費用</a></li>
     <li><a onclick="showPage('register')" class="nav-register">立即報名</a></li>
   </ul>
 </nav>
@@ -211,7 +212,7 @@
     <div class="hero-badge">揮拍釋放活力　迎接最熱血的夏天</div>
     <div class="hero-cta">
       <button onclick="showPage('register')" class="btn-primary">立即報名 →</button>
-      <button onclick="scrollTo('schedule')" class="btn-secondary">查看梯次</button>
+      <button onclick="goTo('schedule')" class="btn-secondary">查看梯次</button>
     </div>
   </section>
 
@@ -264,7 +265,7 @@
     <div class="pricing-wrap fade-up" style="transition-delay:0.1s;">
       <div class="pricing-header"><div>方案</div><div>上午班</div><div>下午班</div><div>全天班</div></div>
       <div class="pricing-row"><div class="label">一般報名</div><div class="price">$4,000</div><div class="price">$4,000</div><div class="price">$7,600</div></div>
-      <div class="pricing-row discount"><div class="label">⭐ 優惠價</div><div class="price">$3,500</div><div class="price">$3,500</div><div class="price">$7,000</div></div>
+      <div class="pricing-row discount"><div class="label">⭐ 優惠價<br><span style="font-size:0.72rem; color:var(--amber-light); font-weight:400;">團體／清大師生</span></div><div class="price">$3,500</div><div class="price">$3,500</div><div class="price">$7,000</div></div>
       <div class="discount-note">⭐ 優惠適用：五人（含）以上團體報名 / 清大在校學生 / 清大教職員工<br>上午班 09:00–12:00　·　下午班 13:30–16:30　·　全天班 09:00–16:30</div>
     </div>
   </section>
@@ -301,7 +302,7 @@
         <strong>📋 報名前請注意</strong><br>
         活動地點：清華大學南大校區體健大樓五樓體育館，請提前確認前往方式。<br>
         上課當天請攜帶球拍、球鞋、運動服及水壺，現場設有飲水機。<br>
-        選擇全天班者可自備環保餐具；如需代訂午餐，請於第一天課程時告知教練並繳交餐費。<br>
+        選擇全天班者可自備環保餐具；如需代訂午餐（五天共 $500），請於第一天課程時告知教練並繳交餐費。<br>
         <strong>團體報名請注意：每位學員皆須個別填寫本表單。</strong><br>
         班別分配將由教練依學員實際程度決定，報名時選填的班別僅供參考。
       </div>
@@ -332,6 +333,7 @@
           <div class="form-grid">
             <div class="form-group"><label>繳款人姓名 <span class="req">*</span></label><input type="text" name="payer_name" placeholder="若與學員相同請重填" required></div>
             <div class="form-group"><label>繳款人電話 <span class="req">*</span></label><input type="tel" name="payer_phone" placeholder="請輸入電話" required></div>
+            <div class="form-group"><label>繳款人信箱 <span class="req">*</span></label><input type="email" name="payer_email" placeholder="用於繳費確認通知" required></div>
             <div class="form-group"><label>與學員關係</label><select name="payer_relation"><option value="">請選擇</option><option>本人</option><option>父母</option><option>監護人</option><option>其他</option></select></div>
           </div>
         </div>
@@ -356,25 +358,28 @@
 
             <div class="form-group full">
               <label>上下午班 <span class="req">*</span></label>
-              <div class="check-grid three">
-                <label class="check-item"><input type="checkbox" name="time_slots" value="上午班｜$4,000"><span>上午班<br>09:00–12:00｜$4,000</span></label>
-                <label class="check-item"><input type="checkbox" name="time_slots" value="下午班｜$4,000"><span>下午班<br>13:30–16:30｜$4,000</span></label>
-                <label class="check-item"><input type="checkbox" name="time_slots" value="全天班｜$7,600"><span>全天班<br>09:00–16:30｜$7,600</span></label>
+              <div class="check-grid three" id="timeSlotChecks">
+                <label class="check-item" id="slot-am"><input type="checkbox" name="time_slots" value="上午班｜$4,000" onchange="handleSlot(this)"><span>上午班<br>09:00–12:00｜$4,000</span></label>
+                <label class="check-item" id="slot-pm"><input type="checkbox" name="time_slots" value="下午班｜$4,000" onchange="handleSlot(this)"><span>下午班<br>13:30–16:30｜$4,000</span></label>
+                <label class="check-item" id="slot-full"><input type="checkbox" name="time_slots" value="全天班｜$7,600" onchange="handleSlot(this)"><span>全天班<br>09:00–16:30｜$7,600</span></label>
               </div>
+              <span id="slotWarning" style="font-size:0.78rem; color:#E24B4A; margin-top:0.3rem; display:none;">全天班已包含上午及下午，請擇一選擇</span>
             </div>
 
             <div class="form-group full">
-              <label>希望班別（教練將依程度最終決定，可複選）</label>
+              <label>班別（教練將依程度最終決定）</label>
               <div class="check-grid three">
-                <label class="check-item"><input type="checkbox" name="class_prefs" value="探索班"><span>探索班<br>零基礎 / 初學</span></label>
-                <label class="check-item"><input type="checkbox" name="class_prefs" value="進階班"><span>進階班<br>已有基礎</span></label>
-                <label class="check-item"><input type="checkbox" name="class_prefs" value="菁英班"><span>菁英班<br>競賽經驗</span></label>
+                <label class="check-item"><input type="radio" name="class_pref" value="探索班"><span>探索班<br>零基礎 / 初學</span></label>
+                <label class="check-item"><input type="radio" name="class_pref" value="進階班"><span>進階班<br>已有基礎</span></label>
+                <label class="check-item"><input type="radio" name="class_pref" value="菁英班"><span>菁英班<br>競賽經驗</span></label>
               </div>
             </div>
 
             <div class="form-group full">
               <label>優惠資格</label>
-              <select name="discount"><option value="無">不符合，以一般價格報名</option>
+              <select name="discount">
+                <option value="">請選擇優惠資格</option>
+                <option value="無">不符合，以一般價格報名</option>
                 <option>五人以上團體報名</option><option>清大在校學生</option><option>清大教職員工</option>
               </select>
             </div>
@@ -404,13 +409,14 @@
         <p>感謝您的報名，我們已收到您的資料。</p>
         <div class="success-info">
           📬 請於<strong style="color:white;">一週內</strong>留意信箱，我們將寄送成班確認通知。<br>
-          🔔 若該梯次名額已滿，將另寄候補通知，請於收到確認信後再完成繳費。<br>
+          🔔 若該梯次名額已滿，將另寄候補通知，請於收到確認信後再完成繳費。<br><br>
+          <strong style="color:white;">如有任何問題，歡迎聯繫我們：</strong><br>
           📧 wcsports02@gmail.com<br>
           💬 LINE ID：941109chang
         </div>
         <div class="success-btns">
           <button onclick="showPage('main')" class="btn-secondary">返回首頁</button>
-          <button onclick="registerAnother()" class="btn-primary">再填一份（團體報名）</button>
+          <button onclick="registerAnother()" class="btn-primary">再填一份</button>
         </div>
       </div>
     </div>
@@ -489,7 +495,7 @@
             <thead><tr>
               <th>#</th><th>時間</th><th>學員</th><th>性別</th><th>年齡</th><th>年級</th>
               <th>電話</th><th>Email</th><th>緊急聯絡</th><th>緊急電話</th>
-              <th>繳款人</th><th>繳款電話</th><th>關係</th>
+              <th>繳款人</th><th>繳款電話</th><th>繳款信箱</th><th>關係</th>
               <th>梯次</th><th>時段</th><th>班別偏好</th><th>優惠</th><th>團報成員</th><th>備注</th>
             </tr></thead>
             <tbody id="adminBody"></tbody>
@@ -516,6 +522,16 @@ function scrollTo(id) {
   }, 60);
 }
 
+function goTo(id) {
+  if (!document.getElementById('page-main').classList.contains('active')) {
+    showPage('main');
+  }
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
 // ── FADE ──
 function initFade() {
   const obs = new IntersectionObserver(entries => {
@@ -525,7 +541,32 @@ function initFade() {
 }
 initFade();
 
-// ── 團報欄位 ──
+// ── 時段互斥邏輯 ──
+function handleSlot(cb) {
+  const amCb = document.querySelector('input[value="上午班｜$4,000"]');
+  const pmCb = document.querySelector('input[value="下午班｜$4,000"]');
+  const fullCb = document.querySelector('input[value="全天班｜$7,600"]');
+  const slotAm = document.getElementById('slot-am');
+  const slotPm = document.getElementById('slot-pm');
+  const slotFull = document.getElementById('slot-full');
+  const warning = document.getElementById('slotWarning');
+
+  if (cb.value === '全天班｜$7,600' && cb.checked) {
+    amCb.checked = false;
+    pmCb.checked = false;
+  } else if (cb.checked) {
+    fullCb.checked = false;
+  }
+
+  const hasAmOrPm = amCb.checked || pmCb.checked;
+  slotFull.classList.toggle('disabled', hasAmOrPm);
+  const hasFull = fullCb.checked;
+  slotAm.classList.toggle('disabled', hasFull);
+  slotPm.classList.toggle('disabled', hasFull);
+  warning.style.display = 'none';
+}
+
+
 document.addEventListener('change', function(e) {
   if (e.target.name === 'discount') {
     const wrap = document.getElementById('groupMemberWrap');
@@ -542,16 +583,18 @@ function submitForm(e) {
   const timeSlots = fd.getAll('time_slots');
   if (!timeSlots.length) { alert('請至少選擇一個時段'); return; }
   const classPrefs = fd.getAll('class_prefs');
+  const classPref = fd.get('class_pref') || '待評估';
   const entry = {
     time: new Date().toLocaleString('zh-TW'),
     name: fd.get('name'), gender: fd.get('gender'), age: fd.get('age'), grade: fd.get('grade') || '—',
     phone: fd.get('phone'), email: fd.get('email'),
     emergency_name: fd.get('emergency_name'), emergency_phone: fd.get('emergency_phone'),
     payer_name: fd.get('payer_name'), payer_phone: fd.get('payer_phone'),
+    payer_email: fd.get('payer_email') || '—',
     payer_relation: fd.get('payer_relation') || '—',
     sessions: sessions.join('、'),
     time_slots: timeSlots.join('、'),
-    class_prefs: classPrefs.length ? classPrefs.join('、') : '待評估',
+    class_prefs: classPref,
     discount: fd.get('discount') || '無',
     group_members: fd.get('group_members') || '—',
     notes: fd.get('notes') || '—'
@@ -568,7 +611,7 @@ function submitForm(e) {
 
 function registerAnother() {
   document.getElementById('regForm').reset();
-  document.querySelectorAll('#regForm input[type=checkbox]').forEach(cb => cb.checked = false);
+  document.querySelectorAll('#regForm input[type=checkbox], #regForm input[type=radio]').forEach(cb => cb.checked = false);
   const wrap = document.getElementById('groupMemberWrap');
   if (wrap) wrap.style.display = 'none';
   document.getElementById('regFormArea').style.display = 'block';
@@ -654,7 +697,7 @@ function renderTable() {
     <td>${r.gender}</td><td>${r.age}</td><td>${r.grade}</td>
     <td>${r.phone}</td><td style="font-size:0.8rem">${r.email}</td>
     <td>${r.emergency_name}</td><td>${r.emergency_phone}</td>
-    <td>${r.payer_name}</td><td>${r.payer_phone}</td><td>${r.payer_relation}</td>
+    <td>${r.payer_name}</td><td>${r.payer_phone}</td><td style="font-size:0.8rem">${r.payer_email||'—'}</td><td>${r.payer_relation}</td>
     <td style="font-size:0.8rem">${r.sessions||'—'}</td>
     <td>${badge(r.time_slots)}</td>
     <td style="font-size:0.8rem">${r.class_prefs||'—'}</td>
@@ -666,8 +709,8 @@ function renderTable() {
 
 function exportCSV() {
   if (!allData.length) { alert('目前沒有報名資料'); return; }
-  const headers = ['#','報名時間','學員姓名','性別','年齡','年級','聯絡電話','Email','緊急聯絡人','緊急電話','繳款人','繳款電話','關係','報名梯次','時段','班別偏好','優惠','團報成員','備注'];
-  const rows = allData.map((r,i)=>[i+1,r.time,r.name,r.gender,r.age,r.grade,r.phone,r.email,r.emergency_name,r.emergency_phone,r.payer_name,r.payer_phone,r.payer_relation,r.sessions,r.time_slots,r.class_prefs,r.discount,r.group_members,r.notes]);
+  const headers = ['#','報名時間','學員姓名','性別','年齡','年級','聯絡電話','Email','緊急聯絡人','緊急電話','繳款人','繳款電話','繳款信箱','關係','報名梯次','時段','班別偏好','優惠','團報成員','備注'];
+  const rows = allData.map((r,i)=>[i+1,r.time,r.name,r.gender,r.age,r.grade,r.phone,r.email,r.emergency_name,r.emergency_phone,r.payer_name,r.payer_phone,r.payer_email||'—',r.payer_relation,r.sessions,r.time_slots,r.class_prefs,r.discount,r.group_members,r.notes]);
   const csv = '\uFEFF'+[headers,...rows].map(row=>row.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
@@ -676,10 +719,50 @@ function exportCSV() {
 }
 
 function clearData() {
-  if (confirm('確定清除所有報名資料？此操作無法復原。')) {
-    localStorage.removeItem('reg'); allData = [];
-    renderStats(); renderTable();
-  }
+  if (!allData.length) { alert('目前沒有報名資料'); return; }
+
+  // 建立選單
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;display:flex;align-items:center;justify-content:center;padding:1rem;';
+  modal.innerHTML = `
+    <div style="background:#0A3660;border:1px solid rgba(55,138,221,0.3);border-radius:16px;padding:2rem;max-width:480px;width:100%;max-height:80vh;display:flex;flex-direction:column;gap:1rem;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:1.2rem;font-weight:900;">清除報名資料</div>
+      <p style="font-size:0.85rem;color:#85B7EB;">選擇要刪除的項目，或一次清除全部。</p>
+      <div style="overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:0.5rem;" id="deleteList">
+        ${allData.map((r,i) => `
+          <label style="display:flex;align-items:center;gap:0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(181,212,244,0.15);border-radius:8px;padding:0.7rem 1rem;cursor:pointer;">
+            <input type="checkbox" value="${i}" style="accent-color:#EF9F27;width:16px;height:16px;flex-shrink:0;">
+            <span style="font-size:0.85rem;color:#B5D4F4;">
+              <strong style="color:white">${r.name}</strong>
+              <span style="color:#85B7EB;margin-left:0.5rem;font-size:0.78rem;">${r.sessions||'—'}　${r.time_slots||'—'}</span>
+              <span style="color:#5F9FD4;display:block;font-size:0.75rem;">${r.time}</span>
+            </span>
+          </label>`).join('')}
+      </div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:space-between;padding-top:0.5rem;border-top:1px solid rgba(55,138,221,0.2);">
+        <button onclick="selectAllDelete(true)" style="background:none;border:none;color:#85B7EB;font-size:0.83rem;cursor:pointer;font-family:inherit;">全選</button>
+        <button onclick="selectAllDelete(false)" style="background:none;border:none;color:#85B7EB;font-size:0.83rem;cursor:pointer;font-family:inherit;">取消全選</button>
+        <div style="flex:1"></div>
+        <button onclick="this.closest('div[style*=fixed]').remove()" style="background:transparent;border:1px solid rgba(181,212,244,0.3);color:#B5D4F4;border-radius:8px;padding:0.5rem 1.2rem;cursor:pointer;font-family:inherit;">取消</button>
+        <button onclick="confirmDelete()" style="background:#E24B4A;border:none;color:white;border-radius:8px;padding:0.5rem 1.4rem;cursor:pointer;font-weight:700;font-family:inherit;">刪除選取</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function selectAllDelete(val) {
+  document.querySelectorAll('#deleteList input[type=checkbox]').forEach(cb => cb.checked = val);
+}
+
+function confirmDelete() {
+  const checked = [...document.querySelectorAll('#deleteList input[type=checkbox]:checked')].map(cb => parseInt(cb.value));
+  if (!checked.length) { alert('請至少選擇一筆資料'); return; }
+  if (!confirm(`確定刪除選取的 ${checked.length} 筆資料？此操作無法復原。`)) return;
+  allData = allData.filter((_, i) => !checked.includes(i));
+  try { localStorage.setItem('reg', JSON.stringify(allData)); } catch(e) {}
+  document.querySelector('div[style*="position:fixed"]').remove();
+  renderStats();
+  renderTable();
 }
 
 if (location.search === '?admin') showPage('admin');
