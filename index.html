@@ -549,14 +549,13 @@ document.addEventListener('change', function(e) {
 });
 
 // ── FORM ──
-function submitForm(e) {
+async function submitForm(e) {
   e.preventDefault();
   const fd = new FormData(e.target);
   const sessions = fd.getAll('sessions');
   if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
   const timeSlots = [fd.get('time_slots')].filter(Boolean);
   if (!timeSlots.length) { alert('請選擇一個時段'); return; }
-  const classPrefs = fd.getAll('class_prefs');
   const classPref = fd.get('class_pref') || '待評估';
   const entry = {
     time: new Date().toLocaleString('zh-TW'),
@@ -573,11 +572,62 @@ function submitForm(e) {
     group_members: fd.get('group_members') || '—',
     notes: fd.get('notes') || '—'
   };
+
+  // 顯示送出中狀態
+  const btn = e.target.querySelector('.submit-btn');
+  const origText = btn.textContent;
+  btn.textContent = '送出中...';
+  btn.disabled = true;
+
+  // ── Web3Forms 寄送 Email ──
+  try {
+    const payload = {
+      access_key: '6ded9f60-9325-481b-a898-907a1b261028',
+      subject: `【羽球夏令營報名】${entry.name}　${entry.sessions}　${entry.time_slots}`,
+      from_name: '清大羽球夏令營報名系統',
+      message: `
+報名時間：${entry.time}
+
+【學員資訊】
+姓名：${entry.name}　性別：${entry.gender}　年齡：${entry.age}　年級：${entry.grade}
+
+【聯絡資訊】
+電話：${entry.phone}　Email：${entry.email}
+緊急聯絡人：${entry.emergency_name}　電話：${entry.emergency_phone}
+
+【繳款人】
+姓名：${entry.payer_name}　電話：${entry.payer_phone}
+信箱：${entry.payer_email}　與學員關係：${entry.payer_relation}
+
+【報名選擇】
+梯次：${entry.sessions}
+時段：${entry.time_slots}
+班別：${entry.class_prefs}
+優惠資格：${entry.discount}
+團報成員：${entry.group_members}
+
+【其他備注】
+${entry.notes}
+      `.trim()
+    };
+    await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch(err) {
+    console.warn('Web3Forms error:', err);
+  }
+
+  // ── localStorage 備份 ──
   try {
     const list = JSON.parse(localStorage.getItem('reg') || '[]');
     list.push(entry);
     localStorage.setItem('reg', JSON.stringify(list));
   } catch(err) {}
+
+  btn.textContent = origText;
+  btn.disabled = false;
   document.getElementById('regFormArea').style.display = 'none';
   document.getElementById('successArea').style.display = 'block';
   window.scrollTo(0, 0);
