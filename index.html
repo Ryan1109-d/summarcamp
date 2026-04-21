@@ -159,6 +159,17 @@
   .badge.am { background: rgba(55,138,221,0.2); color: #B5D4F4; }
   .badge.pm { background: rgba(29,158,117,0.2); color: #9FE1CB; }
   .badge.full { background: rgba(239,159,39,0.2); color: #FAC775; }
+  .status-select { background: transparent; border: 1px solid rgba(181,212,244,0.2); border-radius: 6px; padding: 0.25rem 0.5rem; color: white; font-size: 0.8rem; font-family: inherit; cursor: pointer; appearance: none; min-width: 80px; }
+  .status-select.paid { border-color: var(--teal); color: #9FE1CB; background: rgba(29,158,117,0.1); }
+  .status-select.pending { border-color: var(--amber); color: var(--amber-light); background: rgba(239,159,39,0.1); }
+  .status-select.waitlist { border-color: #85B7EB; color: #85B7EB; background: rgba(55,138,221,0.1); }
+  .status-select.cancelled { border-color: #E24B4A; color: #F09595; background: rgba(226,75,74,0.1); }
+  .note-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(181,212,244,0.15); border-radius: 6px; padding: 0.3rem 0.6rem; color: white; font-size: 0.8rem; font-family: inherit; width: 130px; }
+  .note-input:focus { outline: none; border-color: var(--blue-light); background: rgba(255,255,255,0.09); }
+  .save-btn { background: rgba(55,138,221,0.2); border: 1px solid rgba(55,138,221,0.3); color: #B5D4F4; border-radius: 6px; padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer; font-family: inherit; transition: background 0.15s; white-space: nowrap; }
+  .save-btn:hover { background: rgba(55,138,221,0.35); }
+  .save-btn.saving { opacity: 0.5; pointer-events: none; }
+  .save-btn.saved { background: rgba(29,158,117,0.2); border-color: var(--teal); color: #9FE1CB; }
 
   .success-wrap { text-align: center; padding: 4rem 2rem; max-width: 560px; margin: 0 auto; }
   .success-wrap .icon { font-size: 4rem; margin-bottom: 1.5rem; }
@@ -472,8 +483,11 @@
 
     <div id="adminPanel" style="display:none;">
       <div class="admin-header">
-        <h2>報名資料管理</h2>
-        <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+        <div>
+          <h2>報名資料管理</h2>
+          <div id="autoRefreshStatus" style="font-size:0.78rem; color:var(--text-muted); margin-top:0.3rem;"></div>
+        </div>
+        <div style="display:flex; gap:0.8rem; flex-wrap:wrap; align-items:center;">
           <button onclick="exportCSV()" class="btn-primary" style="border:none; cursor:pointer; font-size:0.9rem; padding:0.6rem 1.4rem;">匯出 CSV</button>
           <button onclick="loadAdmin()" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">🔄 重新整理</button>
           <button onclick="clearData()" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">清除資料</button>
@@ -517,16 +531,20 @@
             <option value="">全部班別</option>
             <option>探索班</option><option>進階班</option><option>菁英班</option>
           </select>
-          <input type="text" id="filterSearch" placeholder="搜尋姓名 / Email" oninput="renderTable()" style="min-width:180px;">
-          <span id="filterCount" style="font-size:0.82rem; color:var(--text-muted); margin-left:0.4rem;"></span>
+          <select id="filterStatus" onchange="renderTable()">
+            <option value="">全部狀態</option>
+            <option>待確認</option><option>已繳費</option><option>候補</option><option>已取消</option>
+          </select>
+          <input type="text" id="filterSearch" placeholder="搜尋姓名 / Email" oninput="renderTable()" style="min-width:160px;">
+          <span id="filterCount" style="font-size:0.82rem; color:var(--text-muted); margin-left:0.2rem;"></span>
         </div>
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead><tr>
-              <th>#</th><th>時間</th><th>學員</th><th>性別</th><th>年齡</th><th>年級</th>
+              <th>#</th><th>狀態</th><th>時間</th><th>學員</th><th>性別</th><th>年齡</th><th>年級</th>
               <th>電話</th><th>Email</th><th>緊急聯絡</th><th>緊急電話</th>
               <th>繳款人</th><th>繳款電話</th><th>繳款信箱</th><th>關係</th>
-              <th>梯次</th><th>時段</th><th>班別偏好</th><th>優惠</th><th>團報成員</th><th>備注</th>
+              <th>梯次</th><th>時段</th><th>班別偏好</th><th>優惠</th><th>團報成員</th><th>備注</th><th>管理備注</th>
             </tr></thead>
             <tbody id="adminBody"></tbody>
           </table>
@@ -771,10 +789,12 @@ function showAdminPanel() {
   document.getElementById('adminLoginArea').style.display = 'none';
   document.getElementById('adminPanel').style.display = 'block';
   loadAdmin();
+  startAutoRefresh();
 }
 
 function logoutAdmin() {
   sessionStorage.removeItem(SESSION_KEY);
+  clearInterval(autoRefreshTimer);
   document.getElementById('adminPanel').style.display = 'none';
   document.getElementById('adminLoginArea').style.display = 'block';
   document.getElementById('adminPwd').value = '';
@@ -785,12 +805,17 @@ function enterAdmin() {
   if (sessionStorage.getItem(SESSION_KEY) === '1') showAdminPanel();
 }
 
-function loadAdmin() {
-  const overlay = document.createElement('div');
-  overlay.className = 'loading-overlay';
-  overlay.id = 'loadingOverlay';
-  overlay.innerHTML = '<div class="spinner"></div><p>從 Google Sheets 讀取資料中...</p>';
-  document.body.appendChild(overlay);
+let autoRefreshTimer = null;
+let autoRefreshCountdown = 30;
+
+function loadAdmin(silent = false) {
+  if (!silent) {
+    const overlay = document.createElement('div');
+    overlay.className = 'loading-overlay';
+    overlay.id = 'loadingOverlay';
+    overlay.innerHTML = '<div class="spinner"></div><p>從 Google Sheets 讀取資料中...</p>';
+    document.body.appendChild(overlay);
+  }
 
   fetch(GAS_URL)
     .then(r => r.json())
@@ -806,28 +831,76 @@ function loadAdmin() {
         payer_email: r['繳款信箱'], payer_relation: r['與學員關係'],
         sessions: r['報名梯次'], time_slots: r['時段'],
         class_prefs: r['班別'], discount: r['優惠資格'],
-        group_members: r['團報成員'], notes: r['備注']
+        group_members: r['團報成員'], notes: r['備注'],
+        status: r['狀態'] || '待確認',
+        admin_note: r['管理備注'] || ''
       }));
       renderStats();
       renderTable();
+      updateRefreshStatus();
     })
     .catch(err => {
+      if (!silent) alert('讀取資料失敗：' + err.message);
       console.error(err);
-      alert('讀取資料失敗：' + err.message);
     })
     .finally(() => document.getElementById('loadingOverlay')?.remove());
 }
 
+function startAutoRefresh() {
+  clearInterval(autoRefreshTimer);
+  autoRefreshCountdown = 30;
+  autoRefreshTimer = setInterval(() => {
+    autoRefreshCountdown--;
+    updateRefreshStatus();
+    if (autoRefreshCountdown <= 0) {
+      autoRefreshCountdown = 30;
+      loadAdmin(true);
+    }
+  }, 1000);
+}
+
+function updateRefreshStatus() {
+  const el = document.getElementById('autoRefreshStatus');
+  if (el) {
+    const now = new Date().toLocaleTimeString('zh-TW');
+    el.innerHTML = `最後更新：${now}　<span style="color:var(--amber)">⟳ ${autoRefreshCountdown}秒後自動更新</span>`;
+  }
+}
+
+async function updateStatusAndNote(row, status, note) {
+  const btn = document.getElementById(`save-${row}`);
+  if (btn) { btn.classList.add('saving'); btn.textContent = '儲存中...'; }
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'updateStatus', row, status, note })
+    });
+    // 更新本地資料
+    const item = allData.find(r => r._row === row);
+    if (item) { item.status = status; item.admin_note = note; }
+    if (btn) { btn.classList.remove('saving'); btn.classList.add('saved'); btn.textContent = '✓ 已儲存'; setTimeout(() => { btn.classList.remove('saved'); btn.textContent = '儲存'; }, 2000); }
+    renderStats();
+  } catch(err) {
+    if (btn) { btn.classList.remove('saving'); btn.textContent = '儲存'; }
+    alert('儲存失敗，請重試');
+  }
+}
+
 function renderStats() {
   const total = allData.length;
+  const paid = allData.filter(r => r.status === '已繳費').length;
+  const pending = allData.filter(r => r.status === '待確認').length;
+  const waitlist = allData.filter(r => r.status === '候補').length;
   const am = allData.filter(r => (r.time_slots||'').includes('上午')).length;
   const pm = allData.filter(r => (r.time_slots||'').includes('下午')).length;
   const full = allData.filter(r => (r.time_slots||'').includes('全天')).length;
   document.getElementById('adminStatsTop').innerHTML = `
     <div class="stat-card"><div class="num">${total}</div><div class="lbl">總報名人數</div></div>
-    <div class="stat-card"><div class="num">${am}</div><div class="lbl">上午班 人次</div></div>
-    <div class="stat-card"><div class="num">${pm}</div><div class="lbl">下午班 人次</div></div>
-    <div class="stat-card"><div class="num">${full}</div><div class="lbl">全天班 人次</div></div>`;
+    <div class="stat-card" style="border-color:rgba(29,158,117,0.3)"><div class="num" style="color:#9FE1CB">${paid}</div><div class="lbl">已繳費</div></div>
+    <div class="stat-card" style="border-color:rgba(239,159,39,0.3)"><div class="num" style="color:var(--amber)">${pending}</div><div class="lbl">待確認</div></div>
+    <div class="stat-card" style="border-color:rgba(55,138,221,0.3)"><div class="num" style="color:#B5D4F4">${waitlist}</div><div class="lbl">候補</div></div>
+  `;
+  // 下方加時段統計小列
   const sk = ['第1梯','第2梯','第3梯','第4梯','第5梯','第6梯','第7梯','第8梯'];
   const sd = ['7/06','7/13','7/20','7/27','8/03','8/10','8/17','8/24'];
   const sc = sk.map(k => allData.filter(r => (r.sessions||'').includes(k)).length);
@@ -845,46 +918,74 @@ function renderStats() {
     classes.map(c=>{const n=allData.filter(r=>(r.class_prefs||'').includes(c.k)).length; return `<div class="mini-bar-row"><div class="mini-bar-label">${c.k}</div><div class="mini-bar-track"><div class="mini-bar-fill ${c.c}" style="width:${(n/maxCl*100).toFixed(0)}%"></div></div><div class="mini-bar-num">${n}</div></div>`;}).join('');
 }
 
+function getStatusClass(s) {
+  if (s === '已繳費') return 'paid';
+  if (s === '待確認') return 'pending';
+  if (s === '候補') return 'waitlist';
+  if (s === '已取消') return 'cancelled';
+  return 'pending';
+}
+
 function renderTable() {
   const fS = document.getElementById('filterSession').value;
   const fT = document.getElementById('filterSlot').value;
   const fC = document.getElementById('filterClass').value;
+  const fSt = document.getElementById('filterStatus').value;
   const fQ = document.getElementById('filterSearch').value.toLowerCase();
   const filtered = allData.filter(r => {
     if (fS && !(r.sessions||'').includes(fS)) return false;
     if (fT && !(r.time_slots||'').includes(fT)) return false;
     if (fC && !(r.class_prefs||'').includes(fC)) return false;
+    if (fSt && r.status !== fSt) return false;
     if (fQ && !(r.name||'').toLowerCase().includes(fQ) && !(r.email||'').toLowerCase().includes(fQ)) return false;
     return true;
   });
   document.getElementById('filterCount').textContent = `顯示 ${filtered.length} 筆 / 共 ${allData.length} 筆`;
   const tbody = document.getElementById('adminBody');
-  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="19" style="text-align:center;padding:2rem;color:var(--text-muted)">無符合條件的資料</td></tr>'; return; }
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="22" style="text-align:center;padding:2rem;color:var(--text-muted)">無符合條件的資料</td></tr>'; return; }
   const badge = s => !s ? '—' : String(s).split('、').map(v => {
     const c = v.includes('上午')?'am':v.includes('下午')?'pm':'full';
-    return `<span class="badge ${c}">${v.replace('｜$4,000','').replace('｜$7,600','')}</span>`;
+    return `<span class="badge ${c}">${v}</span>`;
   }).join(' ');
-  tbody.innerHTML = filtered.map((r,i) => `<tr>
-    <td>${i+1}</td><td style="white-space:nowrap;font-size:0.78rem">${r.time||'—'}</td>
-    <td><strong style="color:white">${r.name||'—'}</strong></td>
-    <td>${r.gender||'—'}</td><td>${r.age||'—'}</td><td>${r.grade||'—'}</td>
-    <td>${r.phone||'—'}</td><td style="font-size:0.8rem">${r.email||'—'}</td>
-    <td>${r.emergency_name||'—'}</td><td>${r.emergency_phone||'—'}</td>
-    <td>${r.payer_name||'—'}</td><td>${r.payer_phone||'—'}</td>
-    <td style="font-size:0.8rem">${r.payer_email||'—'}</td><td>${r.payer_relation||'—'}</td>
-    <td style="font-size:0.8rem">${r.sessions||'—'}</td>
-    <td>${badge(r.time_slots)}</td>
-    <td style="font-size:0.8rem">${r.class_prefs||'—'}</td>
-    <td style="font-size:0.8rem">${r.discount||'—'}</td>
-    <td style="font-size:0.78rem;color:var(--text-muted)">${r.group_members||'—'}</td>
-    <td style="font-size:0.8rem;color:var(--text-muted)">${r.notes||'—'}</td>
-  </tr>`).join('');
+  tbody.innerHTML = filtered.map((r,i) => {
+    const sc = getStatusClass(r.status);
+    return `<tr>
+      <td>${i+1}</td>
+      <td>
+        <select class="status-select ${sc}" id="statusSel-${r._row}" onchange="this.className='status-select '+getStatusClass(this.value)">
+          <option ${r.status==='待確認'?'selected':''}>待確認</option>
+          <option ${r.status==='已繳費'?'selected':''}>已繳費</option>
+          <option ${r.status==='候補'?'selected':''}>候補</option>
+          <option ${r.status==='已取消'?'selected':''}>已取消</option>
+        </select>
+      </td>
+      <td style="white-space:nowrap;font-size:0.78rem">${r.time||'—'}</td>
+      <td><strong style="color:white">${r.name||'—'}</strong></td>
+      <td>${r.gender||'—'}</td><td>${r.age||'—'}</td><td>${r.grade||'—'}</td>
+      <td>${r.phone||'—'}</td><td style="font-size:0.8rem">${r.email||'—'}</td>
+      <td>${r.emergency_name||'—'}</td><td>${r.emergency_phone||'—'}</td>
+      <td>${r.payer_name||'—'}</td><td>${r.payer_phone||'—'}</td>
+      <td style="font-size:0.8rem">${r.payer_email||'—'}</td><td>${r.payer_relation||'—'}</td>
+      <td style="font-size:0.8rem">${r.sessions||'—'}</td>
+      <td>${badge(r.time_slots)}</td>
+      <td style="font-size:0.8rem">${r.class_prefs||'—'}</td>
+      <td style="font-size:0.8rem">${r.discount||'—'}</td>
+      <td style="font-size:0.78rem;color:var(--text-muted)">${r.group_members||'—'}</td>
+      <td style="font-size:0.8rem;color:var(--text-muted)">${r.notes||'—'}</td>
+      <td>
+        <div style="display:flex;gap:0.4rem;align-items:center;min-width:200px;">
+          <input class="note-input" id="note-${r._row}" value="${(r.admin_note||'').replace(/"/g,'&quot;')}" placeholder="備注...">
+          <button class="save-btn" id="save-${r._row}" onclick="updateStatusAndNote(${r._row}, document.getElementById('statusSel-${r._row}').value, document.getElementById('note-${r._row}').value)">儲存</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
 function exportCSV() {
   if (!allData.length) { alert('目前沒有報名資料'); return; }
-  const headers = ['#','報名時間','學員姓名','性別','年齡','年級','聯絡電話','Email','緊急聯絡人','緊急電話','繳款人','繳款電話','繳款信箱','關係','報名梯次','時段','班別偏好','優惠','團報成員','備注'];
-  const rows = allData.map((r,i)=>[i+1,r.time,r.name,r.gender,r.age,r.grade,r.phone,r.email,r.emergency_name,r.emergency_phone,r.payer_name,r.payer_phone,r.payer_email||'—',r.payer_relation,r.sessions,r.time_slots,r.class_prefs,r.discount,r.group_members,r.notes]);
+  const headers = ['#','報名時間','狀態','學員姓名','性別','年齡','年級','聯絡電話','Email','緊急聯絡人','緊急電話','繳款人','繳款電話','繳款信箱','關係','報名梯次','時段','班別偏好','優惠','團報成員','備注','管理備注'];
+  const rows = allData.map((r,i)=>[i+1,r.time,r.status||'待確認',r.name,r.gender,r.age,r.grade,r.phone,r.email,r.emergency_name,r.emergency_phone,r.payer_name,r.payer_phone,r.payer_email||'—',r.payer_relation,r.sessions,r.time_slots,r.class_prefs,r.discount,r.group_members,r.notes,r.admin_note||'']);
   const csv = '\uFEFF'+[headers,...rows].map(row=>row.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
   a.download = `羽球夏令營報名_${new Date().toLocaleDateString('zh-TW').replace(/\//g,'-')}.csv`; a.click();
