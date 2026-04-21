@@ -435,7 +435,7 @@
       <div class="section-label">管理後台</div>
       <h2 style="font-family:'Noto Serif TC',serif; font-size:1.8rem; font-weight:900; margin-bottom:1.5rem;">報名資料管理</h2>
       <div style="max-width:320px;">
-        <div class="form-group" style="margin-bottom:1rem;"><label>管理密碼</label><input type="password" id="adminPwd" placeholder="請輸入密碼" onkeydown="if(event.key==='Enter')checkAdmin()"></div>
+        <div class="form-group" style="margin-bottom:1rem;"><label>管理密碼</label><input type="password" id="adminPwd" placeholder="請輸入密碼" lang="en" inputmode="text" autocomplete="current-password" style="ime-mode:disabled;" onkeydown="if(event.key==='Enter')checkAdmin()"></div>
         <button onclick="checkAdmin()" class="btn-primary" style="width:100%; border:none; cursor:pointer; padding:0.8rem;">進入後台</button>
         <p id="adminErr" style="color:#E24B4A; font-size:0.85rem; margin-top:0.6rem; display:none;">密碼錯誤，請再試一次</p>
       </div>
@@ -446,7 +446,9 @@
         <h2>報名資料管理</h2>
         <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
           <button onclick="exportCSV()" class="btn-primary" style="border:none; cursor:pointer; font-size:0.9rem; padding:0.6rem 1.4rem;">匯出 CSV</button>
+          <button onclick="loadAdmin()" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">🔄 重新整理</button>
           <button onclick="clearData()" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">清除資料</button>
+          <button onclick="logoutAdmin()" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">登出</button>
           <button onclick="showPage('main')" class="btn-secondary" style="font-size:0.9rem; padding:0.6rem 1.4rem;">返回首頁</button>
         </div>
       </div>
@@ -657,15 +659,38 @@ function registerAnother() {
 
 // ── ADMIN ──
 const PWD = 'nthu2026';
+const SESSION_KEY = 'admin_auth';
 let allData = [];
 
 function checkAdmin() {
-  if (document.getElementById('adminPwd').value === PWD) {
-    document.getElementById('adminLoginArea').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    loadAdmin();
+  const pwd = document.getElementById('adminPwd').value;
+  if (pwd === PWD) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    showAdminPanel();
   } else {
     document.getElementById('adminErr').style.display = 'block';
+    document.getElementById('adminPwd').value = '';
+  }
+}
+
+function showAdminPanel() {
+  document.getElementById('adminLoginArea').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  loadAdmin();
+}
+
+function logoutAdmin() {
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminLoginArea').style.display = 'block';
+  document.getElementById('adminPwd').value = '';
+}
+
+// 進入後台頁時自動檢查是否已登入
+function enterAdmin() {
+  showPage('admin');
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    showAdminPanel();
   }
 }
 
@@ -801,7 +826,7 @@ function confirmDelete() {
   renderTable();
 }
 
-if (location.search === '?admin') showPage('admin');
+if (location.search === '?admin') enterAdmin();
 </script>
 </body>
 </html>
