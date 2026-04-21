@@ -363,9 +363,34 @@
             <div class="form-group full">
               <label>上下午班 <span class="req">*</span></label>
               <div class="check-grid three">
-                <label class="check-item" id="slot-am"><input type="radio" name="time_slots" value="上午班｜$4,000" required><span>上午班<br>09:00–12:00｜$4,000</span></label>
-                <label class="check-item" id="slot-pm"><input type="radio" name="time_slots" value="下午班｜$4,000"><span>下午班<br>13:30–16:30｜$4,000</span></label>
-                <label class="check-item" id="slot-full"><input type="radio" name="time_slots" value="全天班｜$7,600"><span>全天班<br>09:00–16:30｜$7,600</span></label>
+                <label class="check-item" id="slot-am"><input type="radio" name="time_slots" value="上午班" required><span>上午班<br>09:00–12:00</span></label>
+                <label class="check-item" id="slot-pm"><input type="radio" name="time_slots" value="下午班"><span>下午班<br>13:30–16:30</span></label>
+                <label class="check-item" id="slot-full"><input type="radio" name="time_slots" value="全天班"><span>全天班<br>09:00–16:30</span></label>
+              </div>
+            </div>
+
+            <!-- 費用速查 -->
+            <div class="form-group full">
+              <div style="background:rgba(55,138,221,0.08); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem; font-size:0.85rem; line-height:2;">
+                <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; color:var(--amber); margin-bottom:0.5rem;">💰 費用一覽</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem; text-align:center; margin-bottom:0.8rem;">
+                  <div style="background:rgba(255,255,255,0.05); border-radius:8px; padding:0.5rem;">
+                    <div style="font-size:0.75rem; color:var(--text-muted);">上午班</div>
+                    <div style="font-weight:700; color:white;">$4,000</div>
+                    <div style="font-size:0.72rem; color:var(--amber);">優惠 $3,500</div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.05); border-radius:8px; padding:0.5rem;">
+                    <div style="font-size:0.75rem; color:var(--text-muted);">下午班</div>
+                    <div style="font-weight:700; color:white;">$4,000</div>
+                    <div style="font-size:0.72rem; color:var(--amber);">優惠 $3,500</div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.05); border-radius:8px; padding:0.5rem;">
+                    <div style="font-size:0.75rem; color:var(--text-muted);">全天班</div>
+                    <div style="font-weight:700; color:white;">$7,600</div>
+                    <div style="font-size:0.72rem; color:var(--amber);">優惠 $7,000</div>
+                  </div>
+                </div>
+                <div style="color:var(--text-muted); font-size:0.78rem;">⭐ 優惠適用：五人以上團體報名 / 清大在校學生 / 教職員工</div>
               </div>
             </div>
 
@@ -401,7 +426,7 @@
           <div class="form-group full"><label>運動傷害或注意事項（選填）</label><textarea name="notes" placeholder="如有舊傷、過敏或其他需告知教練的事項，請填寫於此"></textarea></div>
         </div>
 
-        <button type="submit" class="btn-primary submit-btn">送出報名資料 →</button>
+        <button type="button" onclick="previewForm()" class="btn-primary submit-btn">預覽並確認報名資訊 →</button>
       </form>
     </div>
 
@@ -557,13 +582,96 @@ document.addEventListener('change', function(e) {
 // ── FORM ──
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwu-bdlAPH7R-l_CgYcjIURBYKt6ffTO5TSUf17CoEH775V9Tj238-mBfVmWQPS540/exec';
 
+function previewForm() {
+  const form = document.getElementById('regForm');
+  const fd = new FormData(form);
+
+  // 基本驗證
+  const required = ['name','gender','age','phone','email','emergency_name','emergency_phone','payer_name','payer_phone','payer_email'];
+  for (const f of required) {
+    if (!fd.get(f)) { alert('請填寫所有必填欄位（標示 * 的欄位）'); form.reportValidity(); return; }
+  }
+  const sessions = fd.getAll('sessions');
+  if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
+  const slot = fd.get('time_slots');
+  if (!slot) { alert('請選擇上下午班'); return; }
+
+  const discount = fd.get('discount') || '未選擇';
+  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職');
+  const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
+  const price = priceMap[slot] || '—';
+
+  const row = (label, value) => `
+    <div style="display:flex; gap:0.8rem; padding:0.55rem 0; border-bottom:1px solid rgba(55,138,221,0.1); font-size:0.88rem;">
+      <div style="min-width:110px; color:var(--text-muted); flex-shrink:0;">${label}</div>
+      <div style="color:white; font-weight:500;">${value || '—'}</div>
+    </div>`;
+
+  const modal = document.createElement('div');
+  modal.id = 'previewModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;';
+  modal.innerHTML = `
+    <div style="background:#0A3660;border:1px solid rgba(55,138,221,0.3);border-radius:16px;padding:2rem;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.4rem;">📋 請確認報名資訊</div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.2rem;">確認後資料將正式送出，請仔細核對。</p>
+
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">學員資訊</div>
+      ${row('姓名', fd.get('name'))}
+      ${row('性別', fd.get('gender'))}
+      ${row('年齡', fd.get('age') + ' 歲')}
+      ${row('年級', fd.get('grade') || '未填')}
+
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">聯絡資訊</div>
+      ${row('電話', fd.get('phone'))}
+      ${row('Email', fd.get('email'))}
+      ${row('緊急聯絡人', fd.get('emergency_name'))}
+      ${row('緊急電話', fd.get('emergency_phone'))}
+
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">繳款人</div>
+      ${row('姓名', fd.get('payer_name'))}
+      ${row('電話', fd.get('payer_phone'))}
+      ${row('信箱', fd.get('payer_email'))}
+      ${row('關係', fd.get('payer_relation') || '未填')}
+
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">報名選擇</div>
+      ${row('梯次', sessions.join('、'))}
+      ${row('時段', slot)}
+      ${row('班別偏好', fd.get('class_pref') || '待評估')}
+      ${row('優惠資格', discount)}
+      ${fd.get('group_members') ? row('團報成員', fd.get('group_members')) : ''}
+      ${fd.get('notes') ? row('備注', fd.get('notes')) : ''}
+
+      <div style="margin-top:1.2rem;background:rgba(239,159,39,0.1);border:1px solid rgba(239,159,39,0.3);border-radius:10px;padding:0.9rem 1.1rem;font-size:0.9rem;">
+        <div style="color:var(--text-muted);font-size:0.78rem;margin-bottom:0.3rem;">預估費用</div>
+        <div style="font-family:'Noto Serif TC',serif;font-size:1.6rem;font-weight:900;color:var(--amber);">$${price.toLocaleString()}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">${isDiscount ? '已套用優惠價格' : '一般報名價格，繳費後完成報名'}</div>
+      </div>
+
+      <div style="display:flex;gap:0.8rem;margin-top:1.5rem;">
+        <button onclick="document.getElementById('previewModal').remove()" style="flex:1;background:transparent;border:1px solid rgba(181,212,244,0.3);color:#B5D4F4;border-radius:8px;padding:0.85rem;cursor:pointer;font-family:inherit;font-size:0.9rem;">返回修改</button>
+        <button onclick="confirmSubmit()" style="flex:2;background:var(--amber);border:none;color:#412402;border-radius:8px;padding:0.85rem;cursor:pointer;font-weight:700;font-family:inherit;font-size:0.95rem;">確認送出 →</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+async function confirmSubmit() {
+  document.getElementById('previewModal').remove();
+  document.getElementById('regForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+}
+
 async function submitForm(e) {
   e.preventDefault();
   const fd = new FormData(e.target);
   const sessions = fd.getAll('sessions');
   if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
-  const timeSlots = [fd.get('time_slots')].filter(Boolean);
-  if (!timeSlots.length) { alert('請選擇一個時段'); return; }
+  const slot = fd.get('time_slots');
+  if (!slot) { alert('請選擇一個時段'); return; }
+
+  const discount = fd.get('discount') || '未選擇';
+  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職');
+  const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
+
   const entry = {
     time: new Date().toLocaleString('zh-TW'),
     name: fd.get('name'), gender: fd.get('gender'), age: fd.get('age'), grade: fd.get('grade') || '—',
@@ -573,11 +681,12 @@ async function submitForm(e) {
     payer_email: fd.get('payer_email') || '—',
     payer_relation: fd.get('payer_relation') || '—',
     sessions: sessions.join('、'),
-    time_slots: timeSlots.join('、'),
+    time_slots: slot,
     class_prefs: fd.get('class_pref') || '待評估',
-    discount: fd.get('discount') || '無',
+    discount: discount,
     group_members: fd.get('group_members') || '—',
-    notes: fd.get('notes') || '—'
+    notes: fd.get('notes') || '—',
+    price: `$${(priceMap[slot] || 0).toLocaleString()}`
   };
 
   const btn = e.target.querySelector('.submit-btn');
