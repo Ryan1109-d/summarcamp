@@ -746,45 +746,7 @@ async function submitForm(e) {
     });
   } catch(err) { console.warn('管理員 Email 失敗：', err); }
 
-  // Web3Forms Email — 確認信給報名者
-  try {
-    const confirmMsg = [
-      `${entry.name} 您好，`,
-      '',
-      '感謝您報名 2026 年國立清華大學南大校區羽球夏令營！',
-      '我們已收到您的報名資料，以下是您的報名摘要：',
-      '',
-      `▸ 報名梯次：${entry.sessions}`,
-      `▸ 時段：${entry.time_slots}`,
-      `▸ 班別偏好：${entry.class_prefs}`,
-      '',
-      '【接下來的流程】',
-      '我們將於一週內寄送通知至此信箱：',
-      '• 若順利成班，將寄出「成班確認通知」及繳費資訊，請於期限內完成繳費以確保名額。',
-      '• 若該梯次名額已滿，將寄出「候補通知」，有空缺時會再聯繫您。',
-      '',
-      '【如有任何問題，歡迎聯繫我們】',
-      '📧 Email：wcsports02@gmail.com',
-      '💬 LINE ID：941109chang',
-      '',
-      '期待與您在球場上見面！',
-      '',
-      'wcsports 敬上'
-    ].join('\n');
-
-    await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        access_key: '6ded9f60-9325-481b-a898-907a1b261028',
-        subject: `【清大羽球夏令營】報名確認通知 — ${entry.name}`,
-        from_name: '清大羽球夏令營',
-        to: entry.email,
-        message: confirmMsg,
-        replyto: 'wcsports02@gmail.com'
-      })
-    });
-  } catch(err) { console.warn('確認信 Email 失敗：', err); }
+  // 確認信由 Google Apps Script Gmail 自動寄出給報名者
 
   btn.textContent = origText;
   btn.disabled = false;
