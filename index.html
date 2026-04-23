@@ -617,7 +617,8 @@ function previewForm() {
   const discount = fd.get('discount') || '未選擇';
   const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
-  const price = priceMap[slot] || '—';
+  const unitPrice = priceMap[slot] || 0;
+  const price = unitPrice * sessions.length;
 
   const row = (label, value) => `
     <div style="display:flex; gap:0.8rem; padding:0.55rem 0; border-bottom:1px solid rgba(55,138,221,0.1); font-size:0.88rem;">
@@ -662,7 +663,7 @@ function previewForm() {
       <div style="margin-top:1.2rem;background:rgba(239,159,39,0.1);border:1px solid rgba(239,159,39,0.3);border-radius:10px;padding:0.9rem 1.1rem;font-size:0.9rem;">
         <div style="color:var(--text-muted);font-size:0.78rem;margin-bottom:0.3rem;">預估費用</div>
         <div style="font-family:'Noto Serif TC',serif;font-size:1.6rem;font-weight:900;color:var(--amber);">$${price.toLocaleString()}</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">${isDiscount ? '已套用優惠價格' : '一般報名價格，繳費後完成報名'}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">$${unitPrice.toLocaleString()} × ${sessions.length} 梯次　${isDiscount ? '已套用優惠價格' : '一般報名價格'}，繳費後完成報名</div>
       </div>
 
       <div style="display:flex;gap:0.8rem;margin-top:1.5rem;">
