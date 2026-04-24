@@ -126,9 +126,13 @@
 
   .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.2rem; }
   .check-grid.three { grid-template-columns: 1fr 1fr 1fr; }
-  .check-item { display: flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(181,212,244,0.15); border-radius: 8px; padding: 0.6rem 0.9rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .check-item { display: flex; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(181,212,244,0.15); border-radius: 8px; padding: 0.65rem 0.9rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; }
   .check-item:hover { border-color: rgba(181,212,244,0.35); background: rgba(255,255,255,0.08); }
-  .check-item input[type=checkbox], .check-item input[type=radio] { width: 16px; height: 16px; accent-color: var(--amber); cursor: pointer; flex-shrink: 0; }
+  .check-item input[type=checkbox], .check-item input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .check-box { width: 18px; height: 18px; flex-shrink: 0; border: 2px solid rgba(181,212,244,0.35); border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .check-box::after { content: ''; display: none; width: 5px; height: 9px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) translateY(-1px); }
+  .check-item:has(input:checked) .check-box { background: var(--amber); border-color: var(--amber); }
+  .check-item:has(input:checked) .check-box::after { display: block; }
   .check-item span { font-size: 0.85rem; color: var(--blue-pale); line-height: 1.4; }
   .check-item:has(input:checked) { border-color: var(--amber); background: rgba(239,159,39,0.1); }
   .check-item:has(input:checked) span { color: white; }
@@ -192,13 +196,36 @@
   .admin-table td { padding: 0.7rem 1rem; border-top: 1px solid rgba(55,138,221,0.1); color: var(--blue-pale); }
   .admin-table tr:hover td { background: rgba(55,138,221,0.05); }
 
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr 1fr; }
+    .admin-stats { grid-template-columns: repeat(2,1fr); }
+    .stats-row { grid-template-columns: repeat(2,1fr); }
+  }
   @media (max-width: 640px) {
-    .about-grid, .schedule-grid { grid-template-columns: 1fr; }
-    .pricing-header, .pricing-row { grid-template-columns: 1.2fr 1fr 1fr; }
-    .pricing-header div:nth-child(3), .pricing-row div:nth-child(3) { display: none; }
     nav ul { display: none; }
+    .hero h1 { font-size: 2.4rem; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .hero-cta .btn-primary, .hero-cta .btn-secondary { width: 240px; text-align: center; }
+    .about-grid { grid-template-columns: 1fr; }
+    .schedule-grid { grid-template-columns: 1fr; }
+    .pricing-header, .pricing-row { grid-template-columns: 1.4fr 1fr 1fr; font-size: 0.82rem; }
     .form-grid { grid-template-columns: 1fr; }
+    .check-grid.three { grid-template-columns: 1fr 1fr; }
+    .reg-page-wrap { padding: 5rem 1rem 3rem; }
+    .form-card { padding: 1.2rem; }
     .admin-stats { grid-template-columns: 1fr 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    section { padding: 4rem 1.2rem; }
+    .register-cta { padding: 2rem 1.2rem; }
+    .success-btns { flex-direction: column; align-items: center; }
+    .success-btns button { width: 100%; max-width: 320px; }
+    .notice-box { font-size: 0.82rem; }
+  }
+  @media (max-width: 400px) {
+    .hero h1 { font-size: 1.9rem; }
+    .check-grid, .check-grid.three { grid-template-columns: 1fr; }
+    .pricing-header div:nth-child(3), .pricing-row div:nth-child(3) { display: none; }
+    .reg-page-wrap { padding: 4.5rem 0.8rem 2rem; }
   }
 </style>
 </head>
@@ -360,14 +387,14 @@
             <div class="form-group full">
               <label>報名梯次 <span class="req">*</span>（可複選）</label>
               <div class="check-grid" id="sessionChecks">
-                <label class="check-item"><input type="checkbox" name="sessions" value="第1梯｜7/06－7/10"><span>第 1 梯｜7/06（一）－ 7/10（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第2梯｜7/13－7/17"><span>第 2 梯｜7/13（一）－ 7/17（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第3梯｜7/20－7/24"><span>第 3 梯｜7/20（一）－ 7/24（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第4梯｜7/27－7/31"><span>第 4 梯｜7/27（一）－ 7/31（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第5梯｜8/03－8/07"><span>第 5 梯｜8/03（一）－ 8/07（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第6梯｜8/10－8/14"><span>第 6 梯｜8/10（一）－ 8/14（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第7梯｜8/17－8/21"><span>第 7 梯｜8/17（一）－ 8/21（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第8梯｜8/24－8/28"><span>第 8 梯｜8/24（一）－ 8/28（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第1梯｜7/06－7/10"><div class="check-box"></div><span>第 1 梯｜7/06（一）－ 7/10（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第2梯｜7/13－7/17"><div class="check-box"></div><span>第 2 梯｜7/13（一）－ 7/17（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第3梯｜7/20－7/24"><div class="check-box"></div><span>第 3 梯｜7/20（一）－ 7/24（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第4梯｜7/27－7/31"><div class="check-box"></div><span>第 4 梯｜7/27（一）－ 7/31（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第5梯｜8/03－8/07"><div class="check-box"></div><span>第 5 梯｜8/03（一）－ 8/07（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第6梯｜8/10－8/14"><div class="check-box"></div><span>第 6 梯｜8/10（一）－ 8/14（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第7梯｜8/17－8/21"><div class="check-box"></div><span>第 7 梯｜8/17（一）－ 8/21（五）</span></label>
+                <label class="check-item"><input type="checkbox" name="sessions" value="第8梯｜8/24－8/28"><div class="check-box"></div><span>第 8 梯｜8/24（一）－ 8/28（五）</span></label>
               </div>
             </div>
 
@@ -408,9 +435,9 @@
             <div class="form-group full">
               <label>班別（教練將依程度最終決定）</label>
               <div class="check-grid three">
-                <label class="check-item"><input type="radio" name="class_pref" value="探索班"><span>探索班<br>零基礎 / 初學</span></label>
-                <label class="check-item"><input type="radio" name="class_pref" value="進階班"><span>進階班<br>已有基礎</span></label>
-                <label class="check-item"><input type="radio" name="class_pref" value="菁英班"><span>菁英班<br>競賽經驗</span></label>
+                <label class="check-item"><input type="radio" name="class_pref" value="探索班"><div class="check-box"></div><span>探索班<br>零基礎 / 初學</span></label>
+                <label class="check-item"><input type="radio" name="class_pref" value="進階班"><div class="check-box"></div><span>進階班<br>已有基礎</span></label>
+                <label class="check-item"><input type="radio" name="class_pref" value="菁英班"><div class="check-box"></div><span>菁英班<br>競賽經驗</span></label>
               </div>
             </div>
 
