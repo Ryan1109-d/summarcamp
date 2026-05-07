@@ -307,8 +307,8 @@
     <div class="pricing-wrap fade-up" style="transition-delay:0.1s;">
       <div class="pricing-header"><div>方案</div><div>上午班</div><div>下午班</div><div>全天班</div></div>
       <div class="pricing-row"><div class="label">一般報名</div><div class="price">$4,000</div><div class="price">$4,000</div><div class="price">$7,600</div></div>
-      <div class="pricing-row discount"><div class="label">⭐ 優惠價<br><span style="font-size:0.72rem; color:var(--amber-light); font-weight:400;">團體／清大師生</span></div><div class="price">$3,500</div><div class="price">$3,500</div><div class="price">$7,000</div></div>
-      <div class="discount-note">⭐ 優惠適用：五人（含）以上團體報名 / 清大在校學生 / 清大教職員工<br>上午班 09:00–12:00　·　下午班 13:30–16:30　·　全天班 09:00–16:30</div>
+      <div class="pricing-row discount"><div class="label">⭐ 優惠價<br><span style="font-size:0.72rem; color:var(--amber-light); font-weight:400;">團體／清大師生／特約企業</span></div><div class="price">$3,500</div><div class="price">$3,500</div><div class="price">$7,000</div></div>
+      <div class="discount-note">⭐ 優惠適用：五人（含）以上團體報名 / 清大在校學生 / 清大教職員工 / 特約合作企業員工（含為子女報名）<br>上午班 09:00–12:00　·　下午班 13:30–16:30　·　全天班 09:00–16:30</div>
     </div>
   </section>
 
@@ -428,7 +428,7 @@
                     <div style="font-size:0.72rem; color:var(--amber);">優惠 $7,000</div>
                   </div>
                 </div>
-                <div style="color:var(--text-muted); font-size:0.78rem;">⭐ 優惠適用：五人以上團體報名 / 清大在校學生 / 教職員工</div>
+                <div style="color:var(--text-muted); font-size:0.78rem;">⭐ 優惠適用：五人以上團體報名 / 清大在校學生 / 教職員工 / 特約合作企業員工</div>
               </div>
             </div>
 
@@ -446,7 +446,7 @@
               <select name="discount">
                 <option value="">請選擇優惠資格</option>
                 <option value="無">不符合，以一般價格報名</option>
-                <option>五人以上團體報名</option><option>清大在校學生</option><option>清大教職員工</option>
+                <option>五人以上團體報名</option><option>清大在校學生</option><option>清大教職員工</option><option>特約合作企業員工</option>
               </select>
             </div>
 
@@ -642,7 +642,7 @@ function previewForm() {
   if (!slot) { alert('請選擇上下午班'); return; }
 
   const discount = fd.get('discount') || '未選擇';
-  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職');
+  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
   const unitPrice = priceMap[slot] || 0;
   const price = unitPrice * sessions.length;
@@ -715,7 +715,7 @@ async function submitForm(e) {
   if (!slot) { alert('請選擇一個時段'); return; }
 
   const discount = fd.get('discount') || '未選擇';
-  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職');
+  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
 
   const entry = {
