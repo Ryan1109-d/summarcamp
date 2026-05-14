@@ -570,6 +570,16 @@
               </select>
             </div>
 
+            <div class="form-group full" id="companyWrap" style="display:none;">
+              <label>請選擇您所屬的特約合作企業 <span class="req">*</span></label>
+              <select name="company">
+                <option value="">請選擇所屬企業</option>
+                <option>台積電</option>
+                <option>工研院</option>
+                <option>聯華電子（聯電）</option>
+              </select>
+            </div>
+
             <div class="form-group full" id="groupMemberWrap" style="display:none;">
               <label>同行團報成員姓名 <span class="req">*</span></label>
               <textarea name="group_members" placeholder="請填寫同行成員的姓名，每人一行&#10;例：&#10;王小明&#10;李小華&#10;陳大中"></textarea>
@@ -739,8 +749,17 @@ initFade();
 
 document.addEventListener('change', function(e) {
   if (e.target.name === 'discount') {
-    const wrap = document.getElementById('groupMemberWrap');
-    if (wrap) wrap.style.display = e.target.value.includes('團體') ? 'flex' : 'none';
+    const groupWrap = document.getElementById('groupMemberWrap');
+    if (groupWrap) groupWrap.style.display = e.target.value.includes('團體') ? 'flex' : 'none';
+    const companyWrap = document.getElementById('companyWrap');
+    if (companyWrap) {
+      const isContract = e.target.value.includes('特約');
+      companyWrap.style.display = isContract ? 'flex' : 'none';
+      if (!isContract) {
+        const sel = companyWrap.querySelector('select[name="company"]');
+        if (sel) sel.value = '';
+      }
+    }
   }
 });
 
@@ -761,8 +780,16 @@ function previewForm() {
   const slot = fd.get('time_slots');
   if (!slot) { alert('請選擇上下午班'); return; }
 
-  const discount = fd.get('discount') || '未選擇';
+  let discount = fd.get('discount') || '未選擇';
   const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
+
+  // 特約合作企業需選擇所屬公司
+  if (discount.includes('特約')) {
+    const company = fd.get('company');
+    if (!company) { alert('請選擇您所屬的特約合作企業'); return; }
+    discount = `特約合作企業員工（${company}）`;
+  }
+
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
   const unitPrice = priceMap[slot] || 0;
   const price = unitPrice * sessions.length;
@@ -834,8 +861,15 @@ async function submitForm(e) {
   const slot = fd.get('time_slots');
   if (!slot) { alert('請選擇一個時段'); return; }
 
-  const discount = fd.get('discount') || '未選擇';
+  let discount = fd.get('discount') || '未選擇';
   const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
+
+  // 特約合作企業需把公司名一起送到資料庫
+  if (discount.includes('特約')) {
+    const company = fd.get('company');
+    if (company) discount = `特約合作企業員工（${company}）`;
+  }
+
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
 
   const entry = {
