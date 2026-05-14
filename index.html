@@ -71,6 +71,33 @@
   .schedule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 2.5rem; }
   .schedule-item { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 10px; padding: 1rem 1.4rem; display: flex; align-items: center; gap: 1rem; transition: border-color 0.2s; }
   .schedule-item:hover { border-color: rgba(239,159,39,0.4); }
+
+  /* coaches */
+  .coaches-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 3rem; }
+  .coach-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; overflow: hidden; transition: border-color 0.25s, transform 0.25s; display: flex; flex-direction: column; }
+  .coach-card:hover { border-color: rgba(239,159,39,0.5); transform: translateY(-4px); }
+  .coach-photo { width: 100%; aspect-ratio: 3/4; overflow: hidden; background: var(--navy); }
+  .coach-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .coach-info { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; }
+  .coach-name { font-family: 'Noto Serif TC', serif; font-size: 1.15rem; font-weight: 700; color: var(--text-light); margin-bottom: 0.15rem; }
+  .coach-title { font-size: 0.72rem; color: var(--amber-light); margin-bottom: 0.7rem; font-weight: 500; letter-spacing: 0.5px; }
+  .coach-meta { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 0.7rem; }
+  .coach-meta b { color: var(--text-light); font-weight: 500; }
+  .coach-achievements { font-size: 0.72rem; color: var(--text-muted); line-height: 1.6; border-top: 1px solid rgba(55,138,221,0.15); padding-top: 0.7rem; margin-top: auto; }
+  .coach-achievements li { list-style: none; padding-left: 0.7rem; position: relative; margin-bottom: 0.25rem; }
+  .coach-achievements li::before { content: '▸'; position: absolute; left: 0; color: var(--amber); }
+
+  /* venue */
+  .venue-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; }
+  .venue-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; overflow: hidden; transition: border-color 0.25s; }
+  .venue-card:hover { border-color: rgba(239,159,39,0.4); }
+  .venue-card.full { grid-column: 1 / -1; }
+  .venue-photo { width: 100%; aspect-ratio: 16/9; overflow: hidden; }
+  .venue-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .venue-photo.map img { object-fit: contain; background: #fff; }
+  .venue-photo.map { aspect-ratio: auto; }
+  .venue-label { padding: 0.7rem 1rem 0.9rem; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid rgba(55,138,221,0.15); }
+  .venue-label b { color: var(--text-light); font-weight: 500; }
   .schedule-num { font-family: 'Noto Serif TC', serif; font-size: 1.5rem; font-weight: 900; color: rgba(55,138,221,0.3); min-width: 2rem; }
   .schedule-dates { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; }
   .schedule-time { font-size: 0.8rem; color: var(--text-muted); }
@@ -208,6 +235,8 @@
     .hero-cta .btn-primary, .hero-cta .btn-secondary { width: 240px; text-align: center; }
     .about-grid { grid-template-columns: 1fr; }
     .schedule-grid { grid-template-columns: 1fr; }
+    .coaches-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .venue-grid { grid-template-columns: 1fr; }
     .pricing-header, .pricing-row { grid-template-columns: 1.4fr 1fr 1fr; font-size: 0.82rem; }
     .form-grid { grid-template-columns: 1fr; }
     .check-grid.three { grid-template-columns: 1fr 1fr; }
@@ -235,6 +264,8 @@
   <div class="nav-logo" onclick="showPage('main')">清大<span>羽球</span>夏令營</div>
   <ul>
     <li><a onclick="goTo('about')">活動介紹</a></li>
+    <li><a onclick="goTo('coaches')">教練團</a></li>
+    <li><a onclick="goTo('venue')">場地</a></li>
     <li><a onclick="goTo('schedule')">梯次時間</a></li>
     <li><a onclick="goTo('pricing')">費用</a></li>
     <li><a onclick="showPage('register')" class="nav-register">立即報名</a></li>
@@ -270,6 +301,95 @@
       <div class="about-card blue"><h3>專業教練</h3><p>清大羽球校隊學員親自帶領，依程度分組，讓每位學員都能在合適的步調下穩定進步。</p></div>
       <div class="about-card amber"><h3>五天課程</h3><p>涵蓋步法、技術與體能訓練，每日追蹤學習進度，最後以結業對抗賽展現一週成果。</p></div>
       <div class="about-card teal"><h3>活力滿載</h3><p>輕鬆無壓力的學習氛圍，在揮灑汗水的同時交到新朋友，培養長期運動的好習慣。</p></div>
+    </div>
+  </section>
+
+  <hr class="section-line">
+
+  <section id="coaches">
+    <div class="fade-up">
+      <div class="section-label">教練團</div>
+      <h2 class="section-title">清大羽球校隊　甲組選手親自帶隊</h2>
+      <p class="section-desc">本營隊師資皆由清華大學羽球校隊現役甲組選手與持證教練組成，依各梯次規模採輪派制配置教練群，確保每梯課程皆有相當資歷的教練親自指導。以下為本屆教練群部分代表（實際梯次教練配置以開課當週公告為準）：</p>
+    </div>
+    <div class="coaches-grid fade-up" style="transition-delay:0.15s;">
+      <div class="coach-card">
+        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723133/ryan_wq7nbw.jpg" alt="張軒瑀教練"></div>
+        <div class="coach-info">
+          <div class="coach-name">張軒瑀</div>
+          <div class="coach-title">甲組球員．清大羽球校隊</div>
+          <div class="coach-meta"><b>球齡</b>　12 年<br><b>教學經驗</b>　2 年<br><b>經歷</b>　清華大學校本部夏令營教練</div>
+          <ul class="coach-achievements">
+            <li>113 年全國羽球排名賽　男乙雙第一（晉升甲組）</li>
+            <li>113 年全中運高中男雙第二</li>
+            <li>112 年 BWF 世青羽球錦標賽　團體亞軍</li>
+          </ul>
+        </div>
+      </div>
+      <div class="coach-card">
+        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723133/will_gorg0x.jpg" alt="陳崇瑋教練"></div>
+        <div class="coach-info">
+          <div class="coach-name">陳崇瑋</div>
+          <div class="coach-title">甲組球員．C 級教練證</div>
+          <div class="coach-meta"><b>球齡</b>　15 年<br><b>教學經驗</b>　5 年<br><b>執照</b>　中華民國羽協 C 級教練證</div>
+          <ul class="coach-achievements">
+            <li>110 年全國羽球排名賽　男乙雙第一（晉升甲組）</li>
+            <li>108 年全中運高中男雙第二</li>
+          </ul>
+        </div>
+      </div>
+      <div class="coach-card">
+        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723132/yuchen_myas4c.jpg" alt="陳宥蓁教練"></div>
+        <div class="coach-info">
+          <div class="coach-name">陳宥蓁</div>
+          <div class="coach-title">甲組球員．C 級教練證</div>
+          <div class="coach-meta"><b>球齡</b>　15 年<br><b>教學經驗</b>　3 年<br><b>經歷</b>　羽協育樂營、新竹國小羽球隊、清大校本部夏令營</div>
+          <ul class="coach-achievements">
+            <li>111 年全國羽球排名賽　第三（晉升甲組）</li>
+            <li>111 年全國高中盃女雙季軍</li>
+          </ul>
+        </div>
+      </div>
+      <div class="coach-card">
+        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723131/hong_ujz44c.jpg" alt="洪紹中教練"></div>
+        <div class="coach-info">
+          <div class="coach-name">洪紹中</div>
+          <div class="coach-title">清大羽球校隊</div>
+          <div class="coach-meta"><b>球齡</b>　12 年<br><b>教學經驗</b>　2 年<br><b>經歷</b>　清華大學校本部夏令營教練</div>
+          <ul class="coach-achievements">
+            <li>112 年全國高中盃　個人雙打第三</li>
+            <li>109 年全國國中盃　個人雙打第二</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-line">
+
+  <section id="venue">
+    <div class="fade-up">
+      <div class="section-label">場地介紹</div>
+      <h2 class="section-title">清華大學南大校區體健大樓</h2>
+      <p class="section-desc">活動於清華大學南大校區體健大樓五樓專業體育館進行，全程室內、空間寬敞、地板與設備完善，不受天候影響。校區位於新竹市東區南大路，交通便利、停車方便。</p>
+    </div>
+    <div class="venue-grid fade-up" style="transition-delay:0.15s;">
+      <div class="venue-card">
+        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor1_pntblf.jpg" alt="體育館內部"></div>
+        <div class="venue-label"><b>體育館內部一</b>　專業木地板、自然採光、設備完善</div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor2_f8v02z.jpg" alt="體育館內部"></div>
+        <div class="venue-label"><b>體育館內部二</b>　空間寬敞，可容納 3 面標準羽球場地</div>
+      </div>
+      <div class="venue-card full">
+        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724467/venue_campus_bwfyha.jpg" alt="校區外觀"></div>
+        <div class="venue-label"><b>校區外觀</b>　寧靜清幽的大學環境，校園綠地與田徑場環繞</div>
+      </div>
+      <div class="venue-card full">
+        <div class="venue-photo map"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724466/venue_map_zonyhx.jpg" alt="校區平面圖"></div>
+        <div class="venue-label"><b>校區平面圖</b>　活動地點：體健大樓五樓體育館（地圖右側標示）<br>地址：新竹市東區南大路 521 號　|　交通：地下停車場可停放車輛，正門 / 側門 / 體健入口皆可進入</div>
+      </div>
     </div>
   </section>
 
