@@ -165,6 +165,21 @@
   .check-item:has(input:checked) span { color: white; }
   .check-item.disabled { opacity: 0.35; pointer-events: none; }
 
+  /* UMC verification box */
+  .umc-verify-box {
+    background: rgba(29,158,117,0.08);
+    border: 1px solid rgba(29,158,117,0.3);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-top: 0.8rem;
+    display: none;
+  }
+  .umc-verify-box .umc-title {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+    color: #9FE1CB; margin-bottom: 0.8rem;
+  }
+  .umc-verify-box .form-grid { gap: 0.8rem; }
+
   /* ADMIN upgraded */
   .loading-overlay { position: fixed; inset: 0; background: rgba(7,31,58,0.85); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; }
   .spinner { width: 48px; height: 48px; border: 4px solid rgba(55,138,221,0.2); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -249,6 +264,7 @@
     .success-btns { flex-direction: column; align-items: center; }
     .success-btns button { width: 100%; max-width: 320px; }
     .notice-box { font-size: 0.82rem; }
+    .umc-verify-box .form-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 400px) {
     .hero h1 { font-size: 1.9rem; }
@@ -367,6 +383,7 @@
 
   <hr class="section-line">
 
+  <!-- ══ 場地介紹（照片順序已修正）══ -->
   <section id="venue">
     <div class="fade-up">
       <div class="section-label">場地介紹</div>
@@ -375,18 +392,21 @@
     </div>
     <div class="venue-grid fade-up" style="transition-delay:0.15s;">
       <div class="venue-card">
-        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor1_pntblf.jpg" alt="體育館內部"></div>
+        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor1_pntblf.jpg" alt="體育館內部一"></div>
         <div class="venue-label"><b>體育館內部一</b>　專業木地板、自然採光、設備完善</div>
       </div>
       <div class="venue-card">
-        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor2_f8v02z.jpg" alt="體育館內部"></div>
+        <!-- 修正：原本放 campus，應為 indoor2 -->
+        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor2_f8v02z.jpg" alt="體育館內部二"></div>
         <div class="venue-label"><b>體育館內部二</b>　空間寬敞，可容納 3 面標準羽球場地</div>
       </div>
       <div class="venue-card full">
+        <!-- 修正：原本放 map，應為 campus -->
         <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724467/venue_campus_bwfyha.jpg" alt="校區外觀"></div>
         <div class="venue-label"><b>校區外觀</b>　寧靜清幽的大學環境，校園綠地與田徑場環繞</div>
       </div>
       <div class="venue-card full">
+        <!-- 修正：原本放 indoor2，應為 map -->
         <div class="venue-photo map"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724466/venue_map_zonyhx.jpg" alt="校區平面圖"></div>
         <div class="venue-label"><b>校區平面圖</b>　活動地點：體健大樓五樓體育館（地圖右側標示）<br>地址：新竹市東區南大路 521 號　|　交通：地下停車場可停放車輛，正門 / 側門 / 體健入口皆可進入</div>
       </div>
@@ -563,21 +583,39 @@
 
             <div class="form-group full">
               <label>優惠資格</label>
-              <select name="discount">
+              <select name="discount" id="discountSelect" onchange="handleDiscountChange(this.value)">
                 <option value="">請選擇優惠資格</option>
                 <option value="無">不符合，以一般價格報名</option>
-                <option>五人以上團體報名</option><option>清大在校學生</option><option>清大教職員工</option><option>特約合作企業員工</option>
+                <option value="五人以上團體報名">五人以上團體報名</option>
+                <option value="清大在校學生">清大在校學生</option>
+                <option value="清大教職員工">清大教職員工</option>
+                <option value="特約合作企業員工（聯華電子（聯電））">特約合作企業員工 — 聯華電子（聯電）</option>
+                <option value="特約合作企業員工（台積電）">特約合作企業員工 — 台積電</option>
+                <option value="特約合作企業員工（工研院）">特約合作企業員工 — 工研院</option>
               </select>
             </div>
 
-            <div class="form-group full" id="companyWrap" style="display:none;">
-              <label>請選擇您所屬的特約合作企業 <span class="req">*</span></label>
-              <select name="company">
-                <option value="">請選擇所屬企業</option>
-                <option>台積電</option>
-                <option>工研院</option>
-                <option>聯華電子（聯電）</option>
-              </select>
+            <!-- ══ 聯電員工驗證欄位（選聯電才顯示）══ -->
+            <div class="form-group full" id="umcVerifyWrap">
+              <div class="umc-verify-box" id="umcVerifyBox">
+                <div class="umc-title">🏢 聯華電子員工身份驗證</div>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.7;">
+                  依聯電福委會要求，請填寫員工識別證資訊以核驗優惠資格。資料僅供身份確認，不作其他用途。
+                </p>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>員工識別證編號 <span class="req">*</span></label>
+                    <input type="text" name="umc_employee_id" id="umcEmployeeId" placeholder="請輸入識別證編號">
+                  </div>
+                  <div class="form-group">
+                    <label>員工姓名 <span class="req">*</span></label>
+                    <input type="text" name="umc_employee_name" id="umcEmployeeName" placeholder="請輸入員工本人姓名">
+                  </div>
+                </div>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.6rem;">
+                  ※ 識別證編號將由主辦方向聯電福委會確認，核驗通過後優惠方可生效。
+                </p>
+              </div>
             </div>
 
             <div class="form-group full" id="groupMemberWrap" style="display:none;">
@@ -701,7 +739,7 @@
               <th>#</th><th>狀態</th><th>時間</th><th>學員</th><th>性別</th><th>年齡</th><th>年級</th>
               <th>電話</th><th>Email</th><th>緊急聯絡</th><th>緊急電話</th>
               <th>繳款人</th><th>繳款電話</th><th>繳款信箱</th><th>關係</th>
-              <th>梯次</th><th>時段</th><th>班別偏好</th><th>優惠</th><th>團報成員</th><th>備注</th><th>管理備注</th>
+              <th>梯次</th><th>時段</th><th>班別偏好</th><th>優惠</th><th>聯電員工編號</th><th>聯電員工姓名</th><th>團報成員</th><th>備注</th><th>管理備注</th>
             </tr></thead>
             <tbody id="adminBody"></tbody>
           </table>
@@ -746,22 +784,21 @@ function initFade() {
 }
 initFade();
 
+// ── 優惠資格聯動 ──
+function handleDiscountChange(val) {
+  // 聯電驗證框
+  const umcBox = document.getElementById('umcVerifyBox');
+  const umcId = document.getElementById('umcEmployeeId');
+  const umcName = document.getElementById('umcEmployeeName');
+  const isUMC = val.includes('聯華電子');
+  umcBox.style.display = isUMC ? 'block' : 'none';
+  umcId.required = isUMC;
+  umcName.required = isUMC;
 
-document.addEventListener('change', function(e) {
-  if (e.target.name === 'discount') {
-    const groupWrap = document.getElementById('groupMemberWrap');
-    if (groupWrap) groupWrap.style.display = e.target.value.includes('團體') ? 'flex' : 'none';
-    const companyWrap = document.getElementById('companyWrap');
-    if (companyWrap) {
-      const isContract = e.target.value.includes('特約');
-      companyWrap.style.display = isContract ? 'flex' : 'none';
-      if (!isContract) {
-        const sel = companyWrap.querySelector('select[name="company"]');
-        if (sel) sel.value = '';
-      }
-    }
-  }
-});
+  // 團報成員框
+  const groupWrap = document.getElementById('groupMemberWrap');
+  groupWrap.style.display = val.includes('團體') ? 'flex' : 'none';
+}
 
 // ── FORM ──
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwu-bdlAPH7R-l_CgYcjIURBYKt6ffTO5TSUf17CoEH775V9Tj238-mBfVmWQPS540/exec';
@@ -780,16 +817,14 @@ function previewForm() {
   const slot = fd.get('time_slots');
   if (!slot) { alert('請選擇上下午班'); return; }
 
-  let discount = fd.get('discount') || '未選擇';
-  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
-
-  // 特約合作企業需選擇所屬公司
-  if (discount.includes('特約')) {
-    const company = fd.get('company');
-    if (!company) { alert('請選擇您所屬的特約合作企業'); return; }
-    discount = `特約合作企業員工（${company}）`;
+  // 聯電驗證
+  const discount = fd.get('discount') || '未選擇';
+  if (discount.includes('聯華電子')) {
+    if (!fd.get('umc_employee_id')) { alert('請填寫員工識別證編號'); return; }
+    if (!fd.get('umc_employee_name')) { alert('請填寫員工姓名'); return; }
   }
 
+  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
   const unitPrice = priceMap[slot] || 0;
   const price = unitPrice * sessions.length;
@@ -831,6 +866,8 @@ function previewForm() {
       ${row('時段', slot)}
       ${row('班別偏好', fd.get('class_pref') || '待評估')}
       ${row('優惠資格', discount)}
+      ${discount.includes('聯華電子') ? row('員工識別證編號', fd.get('umc_employee_id')) : ''}
+      ${discount.includes('聯華電子') ? row('員工姓名（聯電）', fd.get('umc_employee_name')) : ''}
       ${fd.get('group_members') ? row('團報成員', fd.get('group_members')) : ''}
       ${fd.get('notes') ? row('備注', fd.get('notes')) : ''}
 
@@ -861,15 +898,13 @@ async function submitForm(e) {
   const slot = fd.get('time_slots');
   if (!slot) { alert('請選擇一個時段'); return; }
 
-  let discount = fd.get('discount') || '未選擇';
-  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
-
-  // 特約合作企業需把公司名一起送到資料庫
-  if (discount.includes('特約')) {
-    const company = fd.get('company');
-    if (company) discount = `特約合作企業員工（${company}）`;
+  const discount = fd.get('discount') || '未選擇';
+  if (discount.includes('聯華電子')) {
+    if (!fd.get('umc_employee_id')) { alert('請填寫員工識別證編號'); return; }
+    if (!fd.get('umc_employee_name')) { alert('請填寫員工姓名'); return; }
   }
 
+  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
 
   const entry = {
@@ -884,6 +919,8 @@ async function submitForm(e) {
     time_slots: slot,
     class_prefs: fd.get('class_pref') || '待評估',
     discount: discount,
+    umc_employee_id: fd.get('umc_employee_id') || '—',
+    umc_employee_name: fd.get('umc_employee_name') || '—',
     group_members: fd.get('group_members') || '—',
     notes: fd.get('notes') || '—',
     price: `$${(priceMap[slot] || 0).toLocaleString()}`
@@ -913,9 +950,11 @@ async function submitForm(e) {
       '【繳款人】',`姓名：${entry.payer_name}　電話：${entry.payer_phone}`,
       `信箱：${entry.payer_email}　關係：${entry.payer_relation}`,'',
       '【報名選擇】',`梯次：${entry.sessions}`,`時段：${entry.time_slots}`,
-      `班別：${entry.class_prefs}`,`優惠：${entry.discount}`,`團報成員：${entry.group_members}`,'',
+      `班別：${entry.class_prefs}`,`優惠：${entry.discount}`,
+      entry.umc_employee_id !== '—' ? `聯電員工編號：${entry.umc_employee_id}　姓名：${entry.umc_employee_name}` : '',
+      `團報成員：${entry.group_members}`,'',
       '【備注】',entry.notes
-    ].join('\n');
+    ].filter(l => l !== null).join('\n');
     await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -927,8 +966,6 @@ async function submitForm(e) {
       })
     });
   } catch(err) { console.warn('管理員 Email 失敗：', err); }
-
-  // 確認信由 Google Apps Script Gmail 自動寄出給報名者
 
   btn.textContent = origText;
   btn.disabled = false;
@@ -946,8 +983,10 @@ async function submitForm(e) {
 function registerAnother() {
   document.getElementById('regForm').reset();
   document.querySelectorAll('#regForm input[type=checkbox], #regForm input[type=radio]').forEach(cb => cb.checked = false);
-  const wrap = document.getElementById('groupMemberWrap');
-  if (wrap) wrap.style.display = 'none';
+  document.getElementById('groupMemberWrap').style.display = 'none';
+  document.getElementById('umcVerifyBox').style.display = 'none';
+  document.getElementById('umcEmployeeId').required = false;
+  document.getElementById('umcEmployeeName').required = false;
   document.getElementById('regFormArea').style.display = 'block';
   document.getElementById('successArea').style.display = 'none';
   window.scrollTo(0, 0);
@@ -1015,6 +1054,8 @@ function loadAdmin(silent = false) {
         payer_email: r['繳款信箱'], payer_relation: r['與學員關係'],
         sessions: r['報名梯次'], time_slots: r['時段'],
         class_prefs: r['班別'], discount: r['優惠資格'],
+        umc_employee_id: r['聯電員工編號'] || '—',
+        umc_employee_name: r['聯電員工姓名'] || '—',
         group_members: r['團報成員'], notes: r['備注'],
         status: r['狀態'] || '待確認',
         admin_note: r['管理備注'] || ''
@@ -1059,7 +1100,6 @@ async function updateStatusAndNote(row, status, note) {
       method: 'POST',
       body: JSON.stringify({ action: 'updateStatus', row, status, note })
     });
-    // 更新本地資料
     const item = allData.find(r => r._row === row);
     if (item) { item.status = status; item.admin_note = note; }
     if (btn) { btn.classList.remove('saving'); btn.classList.add('saved'); btn.textContent = '✓ 已儲存'; setTimeout(() => { btn.classList.remove('saved'); btn.textContent = '儲存'; }, 2000); }
@@ -1075,16 +1115,12 @@ function renderStats() {
   const paid = allData.filter(r => r.status === '已繳費').length;
   const pending = allData.filter(r => r.status === '待確認').length;
   const waitlist = allData.filter(r => r.status === '候補').length;
-  const am = allData.filter(r => (r.time_slots||'').includes('上午')).length;
-  const pm = allData.filter(r => (r.time_slots||'').includes('下午')).length;
-  const full = allData.filter(r => (r.time_slots||'').includes('全天')).length;
   document.getElementById('adminStatsTop').innerHTML = `
     <div class="stat-card"><div class="num">${total}</div><div class="lbl">總報名人數</div></div>
     <div class="stat-card" style="border-color:rgba(29,158,117,0.3)"><div class="num" style="color:#9FE1CB">${paid}</div><div class="lbl">已繳費</div></div>
     <div class="stat-card" style="border-color:rgba(239,159,39,0.3)"><div class="num" style="color:var(--amber)">${pending}</div><div class="lbl">待確認</div></div>
     <div class="stat-card" style="border-color:rgba(55,138,221,0.3)"><div class="num" style="color:#B5D4F4">${waitlist}</div><div class="lbl">候補</div></div>
   `;
-  // 下方加時段統計小列
   const sk = ['第1梯','第2梯','第3梯','第4梯','第5梯','第6梯','第7梯','第8梯'];
   const sd = ['7/06','7/13','7/20','7/27','8/03','8/10','8/17','8/24'];
   const sc = sk.map(k => allData.filter(r => (r.sessions||'').includes(k)).length);
@@ -1126,7 +1162,7 @@ function renderTable() {
   });
   document.getElementById('filterCount').textContent = `顯示 ${filtered.length} 筆 / 共 ${allData.length} 筆`;
   const tbody = document.getElementById('adminBody');
-  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="22" style="text-align:center;padding:2rem;color:var(--text-muted)">無符合條件的資料</td></tr>'; return; }
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="24" style="text-align:center;padding:2rem;color:var(--text-muted)">無符合條件的資料</td></tr>'; return; }
   const badge = s => !s ? '—' : String(s).split('、').map(v => {
     const c = v.includes('上午')?'am':v.includes('下午')?'pm':'full';
     return `<span class="badge ${c}">${v}</span>`;
@@ -1154,6 +1190,8 @@ function renderTable() {
       <td>${badge(r.time_slots)}</td>
       <td style="font-size:0.8rem">${r.class_prefs||'—'}</td>
       <td style="font-size:0.8rem">${r.discount||'—'}</td>
+      <td style="font-size:0.8rem">${r.umc_employee_id||'—'}</td>
+      <td style="font-size:0.8rem">${r.umc_employee_name||'—'}</td>
       <td style="font-size:0.78rem;color:var(--text-muted)">${r.group_members||'—'}</td>
       <td style="font-size:0.8rem;color:var(--text-muted)">${r.notes||'—'}</td>
       <td>
@@ -1168,8 +1206,8 @@ function renderTable() {
 
 function exportCSV() {
   if (!allData.length) { alert('目前沒有報名資料'); return; }
-  const headers = ['#','報名時間','狀態','學員姓名','性別','年齡','年級','聯絡電話','Email','緊急聯絡人','緊急電話','繳款人','繳款電話','繳款信箱','關係','報名梯次','時段','班別偏好','優惠','團報成員','備注','管理備注'];
-  const rows = allData.map((r,i)=>[i+1,r.time,r.status||'待確認',r.name,r.gender,r.age,r.grade,r.phone,r.email,r.emergency_name,r.emergency_phone,r.payer_name,r.payer_phone,r.payer_email||'—',r.payer_relation,r.sessions,r.time_slots,r.class_prefs,r.discount,r.group_members,r.notes,r.admin_note||'']);
+  const headers = ['#','報名時間','狀態','學員姓名','性別','年齡','年級','聯絡電話','Email','緊急聯絡人','緊急電話','繳款人','繳款電話','繳款信箱','關係','報名梯次','時段','班別偏好','優惠','聯電員工編號','聯電員工姓名','團報成員','備注','管理備注'];
+  const rows = allData.map((r,i)=>[i+1,r.time,r.status||'待確認',r.name,r.gender,r.age,r.grade,r.phone,r.email,r.emergency_name,r.emergency_phone,r.payer_name,r.payer_phone,r.payer_email||'—',r.payer_relation,r.sessions,r.time_slots,r.class_prefs,r.discount,r.umc_employee_id||'—',r.umc_employee_name||'—',r.group_members,r.notes,r.admin_note||'']);
   const csv = '\uFEFF'+[headers,...rows].map(row=>row.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
   a.download = `羽球夏令營報名_${new Date().toLocaleDateString('zh-TW').replace(/\//g,'-')}.csv`; a.click();
@@ -1221,7 +1259,6 @@ async function confirmDelete() {
   overlay.innerHTML = '<div class="spinner"></div><p>刪除中...</p>';
   document.body.appendChild(overlay);
 
-  // 從後往前刪（避免 row index 位移）
   const rowsToDelete = checked.map(i => allData[i]._row).filter(Boolean).sort((a,b) => b - a);
   for (const row of rowsToDelete) {
     try { await fetch(`${GAS_URL}?action=delete&index=${row - 2}`); }
