@@ -799,10 +799,11 @@ function renderProgressData(progress) {
     const pmTotal = d.pm + d.ft;
     const amOpen = amTotal >= OPEN_MIN;
     const pmOpen = pmTotal >= OPEN_MIN;
-    const anyOpen = amOpen || pmOpen;
-    const statusLabel = anyOpen
-      ? '<span style="color:#9FE1CB;font-weight:700;">✅ 確定開班</span>'
-      : '<span style="color:var(--amber);">△ 招生中</span>';
+    let statusLabel = '';
+    if (amOpen && pmOpen) statusLabel = '<span style="color:#9FE1CB;font-weight:700;">✅ 上午・下午確定開班</span>';
+    else if (amOpen) statusLabel = '<span style="color:#9FE1CB;font-weight:700;">✅ 確定上午開班</span>';
+    else if (pmOpen) statusLabel = '<span style="color:#9FE1CB;font-weight:700;">✅ 確定下午開班</span>';
+    else statusLabel = '<span style="color:var(--amber);">△ 招生中</span>';
     const rows = [];
     if (amTotal > 0) {
       const pct = Math.min(amTotal / MAX * 100, 100).toFixed(0);
