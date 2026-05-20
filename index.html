@@ -848,7 +848,10 @@ async function loadProgress() {
   if (!wrap) return;
   wrap.innerHTML = '<div style="font-size:0.85rem;color:var(--text-muted);padding:1rem 0;">載入中...</div>';
   try {
-    const res = await fetch(GAS_URL + '?action=progress');
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'progress' })
+    });
     const json = await res.json();
     if (json.success) renderProgressData(json.progress);
     else throw new Error(json.error);
