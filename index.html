@@ -431,6 +431,17 @@
     <div class="schedule-note fade-up" style="transition-delay:0.2s;">
       ※ 每梯次限額 30 名，額滿即止。各梯次報名人數未達 20 人者，該梯次課程將不予開設。
     </div>
+
+    <!-- 報名進度（手動更新） -->
+    <div class="fade-up" style="margin-top:2rem; transition-delay:0.25s;">
+      <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.2em; color:var(--amber); margin-bottom:0.4rem;">📊 各梯次報名進度</div>
+      <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.2rem;">滿 8 人即確定開班・每梯次上限 30 人</div>
+      <div style="display:flex; flex-direction:column; gap:0.75rem;" id="progressBars">
+      </div>
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:1rem; line-height:1.8;">
+        ✅ 確定開班　　△ 招生中　　— 本梯次不開班
+      </div>
+    </div>
   </section>
 
   <hr class="section-line">
@@ -655,8 +666,10 @@
         <h2>報名完成！</h2>
         <p>感謝您的報名，我們已收到您的資料。</p>
         <div class="success-info">
-          📬 請於<strong style="color:white;">一週內</strong>留意信箱，我們將寄送成班確認通知。<br>
+          📬 接下來將陸續寄送繳費通知，請留意信箱。<br>
           🔔 若該梯次名額已滿，將另寄候補通知，請於收到確認信後再完成繳費。<br><br>
+          <strong style="color:white;">立即加入學員家長群組，第一時間掌握開班通知：</strong><br>
+          <a href="https://line.me/ti/g/bVkHhe8Xzb" target="_blank" style="display:inline-block; margin-top:0.6rem; background:#06C755; color:white; font-weight:700; font-size:0.95rem; padding:0.6rem 1.8rem; border-radius:8px; text-decoration:none; letter-spacing:0.05em;">💬 加入 LINE 群組</a><br><br>
           <strong style="color:white;">如有任何問題，歡迎聯繫我們：</strong><br>
           📧 wcsports02@gmail.com<br>
           💬 LINE ID：941109chang
@@ -764,6 +777,87 @@
 
 
 <script>
+// ── 報名進度條（從 GAS 即時拉取）──
+const OPEN_MIN = 8, MAX = 30;
+const BATCH_META = [
+  { key: '第1梯', label: '第 1 梯', date: '7/06－7/10' },
+  { key: '第2梯', label: '第 2 梯', date: '7/13－7/17' },
+  { key: '第3梯', label: '第 3 梯', date: '7/20－7/24' },
+  { key: '第4梯', label: '第 4 梯', date: '7/27－7/31' },
+  { key: '第5梯', label: '第 5 梯', date: '8/03－8/07' },
+  { key: '第6梯', label: '第 6 梯', date: '8/10－8/14' },
+  { key: '第7梯', label: '第 7 梯', date: '8/17－8/21' },
+  { key: '第8梯', label: '第 8 梯', date: '8/24－8/28' },
+];
+
+function renderProgressData(progress) {
+  const wrap = document.getElementById('progressBars');
+  if (!wrap) return;
+  wrap.innerHTML = BATCH_META.map(({ key, label, date }) => {
+    const d = progress[key] || { am: 0, pm: 0, ft: 0 };
+    const amTotal = d.am + d.ft;
+    const pmTotal = d.pm + d.ft;
+    const amOpen = amTotal >= OPEN_MIN;
+    const pmOpen = pmTotal >= OPEN_MIN;
+    const anyOpen = amOpen || pmOpen;
+    const statusLabel = anyOpen
+      ? '<span style="color:#9FE1CB;font-weight:700;">✅ 確定開班</span>'
+      : '<span style="color:var(--amber);">△ 招生中</span>';
+    const rows = [];
+    if (amTotal > 0) {
+      const pct = Math.min(amTotal / MAX * 100, 100).toFixed(0);
+      rows.push(`
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;">
+          <div style="min-width:36px;color:var(--text-muted);">上午</div>
+          <div style="flex:1;background:rgba(255,255,255,0.07);border-radius:4px;height:10px;overflow:hidden;">
+            <div style="width:${pct}%;height:100%;border-radius:4px;background:${amOpen?'var(--teal)':'var(--blue-light)'};transition:width 0.4s;"></div>
+          </div>
+          <div style="min-width:28px;text-align:right;font-weight:700;color:${amOpen?'#9FE1CB':'white'};">${amTotal}</div>
+        </div>`);
+    }
+    if (pmTotal > 0) {
+      const pct = Math.min(pmTotal / MAX * 100, 100).toFixed(0);
+      rows.push(`
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;">
+          <div style="min-width:36px;color:var(--text-muted);">下午</div>
+          <div style="flex:1;background:rgba(255,255,255,0.07);border-radius:4px;height:10px;overflow:hidden;">
+            <div style="width:${pct}%;height:100%;border-radius:4px;background:${pmOpen?'var(--teal)':'var(--blue-light)'};transition:width 0.4s;"></div>
+          </div>
+          <div style="min-width:28px;text-align:right;font-weight:700;color:${pmOpen?'#9FE1CB':'white'};">${pmTotal}</div>
+        </div>`);
+    }
+    if (rows.length === 0) {
+      rows.push(`<div style="font-size:0.8rem;color:var(--text-muted);">尚無報名資料</div>`);
+    }
+    return `
+      <div style="background:var(--navy-dark);border:1px solid rgba(55,138,221,0.15);border-radius:10px;padding:0.9rem 1.2rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
+          <div>
+            <span style="font-weight:700;font-size:0.9rem;">${label}</span>
+            <span style="font-size:0.78rem;color:var(--text-muted);margin-left:0.6rem;">${date}</span>
+          </div>
+          <div style="font-size:0.78rem;">${statusLabel}</div>
+        </div>
+        ${rows.join('')}
+      </div>`;
+  }).join('');
+}
+
+async function loadProgress() {
+  const wrap = document.getElementById('progressBars');
+  if (!wrap) return;
+  wrap.innerHTML = '<div style="font-size:0.85rem;color:var(--text-muted);padding:1rem 0;">載入中...</div>';
+  try {
+    const res = await fetch(GAS_URL + '?action=progress');
+    const json = await res.json();
+    if (json.success) renderProgressData(json.progress);
+    else throw new Error(json.error);
+  } catch(err) {
+    wrap.innerHTML = '<div style="font-size:0.82rem;color:var(--text-muted);">資料載入失敗，請重新整理頁面。</div>';
+  }
+}
+loadProgress();
+
 // ── PAGES ──
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
