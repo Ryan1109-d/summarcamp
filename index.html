@@ -860,7 +860,6 @@ async function loadProgress() {
     wrap.innerHTML = '<div style="font-size:0.82rem;color:var(--text-muted);">資料載入失敗，請重新整理頁面。</div>';
   }
 }
-loadProgress();
 
 // ── PAGES ──
 function showPage(name) {
@@ -913,6 +912,8 @@ function handleDiscountChange(val) {
 
 // ── FORM ──
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwu-bdlAPH7R-l_CgYcjIURBYKt6ffTO5TSUf17CoEH775V9Tj238-mBfVmWQPS540/exec';
+
+loadProgress();
 
 function previewForm() {
   const form = document.getElementById('regForm');
