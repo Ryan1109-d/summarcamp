@@ -429,13 +429,13 @@
       <div class="schedule-item"><div class="schedule-num">08</div><div><div class="schedule-dates">8/24（一）－ 8/28（五）</div><div class="schedule-time">09:00 – 16:30　第八梯次</div></div></div>
     </div>
     <div class="schedule-note fade-up" style="transition-delay:0.2s;">
-      ※ 每梯次限額 30 名，額滿即止。各梯次報名人數滿 8 人即確定開班。
+      ※ 每梯次限額 30 名，額滿即止。各梯次報名人數滿 6 人即確定開班。
     </div>
 
     <!-- 報名招生狀況 -->
     <div class="fade-up" style="margin-top:2rem; transition-delay:0.25s;">
       <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.2em; color:var(--amber); margin-bottom:0.4rem;">📊 各梯次招生狀況</div>
-      <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.2rem;">滿 8 人即確定開班</div>
+      <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.2rem;">滿 6 人即確定開班</div>
       <div style="display:flex; flex-direction:column; gap:0.75rem;" id="progressBars">
       </div>
     </div>
@@ -459,7 +459,7 @@
     <div class="fade-up" style="margin-top:2rem; background:var(--navy-dark); border:1px solid rgba(55,138,221,0.15); border-radius:14px; padding:1.4rem 1.8rem; transition-delay:0.15s;">
       <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.2em; color:var(--amber); margin-bottom:1rem;">🤝 特約合作企業</div>
       <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.2rem; line-height:1.8;">以下企業員工（含為子女報名）無需湊滿五人，即可直接享有優惠價格。</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8rem;">
         <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem;">
           <div style="font-weight:700; font-size:0.95rem; margin-bottom:0.3rem;">工業技術研究院</div>
           <div style="font-size:0.78rem; color:var(--text-muted);">工研院　ITRI</div>
@@ -467,6 +467,10 @@
         <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem;">
           <div style="font-weight:700; font-size:0.95rem; margin-bottom:0.3rem;">聯華電子股份有限公司</div>
           <div style="font-size:0.78rem; color:var(--text-muted);">聯電　UMC</div>
+        </div>
+        <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem;">
+          <div style="font-weight:700; font-size:0.95rem; margin-bottom:0.3rem;">台灣積體電路製造</div>
+          <div style="font-size:0.78rem; color:var(--text-muted);">台積電　TSMC</div>
         </div>
       </div>
       <p style="font-size:0.78rem; color:var(--text-muted); margin-top:1rem; line-height:1.7;">※ 報名時請選擇對應企業並填寫員工資訊，主辦方將進行身份核驗後確認優惠資格。</p>
@@ -775,7 +779,7 @@
 
 <script>
 // ── 報名進度條（從 GAS 即時拉取）──
-const OPEN_MIN = 8, MAX = 30;
+const OPEN_MIN = 6, MAX = 30;
 const BATCH_META = [
   { key: '第1梯', label: '第 1 梯', date: '7/06－7/10' },
   { key: '第2梯', label: '第 2 梯', date: '7/13－7/17' },
@@ -791,8 +795,8 @@ function renderProgressData(progress) {
   const wrap = document.getElementById('progressBars');
   if (!wrap) return;
   const labelFor = total => {
-    if (total >= 8) return '<span style="color:#9FE1CB;font-weight:700;">即將開班</span>';
-    if (total >= 5) return `<span style="color:var(--amber);font-weight:700;">差 ${8 - total} 人開班</span>`;
+    if (total >= 6) return '<span style="color:#9FE1CB;font-weight:700;">即將開班</span>';
+    if (total >= 3) return `<span style="color:var(--amber);font-weight:700;">差 ${6 - total} 人開班</span>`;
     return '<span style="color:var(--blue-pale);">熱烈招生中</span>';
   };
   wrap.innerHTML = BATCH_META.map(({ key, label, date }) => {
