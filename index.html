@@ -794,8 +794,10 @@ const BATCH_META = [
 function renderProgressData(progress) {
   const wrap = document.getElementById('progressBars');
   if (!wrap) return;
-  const labelFor = total => {
-    if (total >= 6) return '<span style="color:#9FE1CB;font-weight:700;">即將開班</span>';
+  // pure = 純半天人數（不含全天班），total = 含全天班總人數
+  // 確定開班只看 pure ≥ 6；其餘狀態看 total
+  const labelFor = (pure, total) => {
+    if (pure >= 6) return '<span style="color:#9FE1CB;font-weight:700;">✅ 確定開班</span>';
     if (total >= 3) return `<span style="color:var(--amber);font-weight:700;">差 ${6 - total} 人開班</span>`;
     return '<span style="color:var(--blue-pale);">熱烈招生中</span>';
   };
@@ -812,11 +814,11 @@ function renderProgressData(progress) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.82rem;">
           <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;">
             <span style="color:var(--text-muted);">上午班</span>
-            ${labelFor(amTotal)}
+            ${labelFor(d.am, amTotal)}
           </div>
           <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;">
             <span style="color:var(--text-muted);">下午班</span>
-            ${labelFor(pmTotal)}
+            ${labelFor(d.pm, pmTotal)}
           </div>
         </div>
       </div>`;
