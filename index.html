@@ -791,18 +791,30 @@ const BATCH_META = [
   { key: '第8梯', label: '第 8 梯', date: '8/24－8/28' },
 ];
 
+// 確定取消開班的時段清單
+const CLOSED_SLOTS = {
+  '第1梯': ['pm'],
+  '第2梯': ['pm'],
+  '第4梯': ['am', 'pm'],
+  '第6梯': ['pm'],
+  '第7梯': ['pm'],
+};
+
 function renderProgressData(progress) {
   const wrap = document.getElementById('progressBars');
   if (!wrap) return;
-  // 完全不計入全天班，僅看純半天人數
-  // ≥6 確定開班、1-5 差 X 人開班、0 熱烈招生中
-  const labelFor = pure => {
+  const labelFor = (pure, closed) => {
+    if (closed) return '<span style="color:#F09595;font-weight:700;">🔴 取消開班</span>';
     if (pure >= 6) return '<span style="color:#9FE1CB;font-weight:700;">✅ 確定開班</span>';
     if (pure >= 3) return `<span style="color:var(--amber);font-weight:700;">差 ${6 - pure} 人開班</span>`;
     return '<span style="color:var(--blue-pale);">熱烈招生中</span>';
   };
   wrap.innerHTML = BATCH_META.map(({ key, label, date }) => {
     const d = progress[key] || { am: 0, pm: 0, ft: 0 };
+    const closed = CLOSED_SLOTS[key] || [];
+    const amClosed = closed.includes('am');
+    const pmClosed = closed.includes('pm');
+    const dim = c => c ? 'opacity:0.6;' : '';
     return `
       <div style="background:var(--navy-dark);border:1px solid rgba(55,138,221,0.15);border-radius:10px;padding:0.9rem 1.2rem;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
@@ -810,13 +822,13 @@ function renderProgressData(progress) {
           <span style="font-size:0.78rem;color:var(--text-muted);">${date}</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.82rem;">
-          <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;">
+          <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;${dim(amClosed)}">
             <span style="color:var(--text-muted);">上午班</span>
-            ${labelFor(d.am)}
+            ${labelFor(d.am, amClosed)}
           </div>
-          <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;">
+          <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;${dim(pmClosed)}">
             <span style="color:var(--text-muted);">下午班</span>
-            ${labelFor(d.pm)}
+            ${labelFor(d.pm, pmClosed)}
           </div>
         </div>
       </div>`;
