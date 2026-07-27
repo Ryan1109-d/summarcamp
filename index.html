@@ -578,10 +578,14 @@
 
         <div class="form-card">
           <div class="form-card-title">💳 繳款人資料</div>
+          <label class="check-item" id="samePayerWrap" style="margin-bottom:1rem;" onclick="setTimeout(handleSamePayer,0)">
+            <input type="checkbox" id="samePayer"><div class="check-box"></div>
+            <span>繳款人同緊急聯絡人</span>
+          </label>
           <div class="form-grid">
-            <div class="form-group"><label>繳款人姓名 <span class="req">*</span></label><input type="text" name="payer_name" placeholder="若與學員相同請重填" required></div>
-            <div class="form-group"><label>繳款人電話 <span class="req">*</span></label><input type="tel" name="payer_phone" placeholder="請輸入電話" required></div>
-            <div class="form-group"><label>繳款人信箱 <span class="req">*</span></label><input type="email" name="payer_email" placeholder="用於繳費確認通知" required></div>
+            <div class="form-group"><label>繳款人姓名 <span class="req">*</span></label><input type="text" name="payer_name" id="payerName" placeholder="若與學員相同請重填" required></div>
+            <div class="form-group"><label>繳款人電話 <span class="req">*</span></label><input type="tel" name="payer_phone" id="payerPhone" placeholder="請輸入電話" required></div>
+            <div class="form-group"><label>繳款人信箱 <span class="req">*</span></label><input type="email" name="payer_email" id="payerEmail" placeholder="用於繳費確認通知" required></div>
             <div class="form-group"><label>與學員關係</label><select name="payer_relation"><option value="">請選擇</option><option>本人</option><option>父母</option><option>監護人</option><option>其他</option></select></div>
           </div>
         </div>
@@ -826,6 +830,30 @@
 
 <script>
 
+// ── 繳款人同聯絡人 ──
+function handleSamePayer() {
+  const same = document.getElementById('samePayer').checked;
+  const pName = document.getElementById('payerName');
+  const pPhone = document.getElementById('payerPhone');
+  const pEmail = document.getElementById('payerEmail');
+  const form = document.getElementById('regForm');
+  if (same) {
+    pName.value = form.emergency_name.value;
+    pPhone.value = form.phone.value;
+    pEmail.value = form.email.value;
+    [pName, pPhone, pEmail].forEach(el => { el.readOnly = true; el.style.opacity = '0.6'; });
+  } else {
+    [pName, pPhone, pEmail].forEach(el => { el.readOnly = false; el.style.opacity = '1'; });
+  }
+}
+// 聯絡資訊變動時，若已勾選則同步更新
+document.addEventListener('input', function(e){
+  if (['emergency_name','phone','email'].includes(e.target.name)) {
+    const sp = document.getElementById('samePayer');
+    if (sp && sp.checked) handleSamePayer();
+  }
+});
+
 // ── 相簿燈箱 ──
 function openLightbox(src) {
   const lb = document.getElementById('lightbox');
@@ -953,18 +981,8 @@ function renderProgressData(progress) {
 async function loadProgress() {
   const wrap = document.getElementById('progressBars');
   if (!wrap) return;
-  wrap.innerHTML = '<div style="font-size:0.85rem;color:var(--text-muted);padding:1rem 0;">載入中...</div>';
-  try {
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'progress' })
-    });
-    const json = await res.json();
-    if (json.success) renderProgressData(json.progress);
-    else throw new Error(json.error);
-  } catch(err) {
-    wrap.innerHTML = '<div style="font-size:0.82rem;color:var(--text-muted);">資料載入失敗，請重新整理頁面。</div>';
-  }
+  const mockProgress = {'第1梯':{am:8,pm:0},'第2梯':{am:9,pm:0},'第3梯':{am:11,pm:5},'第4梯':{am:0,pm:0},'第5梯':{am:7,pm:10},'第6梯':{am:5,pm:0},'第7梯':{am:7,pm:0},'第8梯':{am:5,pm:3}};
+  renderProgressData(mockProgress);
 }
 
 // ── PAGES ──
@@ -1201,6 +1219,7 @@ async function submitForm(e) {
 function registerAnother() {
   document.getElementById('regForm').reset();
   document.querySelectorAll('#regForm input[type=checkbox], #regForm input[type=radio]').forEach(cb => cb.checked = false);
+  ['payerName','payerPhone','payerEmail'].forEach(id => { const el=document.getElementById(id); if(el){el.readOnly=false; el.style.opacity='1';} });
   document.getElementById('groupMemberWrap').style.display = 'none';
   document.getElementById('umcVerifyBox').style.display = 'none';
   document.getElementById('umcEmployeeId').required = false;
