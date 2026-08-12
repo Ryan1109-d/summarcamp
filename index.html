@@ -529,8 +529,8 @@
   </section>
 
   <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
-    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
+    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：Stay Young 運動團隊｜指導：清華大學體育組</div>
+    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com　·　LINE ID：941109chang</div>
     <div style="margin-top:0.5rem; font-size:0.75rem; opacity:0.6;">實際課程內容以現場教練安排為主，主辦單位保有調整活動內容之權利</div>
   </footer>
 </div>
@@ -717,7 +717,7 @@
           <strong style="color:white;">立即加入學員家長群組，第一時間掌握開班通知：</strong><br>
           <a href="https://line.me/ti/g/bVkHhe8Xzb" target="_blank" style="display:inline-block; margin-top:0.6rem; background:#06C755; color:white; font-weight:700; font-size:0.95rem; padding:0.6rem 1.8rem; border-radius:8px; text-decoration:none; letter-spacing:0.05em;">💬 加入 LINE 群組</a><br><br>
           <strong style="color:white;">如有任何問題，歡迎聯繫我們：</strong><br>
-          📧 wcsports02@gmail.com<br>
+          📧 stayyoung985@gmail.com<br>
           💬 LINE ID：941109chang
         </div>
         <div class="success-btns">
@@ -729,8 +729,8 @@
   </div>
 
   <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
-    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
+    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：Stay Young 運動團隊｜指導：清華大學體育組</div>
+    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com　·　LINE ID：941109chang</div>
   </footer>
 </div>
 
@@ -896,8 +896,9 @@ function renderProgressData(progress) {
 async function loadProgress() {
   const wrap = document.getElementById('progressBars');
   if (!wrap) return;
-  const mockProgress = {'第1梯':{am:8,pm:0},'第2梯':{am:9,pm:0},'第3梯':{am:11,pm:5},'第4梯':{am:0,pm:0},'第5梯':{am:7,pm:10},'第6梯':{am:5,pm:0},'第7梯':{am:7,pm:0},'第8梯':{am:6,pm:6}};
-  renderProgressData(mockProgress);
+  // 由主辦方手動維護，數字包含線上報名與現場報名，需與 Sheet 對照後更新
+  const PROGRESS = {'第1梯':{am:8,pm:0},'第2梯':{am:9,pm:0},'第3梯':{am:11,pm:5},'第4梯':{am:0,pm:0},'第5梯':{am:7,pm:10},'第6梯':{am:5,pm:0},'第7梯':{am:7,pm:0},'第8梯':{am:6,pm:6}};
+  renderProgressData(PROGRESS);
 }
 
 // ── PAGES ──
@@ -954,6 +955,31 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbwu-bdlAPH7R-l_CgYcjIUR
 
 loadProgress();
 
+// ── 已結束或已取消的梯次不可勾選 ──
+function sessionSelectable(key) {
+  const closed = CLOSED_SLOTS[key] || [];
+  if (closed.indexOf('am') >= 0 && closed.indexOf('pm') >= 0) return false;  // 整梯取消
+  return batchTimeState(key) === 'enroll';                                   // 尚未開始才可報名
+}
+function lockUnavailableSessions() {
+  document.querySelectorAll('input[name="sessions"]').forEach(cb => {
+    const key = String(cb.value).split('｜')[0];
+    if (sessionSelectable(key)) return;
+    cb.checked = false;
+    cb.disabled = true;
+    const label = cb.closest('.check-item');
+    if (label) {
+      label.classList.add('disabled');
+      const span = label.querySelector('span');
+      const closed = CLOSED_SLOTS[key] || [];
+      const why = (closed.indexOf('am') >= 0 && closed.indexOf('pm') >= 0) ? '（未開班）'
+                : (batchTimeState(key) === 'finished' ? '（已結束）' : '（進行中）');
+      if (span && span.textContent.indexOf('（') === -1) span.textContent += ' ' + why;
+    }
+  });
+}
+lockUnavailableSessions();
+
 function previewForm() {
   const form = document.getElementById('regForm');
   const fd = new FormData(form);
@@ -964,6 +990,11 @@ function previewForm() {
     if (!fd.get(f)) { alert('請填寫所有必填欄位（標示 * 的欄位）'); form.reportValidity(); return; }
   }
   const sessions = fd.getAll('sessions');
+  const badSession = sessions.map(v => String(v).split('｜')[0]).filter(k => !sessionSelectable(k));
+  if (badSession.length) {
+    alert('您選擇的梯次（' + badSession.join('、') + '）已結束或未開班，請重新選擇。');
+    return;
+  }
   if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
   const slot = fd.get('time_slots');
   if (!slot) { alert('請選擇上下午班'); return; }
@@ -1045,6 +1076,11 @@ async function submitForm(e) {
   e.preventDefault();
   const fd = new FormData(e.target);
   const sessions = fd.getAll('sessions');
+  const badSession2 = sessions.map(v => String(v).split('｜')[0]).filter(k => !sessionSelectable(k));
+  if (badSession2.length) {
+    alert('您選擇的梯次（' + badSession2.join('、') + '）已結束或未開班，請重新選擇。');
+    return;
+  }
   if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
   const slot = fd.get('time_slots');
   if (!slot) { alert('請選擇一個時段'); return; }
@@ -1074,7 +1110,7 @@ async function submitForm(e) {
     umc_employee_name: fd.get('umc_employee_name') || '—',
     group_members: fd.get('group_members') || '—',
     notes: fd.get('notes') || '—',
-    price: `$${(priceMap[slot] || 0).toLocaleString()}`
+    price: `$${((priceMap[slot] || 0) * sessions.length).toLocaleString()}`
   };
 
   const btn = e.target.querySelector('.submit-btn');
@@ -1092,37 +1128,13 @@ async function submitForm(e) {
   } catch(err) { console.warn('Sheets 寫入失敗：', err); }
 
   // Web3Forms Email — 通知給管理員
-  try {
-    const msg = [
-      `報名時間：${entry.time}`,'',
-      '【學員資訊】',`姓名：${entry.name}　性別：${entry.gender}　年齡：${entry.age}　年級：${entry.grade}`,'',
-      '【聯絡資訊】',`電話：${entry.phone}`,`Email：${entry.email}`,
-      `緊急聯絡人：${entry.emergency_name}　電話：${entry.emergency_phone}`,'',
-      '【繳款人】',`姓名：${entry.payer_name}　電話：${entry.payer_phone}`,
-      `信箱：${entry.payer_email}　關係：${entry.payer_relation}`,'',
-      '【報名選擇】',`梯次：${entry.sessions}`,`時段：${entry.time_slots}`,
-      `班別：${entry.class_prefs}`,`優惠：${entry.discount}`,
-      entry.umc_employee_id !== '—' ? `聯電員工編號：${entry.umc_employee_id}　姓名：${entry.umc_employee_name}` : '',
-      `團報成員：${entry.group_members}`,'',
-      '【備注】',entry.notes
-    ].filter(l => l !== null).join('\n');
-    await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        access_key: '6ded9f60-9325-481b-a898-907a1b261028',
-        subject: `【羽球夏令營報名】${entry.name}　${entry.sessions}　${entry.time_slots}`,
-        from_name: '清大羽球夏令營報名系統',
-        message: msg, replyto: entry.email
-      })
-    });
-  } catch(err) { console.warn('管理員 Email 失敗：', err); }
+  // 管理員通知已改由 GAS 端寄出（信中不含個資），不再送往任何第三方服務
 
   btn.textContent = origText;
   btn.disabled = false;
 
   if (!sheetOk) {
-    alert('資料送出失敗，請稍後再試或聯繫 wcsports02@gmail.com');
+    alert('資料送出失敗，請稍後再試或聯繫 stayyoung985@gmail.com');
     return;
   }
 
