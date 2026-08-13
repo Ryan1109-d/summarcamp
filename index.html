@@ -28,6 +28,14 @@
   }
   .nav-logo { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: 0.05em; cursor: pointer; }
   .nav-logo span { color: var(--amber); }
+  .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .sy-home { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; transition: opacity 0.2s; }
+  .sy-home:hover { opacity: 0.7; }
+  .sy-chip { display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 8px; padding: 4px 6px; flex-shrink: 0; }
+  .sy-chip img { height: 26px; width: auto; display: block; }
+  .sy-text { font-family: 'Noto Serif TC', serif; font-size: 0.85rem; font-weight: 900; color: var(--white); letter-spacing: 0.03em; white-space: nowrap; }
+  .nav-div { width: 1px; height: 20px; background: rgba(255,255,255,0.25); flex-shrink: 0; }
+  @media (max-width: 700px) { .sy-text { display: none; } }
   nav ul { list-style: none; display: flex; gap: 2rem; }
   nav a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.05em; transition: color 0.2s; cursor: pointer; }
   nav a:hover { color: var(--white); }
@@ -295,7 +303,14 @@
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="showPage('main')">清大<span>羽球</span>夏令營</div>
+  <div class="nav-left">
+    <a class="sy-home" href="https://stayyounglab.com/" title="回到 Stay Young 首頁">
+      <span class="sy-chip"><img src="images/logo-mark.png" alt="Stay Young"></span>
+      <span class="sy-text">Stay Young</span>
+    </a>
+    <span class="nav-div"></span>
+    <div class="nav-logo" onclick="showPage('main')">清大<span>羽球</span>夏令營</div>
+  </div>
   <ul>
     <li><a onclick="goTo('about')">活動介紹</a></li>
     <li><a onclick="goTo('gallery')">營隊實錄</a></li>
@@ -547,7 +562,7 @@
       <p style="font-size:0.8rem; color:var(--text-muted); margin-top:1.2rem; line-height:1.8;">
         ※ 單日缺席可與教練協調擇期補課，惟不提供單日退費，費用以整梯計算。<br>
         ※ 如遇天災（颱風、地震等），依新竹市政府停課公告辦理，停課日將另行協調補課或按比例退費。<br>
-        ※ 退費請來信 stayyoung985@gmail.com，我們將於 7 個工作天內處理。
+        ※ 退費請來信 wcsports02@gmail.com，我們將於 7 個工作天內處理。
       </p>
     </div>
   </section>
@@ -563,8 +578,8 @@
   </section>
 
   <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：Stay Young 運動團隊｜指導：清華大學體育組</div>
-    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com　·　LINE ID：941109chang</div>
+    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
+    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
     <div style="margin-top:0.5rem; font-size:0.75rem; opacity:0.6;">實際課程內容以現場教練安排為主，主辦單位保有調整活動內容之權利</div>
   </footer>
 </div>
@@ -751,7 +766,7 @@
           <strong style="color:white;">立即加入學員家長群組，第一時間掌握開班通知：</strong><br>
           <a href="https://line.me/ti/g/bVkHhe8Xzb" target="_blank" style="display:inline-block; margin-top:0.6rem; background:#06C755; color:white; font-weight:700; font-size:0.95rem; padding:0.6rem 1.8rem; border-radius:8px; text-decoration:none; letter-spacing:0.05em;">💬 加入 LINE 群組</a><br><br>
           <strong style="color:white;">如有任何問題，歡迎聯繫我們：</strong><br>
-          📧 stayyoung985@gmail.com<br>
+          📧 wcsports02@gmail.com<br>
           💬 LINE ID：941109chang
         </div>
         <div class="success-btns">
@@ -763,8 +778,8 @@
   </div>
 
   <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：Stay Young 運動團隊｜指導：清華大學體育組</div>
-    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com　·　LINE ID：941109chang</div>
+    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
+    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
   </footer>
 </div>
 
@@ -1168,7 +1183,7 @@ async function submitForm(e) {
   btn.disabled = false;
 
   if (!sheetOk) {
-    alert('資料送出失敗，請稍後再試或聯繫 stayyoung985@gmail.com');
+    alert('資料送出失敗，請稍後再試或聯繫 wcsports02@gmail.com');
     return;
   }
 
