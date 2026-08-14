@@ -1169,6 +1169,16 @@ function previewForm() {
   if (!fd.get('guardianConsent')) { alert('請勾選法定代理人聲明'); return; }
   if (!fd.get('photoConsent')) { alert('請勾選照片使用同意'); return; }
 
+  // 團報驗證：比照兩個冬令營站，選團體優惠就要列出同行成員
+  if (discount.includes('團體')) {
+    const gms = String(fd.get('group_members') || '')
+      .split('\n').map(s => s.trim()).filter(Boolean);
+    if (gms.length < 4) {
+      alert('團體報名需 5 人（含本人）以上，請至少填寫 4 位同行成員姓名，每人一行。');
+      return;
+    }
+  }
+
   const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
   const unitPrice = priceMap[slot] || 0;
@@ -1261,6 +1271,16 @@ async function submitForm(e) {
   if (!fd.get('medicalConsent')) { alert('請勾選緊急醫療授權'); return; }
   if (!fd.get('guardianConsent')) { alert('請勾選法定代理人聲明'); return; }
   if (!fd.get('photoConsent')) { alert('請勾選照片使用同意'); return; }
+
+  // 團報驗證：比照兩個冬令營站，選團體優惠就要列出同行成員
+  if (discount.includes('團體')) {
+    const gms = String(fd.get('group_members') || '')
+      .split('\n').map(s => s.trim()).filter(Boolean);
+    if (gms.length < 4) {
+      alert('團體報名需 5 人（含本人）以上，請至少填寫 4 位同行成員姓名，每人一行。');
+      return;
+    }
+  }
 
   const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
