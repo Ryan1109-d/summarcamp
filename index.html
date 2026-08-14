@@ -608,7 +608,7 @@
       <p style="font-size:0.8rem; color:var(--text-muted); margin-top:1.2rem; line-height:1.8;">
         ※ 單日缺席可與教練協調擇期補課，惟不提供單日退費，費用以整梯計算。<br>
         ※ 如遇天災（颱風、地震等），依新竹市政府停課公告辦理，停課日將另行協調補課或按比例退費。<br>
-        ※ 退費請來信 wcsports02@gmail.com，我們將於 7 個工作天內處理。
+        ※ 退費請來信 stayyoung985@gmail.com，我們將於 7 個工作天內處理。
       </p>
     </div>
   </section>
@@ -624,8 +624,9 @@
   </section>
 
   <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
-    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
+    <div>國立清華大學南大校區 羽球夏令營 2026</div>
+    <div style="margin-top:0.4rem;">主辦單位：Stay Young 運動團隊｜指導單位：清華大學體育組</div>
+    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com</div>
     <div style="margin-top:0.5rem; font-size:0.75rem; opacity:0.6;">實際課程內容以現場教練安排為主，主辦單位保有調整活動內容之權利</div>
   </footer>
 </div>
@@ -760,27 +761,23 @@
               </select>
             </div>
 
-            <!-- ══ 聯電員工驗證欄位（選聯電才顯示）══ -->
-            <div class="form-group full" id="umcVerifyWrap">
-              <div class="umc-verify-box" id="umcVerifyBox">
-                <div class="umc-title">🏢 聯華電子員工身份驗證</div>
-                <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.7;">
-                  依聯電福委會要求，請填寫員工識別證資訊以核驗優惠資格。資料僅供身份確認，不作其他用途。
-                </p>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>員工識別證編號 <span class="req">*</span></label>
-                    <input type="text" name="umc_employee_id" id="umcEmployeeId" placeholder="請輸入識別證編號">
-                  </div>
-                  <div class="form-group">
-                    <label>員工姓名 <span class="req">*</span></label>
-                    <input type="text" name="umc_employee_name" id="umcEmployeeName" placeholder="請輸入員工本人姓名">
-                  </div>
-                </div>
-                <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.6rem;">
-                  ※ 識別證編號將由主辦方向聯電福委會確認，核驗通過後優惠方可生效。
-                </p>
+            <div class="form-group full">
+              <label>學員健康狀況 <span class="req">*</span></label>
+              <div class="check-grid">
+                <label class="check-item"><input type="radio" name="healthStatus" value="無特殊狀況" required><div class="check-box"></div><span>無特殊狀況</span></label>
+                <label class="check-item"><input type="radio" name="healthStatus" value="有特殊狀況"><div class="check-box"></div><span>有特殊狀況，請說明</span></label>
               </div>
+            </div>
+            <div class="form-group full" id="healthDetailWrap" style="display:none">
+              <label>健康狀況說明 <span class="req">*</span></label>
+              <input type="text" name="healthDetail" placeholder="例如：花生過敏、氣喘、蠶豆症、需定時服藥等">
+            </div>
+            <div class="form-group full">
+              <label class="check-item">
+                <input type="checkbox" name="medicalConsent" required>
+                <div class="check-box"></div>
+                <span>學員於活動中發生緊急傷病時，同意營隊人員先行採取必要之急救或送醫措施，並同時聯繫家長 <span class="req">*</span></span>
+              </label>
             </div>
 
             <div class="form-group full" id="groupMemberWrap" style="display:none;">
@@ -795,6 +792,36 @@
         <div class="form-card">
           <div class="form-card-title">📝 其他說明</div>
           <div class="form-group full"><label>運動傷害或注意事項（選填）</label><textarea name="notes" placeholder="如有舊傷、過敏或其他需告知教練的事項，請填寫於此"></textarea></div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-title">✅ 同意與確認</div>
+          <div class="form-group full">
+            <label class="check-item">
+              <input type="checkbox" name="guardianConsent" required>
+              <div class="check-box"></div>
+              <span>本人為學員之法定代理人，或已取得法定代理人同意，得以代為完成本報名程序 <span class="req">*</span></span>
+            </label>
+          </div>
+          <div class="form-group full">
+            <label>照片使用同意 <span class="req">*</span>　<span style="font-size:0.78rem;color:var(--text-muted);font-weight:400">本營隊活動期間拍攝之照片，將用於分享至家長群組</span></label>
+            <div class="check-grid">
+              <label class="check-item"><input type="radio" name="photoConsent" value="同意" required><div class="check-box"></div><span>同意</span></label>
+              <label class="check-item"><input type="radio" name="photoConsent" value="不同意"><div class="check-box"></div><span>不同意（拍攝時將迴避）</span></label>
+            </div>
+          </div>
+          <div class="form-group full" style="background:rgba(106,165,221,.06);border:1px solid rgba(106,165,221,.15);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.8;color:var(--text-muted)">
+            <strong style="color:white">本表單蒐集之個人資料，</strong><br>
+            僅用於本營隊報名、聯繫、保險投保及活動安全管理，活動結束後六個月內刪除，不作其他用途。
+          </div>
+          <div class="form-group full" style="background:rgba(240,147,15,.06);border:1px solid rgba(240,147,15,.15);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.8;color:var(--text-muted)">
+            <strong style="color:white">💰 退費條款</strong><br>
+            報名後因故無法參加，依下列條款辦理退費：<br>
+            • 開課前 15 天以上：全額退費<br>
+            • 開課前 6–14 天：退費 90%<br>
+            • 開課前 5 天內：退費 70%<br>
+            • 實際開課後：不予退費
+          </div>
         </div>
 
         <button type="button" onclick="previewForm()" class="btn-primary submit-btn">預覽並確認報名資訊 →</button>
@@ -812,8 +839,7 @@
           <strong style="color:white;">立即加入學員家長群組，第一時間掌握開班通知：</strong><br>
           <a href="https://line.me/ti/g/bVkHhe8Xzb" target="_blank" style="display:inline-block; margin-top:0.6rem; background:#06C755; color:white; font-weight:700; font-size:0.95rem; padding:0.6rem 1.8rem; border-radius:8px; text-decoration:none; letter-spacing:0.05em;">💬 加入 LINE 群組</a><br><br>
           <strong style="color:white;">如有任何問題，歡迎聯繫我們：</strong><br>
-          📧 wcsports02@gmail.com<br>
-          💬 LINE ID：941109chang
+          📧 stayyoung985@gmail.com
         </div>
         <div class="success-btns">
           <button onclick="showPage('main')" class="btn-secondary">返回首頁</button>
@@ -824,8 +850,9 @@
   </div>
 
   <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026　·　主辦：清華大學羽球校隊</div>
-    <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com　·　LINE ID：941109chang</div>
+    <div>國立清華大學南大校區 羽球夏令營 2026</div>
+    <div style="margin-top:0.4rem;">主辦單位：Stay Young 運動團隊｜指導單位：清華大學體育組</div>
+    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com</div>
   </footer>
 </div>
 
@@ -1003,13 +1030,6 @@ function showPage(name) {
   window.scrollTo(0, 0);
   if (name === 'main') setTimeout(initFade, 50);
 }
-function scrollTo(id) {
-  setTimeout(() => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 60);
-}
-
 function goTo(id) {
   if (!document.getElementById('page-main').classList.contains('active')) {
     showPage('main');
@@ -1021,29 +1041,65 @@ function goTo(id) {
 }
 
 // ── FADE ──
+// observer 只建一次；initFade 每次返回首頁只補觀察「尚未播放過」的元素，
+// 避免每次切頁都疊加一個新的 IntersectionObserver。
+let fadeObserver = null;
 function initFade() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+  if (!fadeObserver) {
+    fadeObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          e.target.addEventListener('transitionend', () => {
+            e.target.classList.remove('fade-up', 'visible');
+            e.target.style.opacity = '';
+            e.target.style.transform = '';
+            fadeObserver.unobserve(e.target);
+          }, { once: true });
+        }
+      });
+    }, { threshold: 0.1 });
+  }
+  document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
 }
 initFade();
 
 // ── 優惠資格聯動 ──
 function handleDiscountChange(val) {
-  // 聯電驗證框
-  const umcBox = document.getElementById('umcVerifyBox');
-  const umcId = document.getElementById('umcEmployeeId');
-  const umcName = document.getElementById('umcEmployeeName');
-  const isUMC = val.includes('聯華電子');
-  umcBox.style.display = isUMC ? 'block' : 'none';
-  umcId.required = isUMC;
-  umcName.required = isUMC;
-
   // 團報成員框
   const groupWrap = document.getElementById('groupMemberWrap');
   groupWrap.style.display = val.includes('團體') ? 'flex' : 'none';
 }
+
+// ── 無障礙強化 ──
+// 1) 以 div 實作的可點擊元素（導覽、相簿縮圖）補上鍵盤操作與角色
+//    #lightbox 是整片遮罩，不該進 tab 順序，因此排除
+document.querySelectorAll('div[onclick]').forEach(el => {
+  if (el.id === 'lightbox') return;
+  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+  if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+  el.addEventListener('keydown', ev => {
+    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); el.click(); }
+  });
+});
+// 2) 必填欄位補 aria-required
+document.querySelectorAll('#regForm [required]').forEach(el => el.setAttribute('aria-required', 'true'));
+
+// 健康狀況欄位條件顯示
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'healthStatus') {
+    const healthDetailWrap = document.getElementById('healthDetailWrap');
+    const healthDetail = document.querySelector('input[name="healthDetail"]');
+    if (e.target.value === '有特殊狀況') {
+      healthDetailWrap.style.display = 'flex';
+      healthDetail.required = true;
+    } else {
+      healthDetailWrap.style.display = 'none';
+      healthDetail.required = false;
+      healthDetail.value = '';
+    }
+  }
+});
 
 // ── FORM ──
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwu-bdlAPH7R-l_CgYcjIURBYKt6ffTO5TSUf17CoEH775V9Tj238-mBfVmWQPS540/exec';
@@ -1054,7 +1110,14 @@ loadProgress();
 function sessionSelectable(key) {
   const closed = CLOSED_SLOTS[key] || [];
   if (closed.indexOf('am') >= 0 && closed.indexOf('pm') >= 0) return false;  // 整梯取消
-  return batchTimeState(key) === 'enroll';                                   // 尚未開始才可報名
+  const d = BATCH_DATES[key];
+  if (!d) return true;
+  const now = new Date();
+  const start = new Date(d.start + 'T00:00:00');
+  // 關閉點 = 開始日前一天 23:59:59（開始日零時的前一秒）。
+  // 不可寫成 -24h，那會讓「前一天」整天都不能報名，比規格早關一天。
+  const closeTime = new Date(start.getTime() - 1000);
+  return now <= closeTime;
 }
 function lockUnavailableSessions() {
   document.querySelectorAll('input[name="sessions"]').forEach(cb => {
@@ -1094,12 +1157,17 @@ function previewForm() {
   const slot = fd.get('time_slots');
   if (!slot) { alert('請選擇上下午班'); return; }
 
-  // 聯電驗證
   const discount = fd.get('discount') || '未選擇';
-  if (discount.includes('聯華電子')) {
-    if (!fd.get('umc_employee_id')) { alert('請填寫員工識別證編號'); return; }
-    if (!fd.get('umc_employee_name')) { alert('請填寫員工姓名'); return; }
+
+  // 健康狀況、醫療授權、法定代理人、照片同意
+  const health = fd.get('healthStatus');
+  if (!health) { alert('請選擇學員健康狀況'); return; }
+  if (health === '有特殊狀況' && !String(fd.get('healthDetail') || '').trim()) {
+    alert('請填寫健康狀況說明'); return;
   }
+  if (!fd.get('medicalConsent')) { alert('請勾選緊急醫療授權'); return; }
+  if (!fd.get('guardianConsent')) { alert('請勾選法定代理人聲明'); return; }
+  if (!fd.get('photoConsent')) { alert('請勾選照片使用同意'); return; }
 
   const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
@@ -1143,10 +1211,12 @@ function previewForm() {
       ${row('時段', slot)}
       ${row('班別偏好', fd.get('class_pref') || '待評估')}
       ${row('優惠資格', discount)}
-      ${discount.includes('聯華電子') ? row('員工識別證編號', fd.get('umc_employee_id')) : ''}
-      ${discount.includes('聯華電子') ? row('員工姓名（聯電）', fd.get('umc_employee_name')) : ''}
       ${fd.get('group_members') ? row('團報成員', fd.get('group_members')) : ''}
       ${fd.get('notes') ? row('備注', fd.get('notes')) : ''}
+      ${row('健康狀況', health === '有特殊狀況' ? '有特殊狀況：' + String(fd.get('healthDetail') || '').trim() : '無特殊狀況')}
+      ${row('緊急醫療授權', '同意')}
+      ${row('法定代理人聲明', '同意')}
+      ${row('照片使用同意', fd.get('photoConsent') || '—')}
 
       <div style="margin-top:1.2rem;background:rgba(239,159,39,0.1);border:1px solid rgba(239,159,39,0.3);border-radius:10px;padding:0.9rem 1.1rem;font-size:0.9rem;">
         <div style="color:var(--text-muted);font-size:0.78rem;margin-bottom:0.3rem;">預估費用</div>
@@ -1181,10 +1251,16 @@ async function submitForm(e) {
   if (!slot) { alert('請選擇一個時段'); return; }
 
   const discount = fd.get('discount') || '未選擇';
-  if (discount.includes('聯華電子')) {
-    if (!fd.get('umc_employee_id')) { alert('請填寫員工識別證編號'); return; }
-    if (!fd.get('umc_employee_name')) { alert('請填寫員工姓名'); return; }
+
+  // 健康狀況、醫療授權、法定代理人、照片同意
+  const health = fd.get('healthStatus');
+  if (!health) { alert('請選擇學員健康狀況'); return; }
+  if (health === '有特殊狀況' && !String(fd.get('healthDetail') || '').trim()) {
+    alert('請填寫健康狀況說明'); return;
   }
+  if (!fd.get('medicalConsent')) { alert('請勾選緊急醫療授權'); return; }
+  if (!fd.get('guardianConsent')) { alert('請勾選法定代理人聲明'); return; }
+  if (!fd.get('photoConsent')) { alert('請勾選照片使用同意'); return; }
 
   const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
   const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
@@ -1201,10 +1277,13 @@ async function submitForm(e) {
     time_slots: slot,
     class_prefs: fd.get('class_pref') || '待評估',
     discount: discount,
-    umc_employee_id: fd.get('umc_employee_id') || '—',
-    umc_employee_name: fd.get('umc_employee_name') || '—',
     group_members: fd.get('group_members') || '—',
     notes: fd.get('notes') || '—',
+    healthStatus: health,
+    healthDetail: String(fd.get('healthDetail') || '').trim() || '—',
+    medicalConsent: fd.get('medicalConsent') ? '同意' : '',
+    guardianConsent: fd.get('guardianConsent') ? '同意' : '',
+    photoConsent: fd.get('photoConsent') || '',
     price: `$${((priceMap[slot] || 0) * sessions.length).toLocaleString()}`
   };
 
@@ -1229,7 +1308,7 @@ async function submitForm(e) {
   btn.disabled = false;
 
   if (!sheetOk) {
-    alert('資料送出失敗，請稍後再試或聯繫 wcsports02@gmail.com');
+    alert('資料送出失敗，請稍後再試或聯繫 stayyoung985@gmail.com');
     return;
   }
 
@@ -1243,9 +1322,11 @@ function registerAnother() {
   document.querySelectorAll('#regForm input[type=checkbox], #regForm input[type=radio]').forEach(cb => cb.checked = false);
   ['payerName','payerPhone','payerEmail'].forEach(id => { const el=document.getElementById(id); if(el){el.readOnly=false; el.style.opacity='1';} });
   document.getElementById('groupMemberWrap').style.display = 'none';
-  document.getElementById('umcVerifyBox').style.display = 'none';
-  document.getElementById('umcEmployeeId').required = false;
-  document.getElementById('umcEmployeeName').required = false;
+  // 健康狀況說明欄一併收合，避免上一筆的展開狀態殘留
+  const hdw = document.getElementById('healthDetailWrap');
+  if (hdw) hdw.style.display = 'none';
+  const hd = document.querySelector('input[name="healthDetail"]');
+  if (hd) hd.required = false;
   document.getElementById('regFormArea').style.display = 'block';
   document.getElementById('successArea').style.display = 'none';
   window.scrollTo(0, 0);
