@@ -1,30 +1,277 @@
-/*** ============================================================
- * 清大羽球夏令營 2026 — Google Apps Script 後端（完整版）
- *
- * 內容：報名寫入 / 進度條 / 確認信 / 自動排序總表 / 每日備份
+/**
+ * 清華大學羽球冬令營 2027 — Google Apps Script 後端
+ * （與足球營、台大羽球營完全分開：請用新的 Google Sheet + 新的 Apps Script 部署）
  *
  * 部署步驟：
- * 1. 開 Google Sheet →「擴充功能 → Apps Script」，貼上本檔案全部內容
- * 2. 改下方 SHEET_ID（網址中 /d/ 和 /edit 之間那串）
- * 3. 部署 → 管理部署作業 → 編輯 → 版本選「新版本」→ 部署
- *    （只按存檔不會更新線上的 Web App）
+ * 1. Google Sheet 第一列欄位標題（共 28 欄，與下方 appendRow 順序一致）：
+ *    報名時間 | 梯次 | 時段 | 學員姓名 | 性別 | 年齡 | 年級 | 聯絡電話 | 收信信箱 |
+ *    緊急聯絡人 | 緊急聯絡人電話 | 繳款人姓名 | 繳款人電話 | 繳款人信箱 | 與學員關係 |
+ *    優惠資格 | 班別偏好 | 午餐 | 狀態 | 團報成員 | 備註 | 照片同意 |
+ *    健康狀況 | 健康說明 | 緊急醫療授權 | 法定代理人聲明 | 繳費通知 | 系統訊息
+ * 2. Sheet 上方選 擴充功能 → Apps Script，貼上本檔案全部內容
+ * 3. 修改下方 CONFIG 的 SHEET_ID（網址中 /d/ 和 /edit 之間那串）
+ * 4. 部署 → 新增部署作業 → 類型選「網頁應用程式」
+ *    - 執行身分：我
+ *    - 誰可以存取：所有人
+ * 5. 複製 Web App URL，貼到 signup.html 與 index.html 的 GAS_URL
+ * 6. 執行一次 checkSetup() 確認全綠，再執行 installDailyBackupTrigger()
  *
- * ⚠️「報名資料」分頁第一列需為 28 欄。原本 23 欄，這版在最後新增 5 欄：
- *    健康狀況 | 健康說明 | 緊急醫療授權 | 法定代理人聲明 | 照片同意
+ * ⚠️ 本營隊「無早鳥、無推薦人、無紀念衫」，定價沿用 2026 夏令營。
+ *    不要從台大羽球站直接複製 CONFIG 過來，那邊有早鳥與推薦人邏輯。
  *
- *    第 18、19 欄（聯電員工編號／聯電員工姓名）保留不刪 —— 前端已移除這兩個欄位，
- *    新報名一律寫「—」，但歷史資料還在那兩欄裡，刪掉會遺失既有報名紀錄。
- * ============================================================ ***/
+ * 狀態欄位邏輯（與其他兩站不同，請詳讀）：
+ * - 名額以「時段」為單位計算，每個時段上限 CONFIG.CAPACITY 人。
+ * - 全天班同時佔用上午與下午兩個時段的名額。
+ * - 因此上午佔用數 = 上午班 + 全天班；下午佔用數 = 下午班 + 全天班。
+ * - 報名時段還有空位 → 狀態「正取」，寄報名確認信
+ * - 報名時段已額滿   → 狀態「候補」，寄候補通知信
+ *   （報全天班時，只要上午或下午其中一邊滿了就是候補）
+ */
+const CONFIG = {
+  SHEET_ID: 'YOUR_SHEET_ID_HERE',       // TODO: 換成實際 Sheet ID（只在 Apps Script 填，不要 commit）
+  SHEET_NAME: '報名名單',                 // 分頁名稱
+  CAPACITY: 50,                          // 每個時段的正取上限（不是三時段合計）
+  MIN_OPEN: 15,                          // 開班門檻：該時段佔用數達此值才確定開班
+  CAMP_NAME: '清華大學羽球冬令營 2027',
+  CAMP_DATE: '2027/1/25（一）– 1/29（五）',
+  SESSION_NAME: '2027冬令營 1/25–1/29',   // 單梯，寫進 Sheet 的「梯次」欄
+  VENUE: '清華大學南大校區 學生活動中心 1F',
+  REPLY_EMAIL: 'stayyoung985@gmail.com',
+  // 報名關閉時間。網站文案寫「報名截止 2027/1/10」，但系統實際擋到開課前一天，
+  // 留一段人工彈性給晚報名的家長（與台大羽球站行為一致）。
+  // 要改成硬性 1/10 截止，把這個值換成 '2027-01-10T23:59:59+08:00' 即可。
+  REG_CLOSE: '2027-01-24T23:59:59+08:00',
+  // 定價：沿用 2026 夏令營，本營隊「沒有」早鳥與推薦人優惠。
+  //   上午班／下午班　4000 →（優惠資格）3500
+  //   全天班　　　　　7600 →（優惠資格）7000
+  //   折扣幅度上下午與全天不同（500 / 600），所以直接列價格，不用 STEP。
+  PRICE: { HALF: 4000, HALF_DISCOUNT: 3500, FULL: 7600, FULL_DISCOUNT: 7000 },
+  LUNCH_FEE: 500,                        // 代訂午餐五天合計，僅全天班適用
+  // 家長 LINE 社群邀請連結。⚠️ 真值只填在 Apps Script，不要 commit 進 public repo
+  //    （這是可公開加入的邀請網址，落在公開 repo 等於任何人都能加進家長群）。
+  //    維持佔位字串時，確認信會自動略過整段 LINE 說明，不會寄出壞掉的連結。
+  LINE_GROUP_URL: 'YOUR_LINE_GROUP_URL_HERE',
+  // ⚠️ 本營隊的繳費「由學校端寄送與收款」，不使用本系統的繳費通知功能。
+  //    ACCOUNT_NAME 刻意維持「（測試）」開頭，讓 paymentIsPlaceholder() 一直成立，
+  //    sendPaymentNotice() 會直接中止，避免誤觸把個人帳戶寄給家長。
+  //    checkSetup() 對本站回報「收款資訊仍是測試值」是正確結果，不要「修好」它。
+  //    若之後改為自行收款，才把戶名換成真實姓名。
+  PAYMENT: {
+    BANK: '國泰世華銀行 013',
+    ACCOUNT_NAME: '（測試）清大羽球營繳費由學校辦理，本系統不寄繳費通知',
+    ACCOUNT_NO: '699522993691',
+    DEADLINE_DAYS: 7
+  }
+};
 
-const SHEET_ID = 'YOUR_SHEET_ID_HERE';   // TODO: 換成實際 Sheet ID（只在 Apps Script 填，不要 commit）
-const SHEET_NAME = '報名資料';
-const SUMMARY_SHEET = '自動總表';        // 產出分頁（不存在會自動建立）
-const REPLY_EMAIL = 'stayyoung985@gmail.com';
-const LINE_GROUP_URL = 'https://line.me/ti/g/bVkHhe8Xzb';   // 家長群組邀請連結
+// 欄位索引（0-based，對應 Sheet 欄位順序）
+const COL = {
+  TIME: 0, SESSION: 1, SLOT: 2, STUDENT: 3, GENDER: 4, AGE: 5, GRADE: 6,
+  PHONE: 7, EMAIL: 8, EMG_NAME: 9, EMG_PHONE: 10,
+  PAYER_NAME: 11, PAYER_PHONE: 12, PAYER_EMAIL: 13, PAYER_RELATION: 14,
+  DISCOUNT: 15, CLASS_PREF: 16, LUNCH: 17, STATUS: 18, GROUP: 19,
+  NOTES: 20, PHOTO: 21,
+  HEALTH: 22, HEALTH_DETAIL: 23, MEDICAL: 24, GUARDIAN: 25
+};
+const NOTICE_COL = 27;   // 繳費通知（1-based）
+const SYSMSG_COL = 28;   // 系統訊息（1-based）
+
+// 標題列應有的 28 欄，順序即寫入順序。checkSetup() 會拿它逐欄比對。
+const EXPECTED_HEADERS = [
+  '報名時間','梯次','時段','學員姓名','性別','年齡','年級','聯絡電話','收信信箱',
+  '緊急聯絡人','緊急聯絡人電話','繳款人姓名','繳款人電話','繳款人信箱','與學員關係',
+  '優惠資格','班別偏好','午餐','狀態','團報成員','備註','照片同意',
+  '健康狀況','健康說明','緊急醫療授權','法定代理人聲明','繳費通知','系統訊息'
+];
+
+// ⚠️ 以下字串必須與 signup.html 的 <input name="slot"> / <select id="discount">
+//    option value 逐字一致，改前端選項時要同步改這裡，否則合法報名會被擋。
+const SLOT_AM   = '上午班（09:00–12:00）';
+const SLOT_PM   = '下午班（14:00–17:00）';
+const SLOT_FULL = '全天班（09:00–17:00）';
+const VALID_SLOTS = [SLOT_AM, SLOT_PM, SLOT_FULL];
+
+const VALID_DISCOUNTS = [
+  '一般報名',
+  '團報（5 人以上）',
+  '清大在校學生',
+  '清大教職員工',
+  '特約企業員工（聯電）',
+  '特約企業員工（台積電）',
+  '特約企業員工（工研院）'
+];
+
+/** 有優惠資格（非「一般報名」即為有） */
+function hasDiscount_(d) {
+  const s = String(d || '').trim();
+  return s !== '' && s !== '一般報名' && VALID_DISCOUNTS.indexOf(s) >= 0;
+}
+
+/**
+ * 取得報名分頁。找不到時丟出「講得出原因」的錯誤，
+ * 而不是讓後續程式碰到 null 之後噴 Cannot read properties of null。
+ */
+function getSheet_() {
+  const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+  const sheet = ss.getSheetByName(CONFIG.SHEET_NAME);
+  if (!sheet) {
+    const names = ss.getSheets().map(s => '「' + s.getName() + '」').join('、');
+    throw new Error('找不到分頁「' + CONFIG.SHEET_NAME + '」。這個試算表現有的分頁是：' + names +
+                    '。請把報名分頁改名為「' + CONFIG.SHEET_NAME + '」（前後不能有空白），' +
+                    '或改掉 CONFIG.SHEET_NAME。');
+  }
+  return sheet;
+}
+
+/**
+ * 計算各時段目前的「正取」佔用數。
+ *
+ * 全天班的人同時佔用上午與下午，所以：
+ *   上午佔用 = 上午班人數 + 全天班人數
+ *   下午佔用 = 下午班人數 + 全天班人數
+ *
+ * 回傳的 am / pm / full 是「各時段各自報了幾個人」，
+ * amOcc / pmOcc 才是拿來判斷額滿與開班的佔用數。
+ */
+function countSlots_(rows) {
+  let am = 0, pm = 0, full = 0;
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][COL.STATUS]).trim() !== '正取') continue;
+    const slot = String(rows[i][COL.SLOT]).trim();
+    if (slot === SLOT_AM) am++;
+    else if (slot === SLOT_PM) pm++;
+    else if (slot === SLOT_FULL) full++;
+  }
+  return { am: am, pm: pm, full: full, amOcc: am + full, pmOcc: pm + full };
+}
+
+/** 報這個時段會不會變成候補 */
+function isWaitlisted_(slot, c) {
+  if (slot === SLOT_AM)   return c.amOcc >= CONFIG.CAPACITY;
+  if (slot === SLOT_PM)   return c.pmOcc >= CONFIG.CAPACITY;
+  // 全天班要兩邊都有位子才排得進去
+  return c.amOcc >= CONFIG.CAPACITY || c.pmOcc >= CONFIG.CAPACITY;
+}
+
+/** 這筆報名在該時段是第幾位（通知信用，讓自己一眼看出擠不擠） */
+function seqInSlot_(slot, c) {
+  if (slot === SLOT_AM)   return c.amOcc + 1;
+  if (slot === SLOT_PM)   return c.pmOcc + 1;
+  return Math.max(c.amOcc, c.pmOcc) + 1;
+}
+
+/**
+ * 設定自我檢查。部署完、改完 Sheet 之後手動執行這個，
+ * 比送一筆測試報名安全（不會寫資料、不會寄信）。
+ */
+function checkSetup() {
+  const out = [];
+  try {
+    const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+    out.push('✅ SHEET_ID 可開啟：' + ss.getName());
+    const sheet = ss.getSheetByName(CONFIG.SHEET_NAME);
+    if (!sheet) {
+      out.push('❌ 找不到分頁「' + CONFIG.SHEET_NAME + '」');
+      out.push('   現有分頁：' + ss.getSheets().map(s => s.getName()).join('、'));
+    } else {
+      out.push('✅ 分頁「' + CONFIG.SHEET_NAME + '」存在');
+      const lastCol = sheet.getLastColumn();
+      const headers = lastCol ? sheet.getRange(1, 1, 1, lastCol).getValues()[0] : [];
+      out.push((headers.length === EXPECTED_HEADERS.length ? '✅' : '❌') +
+               ' 標題列欄數 ' + headers.length + '（應為 ' + EXPECTED_HEADERS.length + '）');
+      EXPECTED_HEADERS.forEach(function (h, i) {
+        const actual = String(headers[i] == null ? '' : headers[i]).trim();
+        if (actual !== h) {
+          out.push('   ⚠️ 第 ' + (i + 1) + ' 欄應為「' + h + '」，實際是「' + (actual || '(空白)') + '」');
+        }
+      });
+      const n = Math.max(0, sheet.getLastRow() - 1);
+      out.push('   目前資料筆數：' + n);
+      if (n > 0) {
+        const c = countSlots_(sheet.getDataRange().getValues());
+        out.push('   正取佔用｜上午 ' + c.amOcc + '／' + CONFIG.CAPACITY +
+                 '　下午 ' + c.pmOcc + '／' + CONFIG.CAPACITY +
+                 '　（上午班 ' + c.am + '、下午班 ' + c.pm + '、全天班 ' + c.full + '）');
+      }
+    }
+  } catch (e) {
+    out.push('❌ ' + e.message);
+  }
+  // 本站繳費由學校辦理，這行回報「仍是測試值」是預期結果，不是待修的問題。
+  out.push(paymentIsPlaceholder()
+    ? '✅ 收款防呆生效中（本營隊繳費由學校辦理，系統不會寄繳費通知）'
+    : '⚠️ 收款資訊已被改成真實值 —— 本營隊不該自行收款，請確認是否誤改');
+  const msg = out.join('\n');
+  Logger.log(msg);
+  return msg;
+}
+
+/**
+ * 確認信裡的 LINE 家長社群段落。
+ * LINE_GROUP_URL 還是佔位字串時回傳空字串，整段不會出現在信裡，
+ * 避免家長收到「請點選以下連結：YOUR_LINE_GROUP_URL_HERE」。
+ */
+function lineSection() {
+  const url = String(CONFIG.LINE_GROUP_URL || '').trim();
+  if (!url || url.indexOf('http') !== 0) return '';
+  return '\n\n── 加入家長社群 ──\n' +
+         '請加入本營隊的 LINE 家長社群，開班通知、繳費提醒與每日花絮都會在這裡發布：\n' +
+         url + '\n' +
+         '※ 此連結僅提供給已報名的家長，請勿轉發給無關人士。' + '\n';
+}
+
+/**
+ * 新報名通知（寄給 Stay Young 自己，不是家長）。
+ * 主旨開頭固定帶【清大羽球】，三個營隊的通知在收件匣裡不會混淆。
+ * 這封信寄失敗絕不能影響報名結果，呼叫端一律包在 try/catch 內。
+ */
+function notifyOwner_(data, clean, status, seq, c) {
+  const subject = '【清大羽球】新報名　' + status + ' 第 ' + seq + ' 位　' +
+                  safeText(clean.studentName, 20);
+  const sheetUrl = 'https://docs.google.com/spreadsheets/d/' + CONFIG.SHEET_ID + '/edit';
+  const dash = function (v) { var s = safeText(v, 40); return s ? s : '—'; };
+  // 三個營隊刻意共用同一組欄位與順序，收件匣裡的信長得一樣；
+  // 該營隊沒有的欄位一律填「—」，不要整行省略，否則行數會對不齊。
+  const body =
+    CONFIG.CAMP_NAME + '\n' +
+    '─────────────────\n' +
+    '狀態：' + status + '（該時段第 ' + seq + ' 位，每時段上限 ' + CONFIG.CAPACITY +
+      '｜上午 ' + c.amOcc + '、下午 ' + c.pmOcc + '）\n' +
+    '梯次：' + dash(data.session) + '\n' +
+    '時段：' + dash(data.slot) + '\n' +
+    '─────────────────\n' +
+    '學員：' + safeText(clean.studentName, 20) +
+      '（' + dash(clean.gender) + '，' + dash(clean.age) + ' 歲）\n' +
+    '年級：' + dash(clean.grade) + '\n' +
+    '衣服尺寸：—\n' +
+    '健康狀況：' + dash(clean.health) +
+      (String(clean.health).trim() === '有特殊狀況'
+        ? '　⚠️ ' + safeText(clean.healthDetail, 200) : '') + '\n' +
+    '─────────────────\n' +
+    '收信信箱：' + safeText(clean.email, 254) + '\n' +
+    '聯絡電話：' + dash(clean.phone) + '\n' +
+    '緊急聯絡人：' + dash(clean.emgName) + '（' + dash(clean.emgPhone) + '）\n' +
+    '繳款人：' + dash(clean.payerName) + '（' + dash(clean.payerPhone) + '）\n' +
+    '─────────────────\n' +
+    '優惠資格：' + dash(clean.discount) + '\n' +
+    '推薦人：—\n' +
+    '午餐：' + dash(clean.lunch) + '\n' +
+    '班別偏好：' + dash(clean.classPref) + '\n' +
+    '團報成員：' + dash(clean.groupMembers) + '\n' +
+    '備註：' + dash(clean.notes) + '\n' +
+    '─────────────────\n' +
+    '報名名單：' + sheetUrl;
+  MailApp.sendEmail({
+    to: CONFIG.REPLY_EMAIL,
+    subject: subject,
+    body: body,
+    name: 'Stay Young 報名系統'
+  });
+}
 
 /** 給 Sheet 儲存格用：前置單引號讓 Sheets 視為純文字，防公式注入 */
 function safeCell(v, maxLen) {
-  var s = String(v == null ? '' : v).replace(/[\u0000-\u001F\u007F]/g, ' ').trim();
+  var s = String(v == null ? '' : v).replace(/[\u0000-\u001F\u007F]/g, " ").trim();
   if (maxLen && s.length > maxLen) s = s.slice(0, maxLen);
   if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
   return s;
@@ -32,354 +279,430 @@ function safeCell(v, maxLen) {
 
 /** 給 email 內文用：拿掉換行與控制字元，限長，防信件標頭注入 */
 function safeText(v, maxLen) {
-  var s = String(v == null ? '' : v).replace(/[\r\n\u0000-\u001F\u007F]+/g, ' ').trim();
+  var s = String(v == null ? '' : v).replace(/[\r\n\u0000-\u001F\u007F]+/g, " ").trim();
   return (maxLen && s.length > maxLen) ? s.slice(0, maxLen) : s;
 }
 
 /** 統一 JSON 回應 */
-function jsonOut(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function testEmail() {
-  GmailApp.sendEmail(REPLY_EMAIL, '測試信', '這是測試，確認 Gmail 授權正常。');
-}
-
 function doPost(e) {
-  // 併發鎖：兩人同時送出時，避免同時讀寫造成漏算或覆蓋
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(10000)) {
-    return jsonOut({ success: false, error: '系統忙碌中，請稍後再送出一次' });
+    return jsonResponse({ status: 'error', message: '系統忙碌中，請稍後再送出一次' });
   }
+  const t0 = Date.now();
   try {
     const data = JSON.parse(e.postData.contents);
-    const ss = SpreadsheetApp.openById(SHEET_ID);
-    let sheet = ss.getSheetByName(SHEET_NAME);
-    if (!sheet) {
-      sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow([
-        '報名時間','學員姓名','性別','年齡','年級',
-        '聯絡電話','Email','緊急聯絡人','緊急電話',
-        '繳款人','繳款電話','繳款信箱','與學員關係',
-        '報名梯次','時段','班別','優惠資格',
-        '聯電員工編號','聯電員工姓名',
-        '團報成員','備注','狀態','管理備注',
-        '健康狀況','健康說明','緊急醫療授權','法定代理人聲明','照片同意'
-      ]);
-      sheet.getRange(1, 1, 1, 28).setBackground('#185FA5').setFontColor('#FFFFFF').setFontWeight('bold');
-      sheet.setFrozenRows(1);
-    }
 
-    // ── 進度條統計（唯讀，只回傳各梯人數，不含個資）──
+    // ── 進度查詢（唯讀，只回各時段人數，不含任何個資）──
+    // 用 POST 而不是 GET，是為了避開瀏覽器對 script.google.com 的跨網域轉址問題。
     if (data.action === 'progress') {
-      const rows = sheet.getDataRange().getValues();
-      const headers = rows[0];
-      const sessionIdx = headers.indexOf('報名梯次');
-      const slotIdx = headers.indexOf('時段');
-      const batches = ['第1梯','第2梯','第3梯','第4梯','第5梯','第6梯','第7梯','第8梯'];
-      const result = {};
-      batches.forEach(b => result[b] = { am: 0, pm: 0, ft: 0 });
-      rows.slice(1).forEach(row => {
-        const sessions = String(row[sessionIdx] || '').split('、');
-        const slot = String(row[slotIdx] || '');
-        sessions.forEach(s => {
-          const key = s.trim().split('｜')[0];
-          if (!result[key]) return;
-          if (slot === '上午班') result[key].am++;
-          else if (slot === '下午班') result[key].pm++;
-          else if (slot === '全天班') result[key].ft++;
-        });
+      const c = countSlots_(getSheet_().getDataRange().getValues());
+      return jsonResponse({
+        status: 'ok',
+        capacity: CONFIG.CAPACITY,
+        minOpen: CONFIG.MIN_OPEN,
+        am: c.am, pm: c.pm, full: c.full, amOcc: c.amOcc, pmOcc: c.pmOcc
       });
-      return jsonOut({ success: true, progress: result });
     }
 
-    // ⚠️ 原本這裡有 action === 'updateStatus'，可以直接指定列號改「狀態」與「管理備注」。
-    //    那個端點沒有任何驗證，任何人只要知道 Web App 網址就能改任意一列的狀態，
-    //    而前端的管理後台早已移除、沒有任何地方會用到它，因此整段刪除。
-    //    要改狀態請直接開 Sheet 編輯。
+    // ── 防濫用 1：honeypot（欄名須與 signup.html 的 .hp-field 一致）──
+    if (data.contact_pref_2 && String(data.contact_pref_2).trim() !== '') {
+      return jsonResponse({ status: 'ok', waitlist: false });
+    }
+    // ── 防濫用 2：重複送出保護 ──
+    const cache = CacheService.getScriptCache();
+    const rateKey = 'rl_' + [
+      String(data.email || '').toLowerCase().trim(),
+      String(data.studentName || '').trim(),
+      String(data.slot || '').trim()
+    ].join('|');
+    if (cache.get(rateKey)) {
+      return jsonResponse({ status: 'error',
+        message: '這筆報名剛剛已經送出成功了，請稍候幾分鐘再試，或直接來信確認報名狀態。' });
+    }
 
-    // ---- 必填驗證（前端驗證擋不住直接打 API，後端必須自己驗）----
-    const required = ['name', 'gender', 'age', 'phone', 'email',
-                      'emergency_name', 'emergency_phone',
-                      'payer_name', 'payer_phone', 'payer_email',
-                      'sessions', 'time_slots', 'healthStatus', 'photoConsent'];
+    // ---- 基本驗證 ----
+    const required = ['slot', 'studentName', 'gender', 'age', 'phone', 'email',
+                      'emgName', 'emgPhone', 'payerName', 'payerPhone', 'payerEmail',
+                      'discount', 'lunch', 'healthStatus', 'photoConsent'];
     for (const key of required) {
       if (!data[key] || String(data[key]).trim() === '') {
-        return jsonOut({ success: false, error: '缺少必填欄位：' + key });
+        return jsonResponse({ status: 'error', message: '缺少必填欄位：' + key });
       }
     }
     if (String(data.healthStatus).trim() === '有特殊狀況' &&
-        (!data.healthDetail || String(data.healthDetail).trim() === '' ||
-         String(data.healthDetail).trim() === '—')) {
-      return jsonOut({ success: false, error: '請填寫健康狀況說明' });
+        (!data.healthDetail || String(data.healthDetail).trim() === '')) {
+      return jsonResponse({ status: 'error', message: '請填寫健康狀況說明' });
     }
     if (!data.medicalConsent) {
-      return jsonOut({ success: false, error: '請勾選緊急醫療授權' });
+      return jsonResponse({ status: 'error', message: '請勾選緊急醫療授權' });
     }
     if (!data.guardianConsent) {
-      return jsonOut({ success: false, error: '請勾選法定代理人聲明' });
+      return jsonResponse({ status: 'error', message: '請勾選法定代理人聲明' });
     }
 
-    // ---- 格式驗證 ----
+    // ---- 信箱格式驗證 ----
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
     if (!EMAIL_RE.test(String(data.email).trim())) {
-      return jsonOut({ success: false, error: '信箱格式有誤，請確認後再送出' });
+      return jsonResponse({ status: 'error', message: '信箱格式有誤，請確認後再送出' });
     }
-    if (!EMAIL_RE.test(String(data.payer_email).trim())) {
-      return jsonOut({ success: false, error: '繳款人信箱格式有誤，請確認後再送出' });
+    if (!EMAIL_RE.test(String(data.payerEmail).trim())) {
+      return jsonResponse({ status: 'error', message: '繳款人信箱格式有誤，請確認後再送出' });
     }
+
+    // ---- 時段與優惠資格白名單驗證 ----
+    if (VALID_SLOTS.indexOf(String(data.slot).trim()) < 0) {
+      return jsonResponse({ status: 'error', message: '報名時段資料有誤，請重新選擇後送出' });
+    }
+    if (VALID_DISCOUNTS.indexOf(String(data.discount).trim()) < 0) {
+      return jsonResponse({ status: 'error', message: '優惠資格資料有誤，請重新選擇後送出' });
+    }
+
+    // ---- 電話格式驗證 ----
     const PHONE_RE = /^0\d{1,3}-?\d{6,8}$/;
     if (!PHONE_RE.test(String(data.phone).trim())) {
-      return jsonOut({ success: false, error: '聯絡電話格式有誤，請確認後再送出' });
+      return jsonResponse({ status: 'error', message: '聯絡電話格式有誤，請確認後再送出' });
     }
-    if (!PHONE_RE.test(String(data.emergency_phone).trim())) {
-      return jsonOut({ success: false, error: '緊急聯絡人電話格式有誤，請確認後再送出' });
+    if (!PHONE_RE.test(String(data.emgPhone).trim())) {
+      return jsonResponse({ status: 'error', message: '緊急聯絡人電話格式有誤，請確認後再送出' });
     }
-    if (!PHONE_RE.test(String(data.payer_phone).trim())) {
-      return jsonOut({ success: false, error: '繳款人電話格式有誤，請確認後再送出' });
+    if (!PHONE_RE.test(String(data.payerPhone).trim())) {
+      return jsonResponse({ status: 'error', message: '繳款人電話格式有誤，請確認後再送出' });
+    }
+
+    // ---- 團報驗證：選了團報就要列得出同行成員 ----
+    if (String(data.discount).trim() === '團報（5 人以上）') {
+      const gms = String(data.groupMembers || '')
+        .split('\n').map(function (s) { return s.trim(); })
+        .filter(function (s) { return s; });
+      if (gms.length < 4) {
+        return jsonResponse({ status: 'error',
+          message: '團報需 5 人（含本人）以上，請至少填寫 4 位同行成員姓名。' });
+      }
     }
 
     // ---- 淨化（比對與寫入都用這組值）----
     const clean = {
-      name:      safeCell(data.name, 20),
-      gender:    safeCell(data.gender, 20),
-      age:       safeCell(data.age, 20),
-      grade:     safeCell(data.grade, 20) || '—',
-      phone:     safeCell(data.phone, 15),
-      email:     safeCell(data.email, 254),
-      emgName:   safeCell(data.emergency_name, 20),
-      emgPhone:  safeCell(data.emergency_phone, 15),
-      payName:   safeCell(data.payer_name, 20),
-      payPhone:  safeCell(data.payer_phone, 15),
-      payEmail:  safeCell(data.payer_email, 254),
-      payRel:    safeCell(data.payer_relation, 20) || '—',
-      sessions:  safeCell(data.sessions, 120),
-      slot:      safeCell(data.time_slots, 20),
-      cls:       safeCell(data.class_prefs, 20) || '待評估',
-      discount:  safeCell(data.discount, 40) || '—',
-      group:     safeCell(data.group_members, 200) || '—',
-      notes:     safeCell(data.notes, 200) || '—',
+      slot:          safeCell(data.slot, 40),
+      studentName:   safeCell(data.studentName, 20),
+      gender:        safeCell(data.gender, 20),
+      age:           safeCell(data.age, 20),
+      grade:         safeCell(data.grade, 20) || '—',
+      phone:         safeCell(data.phone, 15),
+      email:         safeCell(data.email, 254),
+      emgName:       safeCell(data.emgName, 20),
+      emgPhone:      safeCell(data.emgPhone, 15),
+      payerName:     safeCell(data.payerName, 20),
+      payerPhone:    safeCell(data.payerPhone, 15),
+      payerEmail:    safeCell(data.payerEmail, 254),
+      payerRelation: safeCell(data.payerRelation, 20) || '—',
+      discount:      safeCell(data.discount, 30),
+      classPref:     safeCell(data.classPref, 20) || '待評估',
+      lunch:         safeCell(data.lunch, 30),
+      groupMembers:  safeCell(data.groupMembers, 200) || '—',
+      notes:         safeCell(data.notes, 200) || '—',
+      photoConsent:  safeCell(data.photoConsent, 10),
       health:        safeCell(data.healthStatus, 20),
       healthDetail:  safeCell(data.healthDetail, 200) || '—',
       medical:       data.medicalConsent ? '同意' : '',
-      guardian:      data.guardianConsent ? '同意' : '',
-      photo:         safeCell(data.photoConsent, 10)
+      guardian:      data.guardianConsent ? '同意' : ''
     };
 
-    // ---- 重複報名檢查（姓名＋信箱＋梯次全同才擋，同信箱不同孩子仍可報名）----
+    const sheet = getSheet_();
     const rows = sheet.getDataRange().getValues();
-    const h = rows[0];
-    const iName = h.indexOf('學員姓名'), iEmail = h.indexOf('Email'), iSess = h.indexOf('報名梯次');
+    const tRead = Date.now();
+
+    // ---- 重複報名檢查（用淨化後的值比對）----
     for (let i = 1; i < rows.length; i++) {
-      if (String(rows[i][iName]).trim() === clean.name &&
-          String(rows[i][iEmail]).trim().toLowerCase() === clean.email.toLowerCase() &&
-          String(rows[i][iSess]).trim() === clean.sessions) {
-        return jsonOut({ success: false, error: '這位學員已用相同信箱報名過同一梯次了。' });
+      if (String(rows[i][COL.EMAIL]).trim() === clean.email &&
+          String(rows[i][COL.STUDENT]).trim() === clean.studentName) {
+        return jsonResponse({ status: 'error', message: '此學員已使用相同信箱報名過' });
       }
     }
 
-    // ---- 寫入（共 28 欄，順序 = 標題順序）----
-    // 第 18、19 欄為已停用的聯電欄位，固定寫「—」以維持既有欄位對齊
-    sheet.appendRow([
-      safeCell(data.time, 30) || Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss'),
-      clean.name, clean.gender, clean.age, clean.grade,
-      clean.phone, clean.email, clean.emgName, clean.emgPhone,
-      clean.payName, clean.payPhone, clean.payEmail, clean.payRel,
-      clean.sessions, clean.slot, clean.cls, clean.discount,
-      '—', '—',
-      clean.group, clean.notes, '待確認', '',
-      clean.health, clean.healthDetail, clean.medical, clean.guardian, clean.photo
-    ]);
-
-    // ── 報名寫入後，自動同步「自動總表」──
-    try { updateSummary(); } catch (sumErr) { Logger.log('自動總表更新失敗：' + sumErr); }
-
-    // ── 寄確認信給報名者（寄信失敗不得讓家長看到「送出失敗」，資料已寫入）──
-    try {
-      sendConfirmEmail(data, clean);
-    } catch (mailErr) {
-      Logger.log('確認信寄送失敗：' + mailErr);
-      try {
-        sheet.getRange(sheet.getLastRow(), 23)
-             .setValue('寄信失敗：' + safeCell(mailErr.message, 150));
-      } catch (ignore) {}
+    // ---- 報名關閉時間檢查 ----
+    if (new Date() > new Date(CONFIG.REG_CLOSE)) {
+      return jsonResponse({ status: 'error',
+        message: '很抱歉，本梯次報名已截止。如有候補需求請直接來信 ' + CONFIG.REPLY_EMAIL });
     }
 
-    return jsonOut({ success: true });
+    // ---- 判斷正取或候補（以時段為單位，全天班佔用上午＋下午）----
+    const counts = countSlots_(rows);
+    const isWaitlist = isWaitlisted_(clean.slot, counts);
+    const status = isWaitlist ? '候補' : '正取';
+    const seq = seqInSlot_(clean.slot, counts);
+
+    // ---- 寫入 Sheet（共 28 欄）----
+    sheet.appendRow([
+      new Date(),
+      CONFIG.SESSION_NAME, clean.slot, clean.studentName, clean.gender, clean.age, clean.grade,
+      clean.phone, clean.email, clean.emgName, clean.emgPhone,
+      clean.payerName, clean.payerPhone, clean.payerEmail, clean.payerRelation,
+      clean.discount, clean.classPref, clean.lunch,
+      status,
+      clean.groupMembers, clean.notes, clean.photoConsent,
+      clean.health, clean.healthDetail, clean.medical, clean.guardian,
+      '', ''   // 繳費通知、系統訊息
+    ]);
+    const tWrite = Date.now();
+
+    // ---- 寫入成功，此時才記錄冷卻 ----
+    cache.put(rateKey, '1', 600);
+
+    // ---- 寄信：失敗不得讓家長看到「送出失敗」 ----
+    try {
+      if (isWaitlist) { sendWaitlistEmail(data); } else { sendConfirmEmail(data); }
+    } catch (mailErr) {
+      sheet.getRange(sheet.getLastRow(), SYSMSG_COL)
+           .setValue('寄信失敗：' + safeCell(mailErr.message, 200));
+    }
+    const tParentMail = Date.now();
+
+    // ---- 通知自己有新報名（失敗不影響報名，也不寫進系統訊息欄）----
+    try {
+      notifyOwner_(data, clean, status, seq, counts);
+    } catch (notifyErr) {
+      Logger.log('新報名通知寄送失敗：' + notifyErr);
+    }
+
+    // 效能量測：在 Apps Script 的「執行記錄」可看到每段耗時，用來判斷慢在哪
+    Logger.log('doPost 耗時 ms｜讀 Sheet ' + (tRead - t0) +
+               '、寫入 ' + (tWrite - tRead) +
+               '、家長信 ' + (tParentMail - tWrite) +
+               '、通知信 ' + (Date.now() - tParentMail) +
+               '、總計 ' + (Date.now() - t0));
+
+    return jsonResponse({ status: 'ok', waitlist: isWaitlist });
   } catch (err) {
-    Logger.log('doPost 失敗：' + err);
-    // 不把內部錯誤訊息原樣回給前端，避免洩漏後端結構
-    return jsonOut({ success: false, error: '系統忙線或發生問題，請稍後再試，或來信 ' + REPLY_EMAIL });
+    // 內部錯誤不原樣回給家長（可能含 Sheet 結構等資訊）；細節記進執行記錄供排查
+    Logger.log('doPost 失敗：' + (err && err.stack ? err.stack : err));
+    return jsonResponse({ status: 'error',
+      message: '系統忙線或發生問題，請稍後再試一次，或直接來信 ' + CONFIG.REPLY_EMAIL + ' 由我們協助報名。' });
   } finally {
     lock.releaseLock();
   }
 }
 
-/** 報名確認信 */
-function sendConfirmEmail(data, clean) {
+/** 報名確認信（正取） */
+function sendConfirmEmail(data) {
+  const subject = `【${CONFIG.CAMP_NAME}】報名確認信`;
   const body =
-    safeText(data.name, 20) + ' 您好，\n\n' +
-    '感謝您報名 2026 年國立清華大學南大校區羽球夏令營！\n' +
-    '我們已收到您的報名資料，以下是您的報名摘要：\n\n' +
-    '▸ 報名梯次：' + safeText(data.sessions, 120) + '\n' +
-    '▸ 時段：' + safeText(data.time_slots, 20) + '\n' +
-    '▸ 班別偏好：' + safeText(data.class_prefs, 20) + '\n' +
-    (String(data.healthStatus).trim() === '有特殊狀況'
-      ? '▸ 健康狀況：' + safeText(data.healthDetail, 200) + '\n' : '') +
-    '\n【接下來的流程】\n' +
-    '接下來將陸續寄送繳費通知，請留意信箱。\n' +
-    '若該梯次名額已滿，將寄出候補通知，請於收到確認信後再完成繳費。\n\n' +
-    '【立即加入學員家長群組】\n' +
-    '加入後可第一時間掌握開班通知與活動資訊：\n' +
-    LINE_GROUP_URL + '\n\n' +
-    '【如有任何問題，歡迎聯繫我們】\n' +
-    '📧 Email：' + REPLY_EMAIL + '\n\n' +
-    '期待與您在球場上見面！\n\n' +
-    'Stay Young 運動團隊 敬上';
-  GmailApp.sendEmail(
-    data.email,
-    '【清大羽球夏令營】報名確認通知 — ' + safeText(data.name, 20),
-    body,
-    { name: 'Stay Young 清大羽球夏令營', replyTo: REPLY_EMAIL }
-  );
-}
+`您好：
 
-function doGet(e) {
-  return jsonOut({ status: 'ok' });
-}
+已收到 ${safeText(data.studentName,20)} 的報名資料，報名登記完成！
 
-function testProgress() {
-  const e = { postData: { contents: JSON.stringify({ action: 'progress' }) } };
-  Logger.log(doPost(e).getContent());
-}
+── 報名資訊 ──
+營隊：${CONFIG.CAMP_NAME}
+日期：${CONFIG.CAMP_DATE}
+地點：${CONFIG.VENUE}
+時段：${safeText(data.slot,40)}
+學員：${safeText(data.studentName,20)}（${safeText(data.gender,20)}，${safeText(data.age,20)} 歲）
+緊急聯絡人：${safeText(data.emgName,20)}（${safeText(data.emgPhone,15)}）
+優惠資格：${safeText(data.discount,30)}
+午餐：${safeText(data.lunch,30)}${String(data.healthStatus).trim() === '有特殊狀況' ? '\n健康狀況：' + safeText(data.healthDetail,200) : ''}${data.notes && data.notes !== '—' ? '\n備註：' + safeText(data.notes,200) : ''}
 
-/*** ============================================================
- * 自動排序總表
- * 讀「報名資料」→ 依梯次展開（報多梯→多列）→ 寫入「自動總表」
- * 手填三欄（繳費狀態/個別Line群/繳費回信）用「姓名+梯次+時段」鍵保留
- * ============================================================ ***/
+── 接下來的流程 ──
+1. 報名人數達開班標準並確認開班後，我們會通知您
+2. 本營隊的繳費單與收款由清華大學校方統一辦理，屆時請依校方通知完成繳費
+3. 開課前會再寄送行前通知信
 
-const SUMMARY_HEADERS = [
-  '報名梯次','學生姓名','年齡','繳款人姓名','繳款人電話','繳款人email','優惠方案','年級',
-  '繳費狀態','個別Line群','繳費回信',
-  '時段','性別','班別','報名時間','健康狀況'
-];
-const MANUAL_START_COL = 9;    // I欄起是手填區（繳費狀態/個別Line群/繳費回信）
-const MANUAL_COLS = 3;
-const BATCH_ORDER = ['第1梯','第2梯','第3梯','第4梯','第5梯','第6梯','第7梯','第8梯'];
-const SLOT_ORDER  = ['上午班','下午班','全天班'];
+開班確認前不會收取任何費用，請安心等候通知。
+若有任何問題，歡迎直接回覆本信。${lineSection()}
 
-function updateSummary() {
-  const ss = SpreadsheetApp.openById(SHEET_ID);
-  const src = ss.getSheetByName(SHEET_NAME);
-  if (!src) return;
-  let dest = ss.getSheetByName(SUMMARY_SHEET);
-  if (!dest) dest = ss.insertSheet(SUMMARY_SHEET);
-
-  // 1. 記住已填的三欄（鍵 = 姓名|梯次|時段）
-  const oldManual = readManual_(dest);
-
-  // 2. 讀原始報名
-  const data = src.getDataRange().getValues();
-  if (data.length < 2) {
-    dest.clear();
-    dest.getRange(1,1,1,SUMMARY_HEADERS.length).setValues([SUMMARY_HEADERS]);
-    return;
-  }
-  const head = data[0];
-  const col = n => head.indexOf(n);
-  const ci = {
-    time: col('報名時間'), name: col('學員姓名'), gender: col('性別'),
-    age: col('年齡'), grade: col('年級'), pay_name: col('繳款人'),
-    pay_phone: col('繳款電話'), pay_email: col('繳款信箱'),
-    batch: col('報名梯次'), slot: col('時段'),
-    cls: col('班別'), discount: col('優惠資格'),
-    health: col('健康狀況'), healthDetail: col('健康說明')
-  };
-
-  // 3. 展開：報多梯→多列
-  const out = [];
-  for (let r = 1; r < data.length; r++) {
-    const row = data[r];
-    const name = row[ci.name];
-    if (!name) continue;
-    const slot = row[ci.slot] || '';
-    const batches = String(row[ci.batch] || '').split(/[、,，]/).map(s => s.trim()).filter(Boolean);
-    // 健康狀況：有特殊狀況時直接把說明帶進總表，教練不必再翻原始分頁
-    let healthCell = '';
-    if (ci.health >= 0) {
-      const hs = String(row[ci.health] || '').trim();
-      const hd = ci.healthDetail >= 0 ? String(row[ci.healthDetail] || '').trim() : '';
-      healthCell = (hs === '有特殊狀況') ? ('⚠️ ' + (hd && hd !== '—' ? hd : '有特殊狀況')) : hs;
-    }
-    batches.forEach(b => {
-      const batchKey = normBatch_(b);
-      const key = name + '|' + batchKey + '|' + slot;
-      const m = oldManual[key] || ['','',''];
-      out.push([
-        batchKey, name, row[ci.age], row[ci.pay_name], row[ci.pay_phone], row[ci.pay_email],
-        row[ci.discount], row[ci.grade],
-        m[0], m[1], m[2],
-        slot, row[ci.gender], row[ci.cls], row[ci.time], healthCell
-      ]);
-    });
-  }
-
-  // 4. 排序：梯次→時段→姓名
-  out.sort((a,b) => {
-    const bi = BATCH_ORDER.indexOf(a[0]) - BATCH_ORDER.indexOf(b[0]);
-    if (bi !== 0) return bi;
-    const si = SLOT_ORDER.indexOf(a[11]) - SLOT_ORDER.indexOf(b[11]);
-    if (si !== 0) return si;
-    return String(a[1]).localeCompare(String(b[1]), 'zh-Hant');
+Stay Young 清華大學羽球冬令營
+${CONFIG.REPLY_EMAIL}`;
+  MailApp.sendEmail({
+    to: data.email,
+    subject: subject,
+    body: body,
+    replyTo: CONFIG.REPLY_EMAIL,
+    name: 'Stay Young 清華大學羽球冬令營'
   });
-
-  // 5. 寫回（只清內容，不動欄寬與格式，保留你手動調整的欄寬）
-  const lastRow = dest.getLastRow();
-  if (lastRow > 0) dest.getRange(1, 1, lastRow, SUMMARY_HEADERS.length).clearContent();
-  dest.getRange(1,1,1,SUMMARY_HEADERS.length).setValues([SUMMARY_HEADERS]);
-  if (out.length) dest.getRange(2,1,out.length,SUMMARY_HEADERS.length).setValues(out);
-
-  // 6. 美化（不含 autoResizeColumns，欄寬交給你手動控制）
-  dest.setFrozenRows(1);
-  dest.getRange(1,1,1,SUMMARY_HEADERS.length).setBackground('#0C447C').setFontColor('#FFFFFF').setFontWeight('bold');
-  dest.getRange(1, MANUAL_START_COL, 1, MANUAL_COLS).setBackground('#EF9F27').setFontColor('#412402');
-  if (out.length) dest.getRange(2, MANUAL_START_COL, out.length, MANUAL_COLS).setBackground('#FFF8EC');
 }
 
-// 讀現有手填三欄 → { "姓名|梯次|時段": [繳費狀態, Line群, 繳費回信] }
-function readManual_(dest) {
-  const map = {};
-  if (!dest || dest.getLastRow() < 2) return map;
-  const vals = dest.getDataRange().getValues();
-  const h = vals[0];
-  const iName = h.indexOf('學生姓名'), iBatch = h.indexOf('報名梯次'), iSlot = h.indexOf('時段');
-  const iM = MANUAL_START_COL - 1;
-  if (iName < 0 || iBatch < 0) return map;
-  for (let r = 1; r < vals.length; r++) {
-    const key = vals[r][iName] + '|' + vals[r][iBatch] + '|' + vals[r][iSlot];
-    const m = [vals[r][iM] || '', vals[r][iM+1] || '', vals[r][iM+2] || ''];
-    if (m.some(x => x !== '')) map[key] = m;
+/** 候補通知信（該時段額滿後） */
+function sendWaitlistEmail(data) {
+  const subject = `【${CONFIG.CAMP_NAME}】候補登記通知`;
+  const body =
+`您好：
+
+感謝您為 ${safeText(data.studentName,20)} 報名 ${CONFIG.CAMP_NAME}（${safeText(data.slot,40)}）。
+
+目前該時段正取名額已滿，您的報名已列入「候補名單」。
+若有名額釋出，我們將立即以 email 通知您，屆時再依信中說明完成報名程序即可。
+候補期間不會收取任何費用。
+
+※ 其他時段可能仍有名額。若您的時間允許調整，歡迎回覆本信告知，
+　 我們可協助改到還有空位的時段。
+
+若有任何問題，歡迎直接回覆本信。
+
+Stay Young 清華大學羽球冬令營
+${CONFIG.REPLY_EMAIL}`;
+  MailApp.sendEmail({
+    to: data.email,
+    subject: subject,
+    body: body,
+    replyTo: CONFIG.REPLY_EMAIL,
+    name: 'Stay Young 清華大學羽球冬令營'
+  });
+}
+
+/**
+ * doGet 保留給之後的後台（?admin）使用。
+ * 進度查詢走 doPost 的 action:'progress'，不放在這裡。
+ */
+function doGet(e) {
+  return jsonResponse({ status: 'ok', message: 'API alive' });
+}
+
+// ══════════════════════════════════════════
+// 繳費通知信
+//
+// ⚠️ 本營隊繳費由清大校方辦理，以下功能實際上不會用到。
+//    程式碼保留是為了與另外兩站一致；防呆讓它永遠不會誤寄。
+// ══════════════════════════════════════════
+
+/** 收款資訊是否還是測試值 */
+function paymentIsPlaceholder() {
+  const p = CONFIG.PAYMENT;
+  return [p.BANK, p.ACCOUNT_NAME, p.ACCOUNT_NO]
+    .some(v => String(v).indexOf('（測試）') === 0);
+}
+
+/**
+ * 依時段、優惠資格、午餐計算應繳金額。
+ * 本營隊沒有早鳥、沒有推薦人，所以只有兩層：原價 → 優惠價。
+ */
+function calcAmount(row) {
+  const slot = String(row[COL.SLOT] || '').trim();
+  const fullDay = slot === SLOT_FULL;
+  const discounted = hasDiscount_(row[COL.DISCOUNT]);
+
+  const listPrice = fullDay ? CONFIG.PRICE.FULL : CONFIG.PRICE.HALF;
+  const base = fullDay
+    ? (discounted ? CONFIG.PRICE.FULL_DISCOUNT : CONFIG.PRICE.FULL)
+    : (discounted ? CONFIG.PRICE.HALF_DISCOUNT : CONFIG.PRICE.HALF);
+
+  const breakdown = [];
+  if (discounted) {
+    breakdown.push('優惠資格（' + String(row[COL.DISCOUNT]).trim() + '）　−NT$ ' + (listPrice - base));
   }
-  return map;
+
+  // 午餐代訂只有全天班適用
+  const meal = (fullDay && String(row[COL.LUNCH] || '').indexOf('代訂') >= 0)
+    ? CONFIG.LUNCH_FEE : 0;
+
+  return { listPrice: listPrice, base: base, meal: meal, total: base + meal,
+           slotLabel: fullDay ? '全天班' : '半天班', breakdown: breakdown,
+           label: discounted ? '優惠價' : '原價' };
 }
 
-// 「第3梯｜7/20－7/24」→「第3梯」
-function normBatch_(s) {
-  const m = String(s).match(/第[0-9一二三四五六七八]+梯/);
-  if (!m) return s;
-  return m[0].replace(/[一二三四五六七八]/, d => ({'一':'1','二':'2','三':'3','四':'4','五':'5','六':'6','七':'7','八':'8'}[d]));
+/** 組繳費通知信內容 */
+function buildPaymentBody(studentName, session, slot, amt) {
+  const p = CONFIG.PAYMENT;
+  const due = new Date();
+  due.setDate(due.getDate() + p.DEADLINE_DAYS);
+  const dueStr = Utilities.formatDate(due, 'Asia/Taipei', 'yyyy/MM/dd');
+  return `您好：
+
+${CONFIG.CAMP_NAME} 已達開班標準，確定開班！
+以下是 ${studentName} 的繳費資訊，敬請於期限內完成轉帳。
+
+── 費用明細 ──
+梯次：${session}
+時段：${slot}（${amt.slotLabel}）
+原價：NT$ ${amt.listPrice}
+${amt.breakdown.length ? amt.breakdown.map(x => '　' + x).join('\n') + '\n' : ''}營隊費用：NT$ ${amt.base}${amt.meal ? '\n代訂午餐：NT$ ' + amt.meal + '（五天）' : ''}
+應繳總額：NT$ ${amt.total}
+
+── 轉帳資訊 ──
+銀行：${p.BANK}
+戶名：${p.ACCOUNT_NAME}
+帳號：${p.ACCOUNT_NO}
+繳費期限：${dueStr}（收到通知後 ${p.DEADLINE_DAYS} 天內）
+
+── 完成轉帳後 ──
+請直接回覆本信，告知「轉帳帳號末五碼」與「轉帳日期」，
+我們核帳後會回覆確認，即完成報名程序。
+
+如需延長繳費期限或有任何問題，請直接回覆本信與我們聯繫。
+
+Stay Young 清華大學羽球冬令營
+${CONFIG.REPLY_EMAIL}`;
 }
 
-/*** ============================================================
- * 每日自動備份
- *
- * 安裝方式（擇一）：
- *   A.【建議】函式下拉選單選 installDailyBackupTrigger 按執行，一次裝好。
- *   B. 手動：左側「觸發條件」→ 新增 → dailyBackup／時間驅動／日計時器／23:00–00:00
- * ============================================================ ***/
+/** 預覽：只寄一封範例信給自己，不讀 Sheet、不動任何資料 */
+function previewPaymentNotice() {
+  const amt = { listPrice: CONFIG.PRICE.FULL, base: CONFIG.PRICE.FULL_DISCOUNT,
+                meal: CONFIG.LUNCH_FEE, total: CONFIG.PRICE.FULL_DISCOUNT + CONFIG.LUNCH_FEE,
+                slotLabel: '全天班', breakdown: ['優惠資格（清大教職員工）　−NT$ 600'],
+                label: '優惠價' };
+  const body = buildPaymentBody('王小華（範例）', CONFIG.SESSION_NAME, SLOT_FULL, amt);
+  MailApp.sendEmail({
+    to: CONFIG.REPLY_EMAIL,
+    subject: `【預覽】${CONFIG.CAMP_NAME} 繳費通知信`,
+    body: (paymentIsPlaceholder()
+            ? '⚠️ 本營隊繳費由清大校方辦理，收款防呆生效中，正式寄送會被擋下。\n\n───────────\n\n'
+            : '⚠️ 收款防呆已被解除，正式寄送不會被擋 —— 本營隊不該自行收款，請確認。\n\n───────────\n\n') + body,
+    replyTo: CONFIG.REPLY_EMAIL,
+    name: 'Stay Young 清華大學羽球冬令營'
+  });
+  return '預覽信已寄至 ' + CONFIG.REPLY_EMAIL;
+}
 
+/** 正式寄送：挑出「正取」且尚未寄過繳費通知的人，寄信並回填時間 */
+function sendPaymentNotice() {
+  if (paymentIsPlaceholder()) {
+    throw new Error('本營隊的繳費單由清華大學校方寄送與收款，本系統不寄繳費通知，已中止。' +
+                    '若確實要改為自行收款，請先把 CONFIG.PAYMENT 換成真實資料。');
+  }
+  const sheet = getSheet_();
+  const rows = sheet.getDataRange().getValues();
+  let sent = 0, skipped = 0;
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (String(r[COL.STATUS]).trim() !== '正取') { skipped++; continue; }
+    if (String(r[NOTICE_COL - 1] || '').trim() !== '') { skipped++; continue; }
+    const payerEmail = String(r[COL.PAYER_EMAIL] || '').trim();
+    if (!payerEmail) { skipped++; continue; }
+    const amt = calcAmount(r);
+    const body = buildPaymentBody(r[COL.STUDENT], r[COL.SESSION], r[COL.SLOT], amt);
+    const opts = {
+      to: payerEmail,
+      subject: `【${CONFIG.CAMP_NAME}】確定開班・繳費通知`,
+      body: body,
+      replyTo: CONFIG.REPLY_EMAIL,
+      name: 'Stay Young 清華大學羽球冬令營'
+    };
+    const notifyEmail = String(r[COL.EMAIL] || '').trim();
+    if (notifyEmail && notifyEmail !== payerEmail) opts.bcc = notifyEmail;
+    MailApp.sendEmail(opts);
+    sheet.getRange(i + 1, NOTICE_COL)
+         .setValue(Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm'));
+    sent++;
+  }
+  return '已寄送 ' + sent + ' 封，略過 ' + skipped + ' 筆。';
+}
+
+// ══════════════════════════════════════════
+// 每日自動備份
+//
+// 安裝方式（擇一）：
+//   A. 【建議】在上方函式下拉選單選 installDailyBackupTrigger 按執行，一次就裝好。
+//   B. 手動：左側「觸發條件」→ 新增 → dailyBackup／時間驅動／日計時器／23:00–00:00
+// ══════════════════════════════════════════
+
+/**
+ * 一鍵安裝每日備份觸發條件（每天 23:00–00:00 之間跑一次 dailyBackup）。
+ * 會先刪掉既有的 dailyBackup 觸發條件，重複執行不會裝出兩個。
+ */
 function installDailyBackupTrigger() {
   var removed = 0;
   ScriptApp.getProjectTriggers().forEach(function (t) {
@@ -403,13 +726,13 @@ function listTriggers() {
 }
 
 function dailyBackup() {
-  // 資料夾與兩個冬令營站分開，否則各自的 slice(14) 會互刪對方的備份
-  const FOLDER_NAME = 'StayYoung 報名備份_夏令營';
+  // 資料夾必須與另外兩站分開，否則各站的 slice(14) 會互刪對方的備份，保留天數被砍
+  const FOLDER_NAME = 'StayYoung 報名備份_清大羽球';
   const it = DriveApp.getFoldersByName(FOLDER_NAME);
   const folder = it.hasNext() ? it.next() : DriveApp.createFolder(FOLDER_NAME);
-  const src = DriveApp.getFileById(SHEET_ID);
+  const src = DriveApp.getFileById(CONFIG.SHEET_ID);
   const stamp = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyyMMdd');
-  const copy = src.makeCopy('【備份】羽球夏令營報名_' + stamp, folder);
+  const copy = src.makeCopy('【備份】清大羽球冬令營報名_' + stamp, folder);
   const files = folder.getFiles();
   const list = [];
   while (files.hasNext()) list.push(files.next());
@@ -418,11 +741,43 @@ function dailyBackup() {
   return copy.getId();
 }
 
-// 手動更新選單
-function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu('🏸 營隊工具')
-    .addItem('更新自動總表', 'updateSummary')
-    .addItem('立即備份一次', 'dailyBackup')
-    .addToUi();
+// ══════════════════════════════════════════
+// 取消開班通知（未達開班門檻時手動執行）
+//
+// 用法：sendCancelNotice('上午班（09:00–12:00）')
+//       只通知該時段的報名者；不傳參數會擋下來，避免誤發給全部人。
+// ══════════════════════════════════════════
+function sendCancelNotice(slotName) {
+  if (!slotName) {
+    throw new Error('請傳入時段名稱，例如 sendCancelNotice("' + SLOT_AM + '")');
+  }
+  if (VALID_SLOTS.indexOf(String(slotName).trim()) < 0) {
+    throw new Error('時段名稱不在白名單內。可用值：' + VALID_SLOTS.join('、'));
+  }
+  const sheet = getSheet_();
+  const rows = sheet.getDataRange().getValues();
+  let sent = 0;
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][COL.SLOT]).trim() !== String(slotName).trim()) continue;
+    if (String(rows[i][COL.STATUS]).trim() === '已取消通知') continue;
+    MailApp.sendEmail({
+      to: rows[i][COL.EMAIL],
+      subject: '【' + CONFIG.CAMP_NAME + '】' + slotName + ' 未達開班人數通知',
+      body:
+'您好：\n\n' +
+'感謝您為 ' + rows[i][COL.STUDENT] + ' 報名 ' + CONFIG.CAMP_NAME + '（' + slotName + '）。\n\n' +
+'很遺憾，本時段報名人數未達開班標準（' + CONFIG.MIN_OPEN + ' 人），經評估後將不予開班，' +
+'在此向您致上最深的歉意。\n\n' +
+'由於本營隊採「確認開班後才收費」的方式，您並未被收取任何費用，無需辦理退費手續。\n\n' +
+'若其他時段仍有名額，歡迎回覆本信告知，我們可協助您改到有開班的時段。\n' +
+'若後續有加開梯次或其他營隊資訊，我們也會第一時間通知您。\n' +
+'造成您的不便，我們深感抱歉。\n\n' +
+'Stay Young 運動團隊\n' + CONFIG.REPLY_EMAIL,
+      replyTo: CONFIG.REPLY_EMAIL,
+      name: 'Stay Young 運動團隊'
+    });
+    sheet.getRange(i + 1, COL.STATUS + 1).setValue('已取消通知');
+    sent++;
+  }
+  return sent + ' 封已寄出';
 }

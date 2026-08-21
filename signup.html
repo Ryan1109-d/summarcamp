@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>報名表單｜清華大學羽球冬令營 2027</title>
+<meta name="robots" content="noindex">
+<!-- Google tag (gtag.js) -->
+<!-- 內部流量開關：在任一頁網址後加 ?ga_off=1 造訪一次，這台瀏覽器在「四個子網域」都不再送出 GA 資料。要恢復：改加 ?ga_on=1
+     旗標存成根網域 cookie（localStorage 不跨子網域，只作為輔助） -->
+<script>
+(function(){
+  var KEY = 'sy_ga_off';
+  var DOMAIN = '.stayyounglab.com';
+
+  function setFlag(on){
+    try{ on ? localStorage.setItem(KEY,'1') : localStorage.removeItem(KEY); }catch(e){}
+    document.cookie = KEY + '=' + (on ? '1' : '') +
+      '; domain=' + DOMAIN + '; path=/; max-age=' + (on ? 63072000 : 0) + '; SameSite=Lax';
+  }
+  function hasFlag(){
+    if (new RegExp('(^|;\\s*)' + KEY + '=1').test(document.cookie)) return true;
+    try{ return localStorage.getItem(KEY) === '1'; }catch(e){ return false; }
+  }
+
+  var q = window.location.search;
+  if (q.indexOf('ga_off=1') > -1) setFlag(true);
+  if (q.indexOf('ga_on=1')  > -1) setFlag(false);
+  if (hasFlag()) return;   // 內部裝置，不載入 GA
+
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XP3DQR7BCT';
+  document.head.appendChild(s);
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', 'G-XP3DQR7BCT');
+})();
+</script>
+<style>
+:root{
+  --bg:#ffffff;
+  --bg-alt:#f3f6fa;
+  --card:#fbfcfe;
+  --card-light:#f1f5fa;
+  --border:#d8e1ec;
+  --border-soft:#e5ebf3;
+  --text:#1c2733;
+  --text-2:#1e2c3d;
+  --text-body:#566578;
+  --text-muted:#5e6f83;
+  --text-faint:#96a4b3;
+  --accent:#1c5b9e;
+  --accent-deep:#0d2f5c;
+  --gold:#c9a227;
+  --gold-deep:#8a6a12;
+  --red:#b0483a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text)}
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:.5px solid var(--border);padding:0 1.75rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;white-space:nowrap}
+.nav-left{display:flex;align-items:center;gap:10px;min-width:0}
+.nav-home{display:flex;align-items:center;gap:7px;text-decoration:none;flex-shrink:0;transition:opacity .15s}
+.nav-home:hover{opacity:.65}
+.sy-mark{height:34px;width:auto;display:block;flex-shrink:0}
+.sy-text{font-size:14px;font-weight:700;color:var(--text-2);letter-spacing:.03em;white-space:nowrap}
+.nav-div{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.nav-year{font-size:12px;color:var(--text-muted)}
+.reg-wrap{padding:2.75rem 1.75rem 4rem;min-height:calc(100vh - 56px - 80px);background:linear-gradient(160deg,#071f3f 0%,#0d2f5c 55%,#1c5b9e 100%)}
+.reg-box{max-width:600px;margin:0 auto;background:#fff;border-radius:16px;padding:2rem 1.9rem;box-shadow:0 16px 48px rgba(4,16,34,.34)}
+.breadcrumb{font-size:12px;color:var(--text-faint);margin-bottom:1.3rem}
+.breadcrumb a{color:var(--accent);text-decoration:none}
+.reg-title{font-size:23px;font-weight:600;margin-bottom:.4rem}
+.reg-sub{font-size:13px;color:var(--text-body);line-height:1.75;margin-bottom:1.6rem}
+.flow-strip{display:flex;border:.5px solid var(--border);background:var(--card);border-radius:10px;overflow:hidden;margin-bottom:1.8rem}
+.flow-step{flex:1;padding:.9rem .4rem;text-align:center;border-right:.5px solid var(--border-soft)}
+.flow-step:last-child{border-right:none}
+.flow-num{width:22px;height:22px;border-radius:50%;background:rgba(28,91,158,.09);border:.5px solid rgba(28,91,158,.3);color:var(--accent);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;margin:0 auto 5px}
+.flow-txt{font-size:11px;color:#4a5b6c;line-height:1.5}
+.form-g{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+/* ===== 分段卡片：把表單依主題切成一格一格，家長比較好讀 ===== */
+.form-card{grid-column:1/-1;background:var(--card);border:.5px solid var(--border);border-radius:12px;padding:1.1rem 1.15rem 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.form-card>.fc-title{grid-column:1/-1;font-size:12.5px;font-weight:700;color:var(--accent);letter-spacing:.05em;padding-bottom:.65rem;border-bottom:.5px solid var(--border-soft);margin-bottom:.15rem;display:flex;align-items:center;gap:7px}
+.form-card>.fc-title .fc-num{width:19px;height:19px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+@media(max-width:560px){.form-card{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:12px;color:var(--text-body)}
+.fg label .req{color:var(--red)}
+.fg input,.fg select{background:var(--card-light);border:.5px solid #c3d0dd;border-radius:6px;padding:10px 12px;font-size:14px;color:var(--text-2);width:100%;font-family:inherit}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--accent)}
+.fg input.err,.fg select.err{border-color:var(--red)}
+/* 時段選擇卡 */
+.slot-pick{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.slot-opt{position:relative;border:.5px solid #c3d0dd;background:var(--card-light);border-radius:8px;padding:.85rem .7rem;cursor:pointer;transition:border-color .15s,background .15s}
+.slot-opt:hover{border-color:var(--accent)}
+.slot-opt input{position:absolute;opacity:0;pointer-events:none}
+.slot-opt.sel{border-color:var(--accent);background:rgba(28,91,158,.06);box-shadow:0 0 0 1px var(--accent) inset}
+.slot-name{font-size:14px;font-weight:600;color:var(--text-2)}
+.slot-time{font-size:11px;color:var(--text-muted);margin:2px 0 6px}
+.slot-price{font-size:13px;font-weight:700;color:var(--accent)}
+.slot-orig{font-size:11px;color:var(--gold-deep);font-weight:600;margin-top:1px}
+.group-box{grid-column:1/-1;background:rgba(28,91,158,.05);border:.5px solid rgba(28,91,158,.3);border-radius:8px;padding:1rem}
+.gb-title{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px}
+.gb-hint{font-size:12px;color:#4a5b6c;line-height:1.7;margin-bottom:10px}
+.gb-hint strong{color:var(--accent)}
+.gb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gb-input{background:var(--card-light);border:.5px solid #c3d0dd;border-radius:6px;padding:9px 12px;font-size:13px;color:var(--text-2);width:100%}
+.gb-input:focus{outline:none;border-color:var(--accent)}
+.same-check{grid-column:1/-1;display:flex;flex-direction:row;align-items:center;gap:8px;padding:.2rem 0}
+.same-check input{width:16px;height:16px;accent-color:var(--accent);margin:0;flex:none}
+.same-check label{font-size:13px;color:var(--text-2);cursor:pointer;margin:0}
+.lunch-box{grid-column:1/-1;background:var(--card);border:.5px solid var(--border);border-radius:8px;padding:1rem}
+.lt{font-size:12px;color:var(--text-body);margin-bottom:10px}
+.lopt{display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:9px}
+.lopt:last-child{margin-bottom:0}
+.lopt input{margin-top:2px;accent-color:var(--accent);flex-shrink:0}
+.lol{font-size:13px;color:var(--text-2)}
+.los{font-size:11px;color:var(--text-muted);margin-top:1px}
+.meal-type{margin:2px 0 8px 24px;display:flex;align-items:center;gap:14px;background:var(--card-light);border:.5px solid var(--border-soft);border-radius:6px;padding:8px 12px}
+.mt-label{font-size:12px;color:var(--text-body)}
+.mt-opt{font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:5px;cursor:pointer}
+.mt-opt input{accent-color:var(--accent);margin:0}
+.notice-box{grid-column:1/-1;background:rgba(201,162,39,.08);border:.5px solid rgba(201,162,39,.35);border-radius:8px;padding:.95rem 1rem}
+.notice-title{font-size:12px;font-weight:600;color:var(--gold-deep);margin-bottom:4px}
+.notice-text{font-size:12px;color:#4a5b6c;line-height:1.7}
+.hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.pc-row{display:flex;flex-direction:row;align-items:center;gap:22px;flex-wrap:wrap;margin-top:4px}
+.pc-opt{display:inline-flex;flex-direction:row;align-items:center;gap:6px;font-size:13px;color:var(--text-2);cursor:pointer;white-space:nowrap;margin:0}
+.pc-opt input{width:15px;height:15px;accent-color:var(--accent);margin:0;flex:none}
+.fnote{font-size:11px;color:var(--text-muted);line-height:1.65;grid-column:1/-1}
+.fnote a{color:var(--accent)}
+.fsub{grid-column:1/-1;background:linear-gradient(135deg,var(--accent-deep),var(--accent));color:#fff;border:none;border-radius:7px;padding:13px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+.fsub:hover{filter:brightness(1.1)}
+.fsub:disabled{opacity:.55;cursor:not-allowed}
+.msg{grid-column:1/-1;border-radius:8px;padding:.9rem 1rem;font-size:13px;line-height:1.7;display:none}
+.msg.ok{display:block;background:rgba(28,91,158,.07);border:.5px solid rgba(28,91,158,.35);color:var(--accent)}
+.msg.fail{display:block;background:rgba(176,72,58,.07);border:.5px solid rgba(176,72,58,.35);color:var(--red)}
+footer{background:var(--accent-deep);padding:1.9rem 1.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.fl{font-size:14px;font-weight:600;color:#eef4fb}
+.fs{font-size:11px;color:#93a9c2;margin-top:3px;letter-spacing:.08em}
+.fi2{font-size:12px;color:#93a9c2;text-align:right;line-height:1.9}
+@media (max-width:640px){
+  .nav{padding:0 1rem}
+  .sy-text{display:none}
+  .nav-logo{font-size:13px}
+  .nav-year{display:none}
+  .form-g{grid-template-columns:1fr}
+  .slot-pick{grid-template-columns:1fr}
+  .flow-txt{font-size:10px}
+  footer{flex-direction:column;text-align:center}
+  .fi2{text-align:center}
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-home" href="https://stayyounglab.com/" title="回到 Stay Young 首頁">
+      <img class="sy-mark" src="images/logo-mark.png" alt="Stay Young">
+      <span class="sy-text">Stay Young</span>
+    </a>
+    <span class="nav-div"></span>
+    <a class="nav-logo" href="index.html">清華大學羽球冬令營</a>
+  </div>
+  <div class="nav-year">2027 寒假</div>
+</nav>
+<div class="reg-wrap">
+  <div class="reg-box">
+    <div class="breadcrumb"><a href="index.html">← 返回首頁</a></div>
+    <h1 class="reg-title">報名表單</h1>
+    <p class="reg-sub">填妥以下資料並送出，即完成報名登記。</p>
+    <div class="flow-strip">
+      <div class="flow-step"><div class="flow-num">1</div><div class="flow-txt">送出報名<br>收到確認信</div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div class="flow-txt">確認開班<br>通知繳費</div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div class="flow-txt">依校方通知<br>完成繳費</div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div class="flow-txt">收到行前信<br>準備開課</div></div>
+    </div>
+    <form class="form-g" id="signupForm" novalidate>
+      <div class="hp-field" aria-hidden="true">
+        <label for="contact_pref_2">網站</label>
+        <input type="text" id="contact_pref_2" name="contact_pref_2" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-card">
+        <div class="fc-title"><span class="fc-num">1</span>報名梯次與時段</div>
+      <div class="fg full">
+        <label for="session">報名梯次 <span class="req">*</span></label>
+        <select id="session" name="session" required>
+          <option value="2027冬令營 1/25–1/29">2027 冬令營｜1/25（一）– 1/29（五）</option>
+        </select>
+      </div>
+      <div class="fg full">
+        <label>報名時段 <span class="req">*</span>　<span style="color:var(--text-faint);font-weight:400">價格為 一般報名價 / 優惠價</span></label>
+      </div>
+      <div class="slot-pick" id="slotPick">
+        <label class="slot-opt" data-slot="morning">
+          <input type="radio" name="slot" value="上午班（09:00–12:00）">
+          <div class="slot-name">上午班</div>
+          <div class="slot-time">09:00–12:00 半天</div>
+          <div class="slot-price">$4,000</div>
+          <div class="slot-orig">優惠價 $3,500</div>
+        </label>
+        <label class="slot-opt" data-slot="fullday">
+          <input type="radio" name="slot" value="全天班（09:00–17:00）">
+          <div class="slot-name">全天班</div>
+          <div class="slot-time">09:00–17:00 含午休</div>
+          <div class="slot-price">$7,600</div>
+          <div class="slot-orig">優惠價 $7,000</div>
+        </label>
+        <label class="slot-opt" data-slot="afternoon">
+          <input type="radio" name="slot" value="下午班（14:00–17:00）">
+          <div class="slot-name">下午班</div>
+          <div class="slot-time">14:00–17:00 半天</div>
+          <div class="slot-price">$4,000</div>
+          <div class="slot-orig">優惠價 $3,500</div>
+        </label>
+      </div>
+      </div>
+
+      <div class="form-card">
+        <div class="fc-title"><span class="fc-num">2</span>學員資料</div>
+      <div class="fg">
+        <label for="studentName">學員姓名 <span class="req">*</span></label>
+        <input type="text" id="studentName" name="studentName" placeholder="王小華" required>
+      </div>
+      <div class="fg">
+        <label for="gender">學員性別 <span class="req">*</span></label>
+        <select id="gender" name="gender" required>
+          <option value="">請選擇</option>
+          <option value="男">男</option>
+          <option value="女">女</option>
+          <option value="不便透露">不便透露</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label for="age">學員年齡 <span class="req">*</span></label>
+        <input type="number" id="age" name="age" min="1" max="120" placeholder="10" required>
+      </div>
+      <div class="fg">
+        <label for="grade">就讀年級（選填）</label>
+        <input type="text" id="grade" name="grade" placeholder="例：國小四年級">
+      </div>
+      <div class="fg full">
+        <label for="classPref">班別偏好（選填）　<span style="color:var(--text-faint);font-weight:400">教練將依實際程度最終決定</span></label>
+        <select id="classPref" name="classPref">
+          <option value="">尚未決定，交由教練評估</option>
+          <option value="探索班">探索班　零基礎 / 初學</option>
+          <option value="進階班">進階班　已有基礎</option>
+          <option value="菁英班">菁英班　有競賽經驗</option>
+        </select>
+      </div>
+      </div>
+
+      <div class="form-card">
+        <div class="fc-title"><span class="fc-num">3</span>聯絡資訊</div>
+      <div class="fg full">
+        <label for="email">信箱 <span class="req">*</span>　<span style="color:var(--text-faint);font-weight:400">報名確認信與後續通知寄送至此</span></label>
+        <input type="email" id="email" name="email" placeholder="email@example.com" required>
+      </div>
+      <div class="fg full">
+        <label for="phone">聯絡電話 <span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" placeholder="0912345678 或 03-5733120" required>
+      </div>
+      <div class="fg">
+        <label for="emgName">緊急聯絡人 <span class="req">*</span></label>
+        <input type="text" id="emgName" name="emgName" placeholder="王小明" required>
+      </div>
+      <div class="fg">
+        <label for="emgPhone">緊急聯絡人電話 <span class="req">*</span></label>
+        <input type="tel" id="emgPhone" name="emgPhone" placeholder="0912345678" required>
+      </div>
+      </div>
+
+      <div class="form-card">
+        <div class="fc-title"><span class="fc-num">4</span>繳款人資料</div>
+      <div class="same-check">
+        <input type="checkbox" id="sameAsEmg">
+        <label for="sameAsEmg">繳款人同緊急聯絡人</label>
+      </div>
+      <div class="fg">
+        <label for="payerName">繳款人姓名 <span class="req">*</span></label>
+        <input type="text" id="payerName" name="payerName" placeholder="王小明" required>
+      </div>
+      <div class="fg">
+        <label for="payerPhone">繳款人電話 <span class="req">*</span></label>
+        <input type="tel" id="payerPhone" name="payerPhone" placeholder="0912345678" required>
+      </div>
+      <div class="fg">
+        <label for="payerEmail">繳款人信箱 <span class="req">*</span></label>
+        <input type="email" id="payerEmail" name="payerEmail" placeholder="email@example.com" required>
+      </div>
+      <div class="fg">
+        <label for="payerRelation">與學員關係（選填）</label>
+        <select id="payerRelation" name="payerRelation">
+          <option value="">請選擇</option>
+          <option value="本人">本人</option>
+          <option value="父母">父母</option>
+          <option value="監護人">監護人</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      </div>
+
+      <div class="form-card">
+        <div class="fc-title"><span class="fc-num">5</span>優惠與餐食</div>
+      <div class="fg full">
+        <label for="discount">優惠資格 <span class="req">*</span></label>
+        <select id="discount" name="discount" required>
+          <option value="一般報名">一般報名（不適用優惠）</option>
+          <option value="團報（5 人以上）">五人以上團體報名</option>
+          <option value="清大在校學生">清大在校學生</option>
+          <option value="清大教職員工">清大教職員工</option>
+          <option value="特約企業員工（聯電）">特約企業員工 — 聯華電子（聯電）</option>
+          <option value="特約企業員工（台積電）">特約企業員工 — 台積電</option>
+          <option value="特約企業員工（工研院）">特約企業員工 — 工研院</option>
+        </select>
+        <span style="font-size:11px;color:var(--text-muted);margin-top:3px">以上優惠資格擇一適用，彼此不可疊加。特約企業員工含為子女報名，主辦方將進行身份核驗後確認資格。</span>
+      </div>
+      <div class="group-box" id="groupBox" style="display:none">
+        <div class="gb-title">團報學員名單</div>
+        <div class="gb-hint">請填寫同行其他學員姓名。<strong>提醒：每位學員皆需各自填寫一份報名表。</strong></div>
+        <div class="gb-grid">
+          <label class="vh" for="gm1">團報學員 1 姓名</label><input type="text" class="gb-input" id="gm1" placeholder="學員 1 姓名">
+          <label class="vh" for="gm2">團報學員 2 姓名</label><input type="text" class="gb-input" id="gm2" placeholder="學員 2 姓名">
+          <label class="vh" for="gm3">團報學員 3 姓名</label><input type="text" class="gb-input" id="gm3" placeholder="學員 3 姓名">
+          <label class="vh" for="gm4">團報學員 4 姓名</label><input type="text" class="gb-input" id="gm4" placeholder="學員 4 姓名">
+          <label class="vh" for="gm5">團報學員 5 姓名</label><input type="text" class="gb-input" id="gm5" placeholder="學員 5 姓名">
+        </div>
+      </div>
+      <div class="lunch-box" id="lunchBox" style="display:none">
+        <div class="lt">午餐安排（全天班）<span class="req" style="color:var(--red)">*</span></div>
+        <label class="lopt">
+          <input type="radio" name="lunch" value="代訂午餐">
+          <div>
+            <div class="lol">代訂營隊午餐　+$500／人</div>
+            <div class="los">五天共 $500（葷素可選），將併入繳費金額一併計算</div>
+          </div>
+        </label>
+        <div class="meal-type" id="mealType" style="display:none">
+          <span class="mt-label">餐食選擇：</span>
+          <label class="mt-opt"><input type="radio" name="mealType" value="葷">葷食</label>
+          <label class="mt-opt"><input type="radio" name="mealType" value="素">素食</label>
+        </div>
+        <label class="lopt">
+          <input type="radio" name="lunch" value="自帶餐食" checked>
+          <div>
+            <div class="lol">自帶餐食</div>
+            <div class="los">請自行準備或安排外出用餐，可自備環保餐具</div>
+          </div>
+        </label>
+      </div>
+      </div>
+
+      <div class="form-card">
+        <div class="fc-title"><span class="fc-num">6</span>健康與安全</div>
+      <div class="fg full">
+        <label>學員健康狀況 <span class="req">*</span>　<span style="color:var(--text-faint);font-weight:400">為了學員安全，請務必據實填寫</span></label>
+        <div class="pc-row">
+          <label class="pc-opt"><input type="radio" name="healthStatus" value="無特殊狀況">無特殊狀況</label>
+          <label class="pc-opt"><input type="radio" name="healthStatus" value="有特殊狀況">有，請說明</label>
+        </div>
+      </div>
+      <div class="fg full" id="healthDetailWrap" style="display:none">
+        <label for="healthDetail">健康狀況說明 <span class="req">*</span></label>
+        <input type="text" id="healthDetail" name="healthDetail" placeholder="例如：花生過敏、氣喘、蠶豆症、需定時服藥、注意力不足等">
+      </div>
+      <div class="fg full">
+        <label for="notes">其他想告訴我們的</label>
+        <input type="text" id="notes" name="notes" placeholder="其他希望教練留意的事項（選填）">
+      </div>
+      </div>
+
+      <div class="form-card">
+        <div class="fc-title"><span class="fc-num">7</span>同意與確認</div>
+      <div class="fg full">
+        <label>照片使用同意 <span class="req">*</span></label>
+        <div class="pc-row">
+          <label class="pc-opt"><input type="radio" name="photoConsent" value="同意" required>同意分享至家長群組</label>
+          <label class="pc-opt"><input type="radio" name="photoConsent" value="不同意">不同意</label>
+        </div>
+      </div>
+      <div class="fg full">
+        <label class="same-check" style="display:flex;align-items:center;gap:8px;cursor:pointer;margin:0">
+          <input type="checkbox" id="medicalConsent" name="medicalConsent" required>
+          <span>學員於活動中發生緊急傷病時，同意營隊人員先行採取必要之急救或送醫措施，並同時聯繫緊急聯絡人 <span class="req">*</span></span>
+        </label>
+      </div>
+      <div class="fg full">
+        <label class="same-check" style="display:flex;align-items:center;gap:8px;cursor:pointer;margin:0">
+          <input type="checkbox" id="guardianConsent" name="guardianConsent" required>
+          <span>本人為學員之法定代理人、已取得法定代理人同意，或學員已成年得自行報名 <span class="req">*</span></span>
+        </label>
+      </div>
+      <div class="fg full" style="background:var(--card-light);border:.5px solid var(--border-soft);border-radius:8px;padding:.9rem 1rem;font-size:12px;line-height:1.75;color:#4a5b6c;gap:0">
+        <strong style="color:var(--text-2);font-weight:600">個人資料使用說明</strong>
+        <span style="margin-top:4px">本表單蒐集之個人資料，僅用於本營隊報名、聯繫、保險投保及活動安全管理，活動結束後六個月內刪除，不作其他用途。</span>
+      </div>
+      </div>
+
+      <div class="notice-box">
+        <div class="notice-title">報名後流程說明</div>
+        <div class="notice-text">送出報名後，您會先收到「報名確認信」。待報名人數達開班標準並確認開班後，我們才會通知您。<strong>本營隊的繳費單與收款由清華大學校方統一辦理</strong>，屆時請依校方通知完成繳費。開班確認前不會收取任何費用。</div>
+      </div>
+      <p class="fnote">報名截止：2027/1/10（日）。該時段額滿後自動進入候補名單，有名額釋出時以 email 通知。退費規則詳見<a href="index.html#pricing">首頁收費方案區</a>。</p>
+      <div class="msg" id="formMsg" role="status" aria-live="polite"></div>
+      <button type="submit" class="fsub" id="submitBtn">送出報名 →</button>
+    </form>
+  </div>
+</div>
+<footer>
+  <div>
+    <div class="fl">Stay Young</div>
+    <div class="fs">清華大學羽球冬令營 2027</div>
+  </div>
+  <div class="fi2">
+    聯繫我們：stayyoung985@gmail.com
+  </div>
+</footer>
+<script>
+// ====== 後端設定 ======
+// TODO: 部署清大羽球專屬 Google Apps Script 後，把 Web App URL 貼到這裡。
+//       ⚠️ index.html 的 GAS_URL 也要換成同一個值（招生狀況要靠它讀人數）。
+const GAS_URL = 'YOUR_GAS_WEB_APP_URL_HERE';
+
+const form = document.getElementById('signupForm');
+// 無障礙：必填欄位補 aria-required（表單為 novalidate，required 僅作語意標記）
+document.querySelectorAll('#signupForm [required]').forEach(el => el.setAttribute('aria-required', 'true'));
+const btn = document.getElementById('submitBtn');
+const msgBox = document.getElementById('formMsg');
+
+// 時段選擇：視覺選中 + 全天才顯示午餐
+const slotOpts = document.querySelectorAll('.slot-opt');
+slotOpts.forEach(opt => {
+  opt.addEventListener('click', () => {
+    slotOpts.forEach(o => o.classList.remove('sel'));
+    opt.classList.add('sel');
+    opt.querySelector('input').checked = true;
+    const isFull = opt.dataset.slot === 'fullday';
+    document.getElementById('lunchBox').style.display = isFull ? 'block' : 'none';
+    if (!isFull) {
+      // 半天：清掉午餐選擇
+      document.querySelectorAll('input[name="lunch"]').forEach(r => r.checked = (r.value === '自帶餐食'));
+      document.getElementById('mealType').style.display = 'none';
+    }
+  });
+});
+
+// 繳款人同緊急聯絡人
+const sameAsEmg = document.getElementById('sameAsEmg');
+const payerFields = ['payerName','payerPhone','payerEmail'];
+function syncPayer() {
+  document.getElementById('payerName').value = document.getElementById('emgName').value;
+  document.getElementById('payerPhone').value = document.getElementById('emgPhone').value;
+  document.getElementById('payerEmail').value = document.getElementById('email').value;
+}
+sameAsEmg.addEventListener('change', () => {
+  if (sameAsEmg.checked) {
+    syncPayer();
+    payerFields.forEach(id => document.getElementById(id).readOnly = true);
+  } else {
+    payerFields.forEach(id => {
+      const el = document.getElementById(id);
+      el.readOnly = false;
+      el.value = '';
+    });
+  }
+});
+['emgName','emgPhone','email'].forEach(src => {
+  document.getElementById(src).addEventListener('input', () => {
+    if (sameAsEmg.checked) syncPayer();
+  });
+});
+
+// 午餐葷素聯動
+document.querySelectorAll('input[name="lunch"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('mealType').style.display =
+      document.querySelector('input[name="lunch"]:checked').value === '代訂午餐' ? 'flex' : 'none';
+  });
+});
+// 健康狀況說明展開聯動
+document.querySelectorAll('input[name="healthStatus"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('healthDetailWrap').style.display =
+      document.querySelector('input[name="healthStatus"]:checked').value === '有特殊狀況' ? 'flex' : 'none';
+  });
+});
+// 團報名單顯示聯動
+document.getElementById('discount').addEventListener('change', (e) => {
+  document.getElementById('groupBox').style.display = e.target.value === '團報（5 人以上）' ? 'block' : 'none';
+});
+
+// 電話格式：與 gas-backend.js 的 PHONE_RE 一致，手機與市話都收
+// （前端若比後端嚴格，合法的市話會在這裡就被擋掉）
+const isPhone = v => /^0\d{1,3}-?\d{6,8}$/.test(v.replace(/\s/g,''));
+const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  msgBox.className = 'msg';
+  let valid = true;
+  const requiredText = ['studentName','age','email','phone','emgName','emgPhone','payerName','payerPhone','payerEmail'];
+  const requiredSelect = ['session','gender','discount'];
+  [...requiredText, ...requiredSelect].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('err');
+    if (!el.value || !String(el.value).trim()) { el.classList.add('err'); valid = false; }
+  });
+  // 年齡不做範圍驗證：本營隊不限年齡
+  [['phone', isPhone], ['emgPhone', isPhone], ['payerPhone', isPhone],
+   ['email', isEmail], ['payerEmail', isEmail]].forEach(([id, fn]) => {
+    const el = document.getElementById(id);
+    if (el.value.trim() && !fn(el.value)) { el.classList.add('err'); valid = false; }
+  });
+
+  const slotChecked = document.querySelector('input[name="slot"]:checked');
+  if (!slotChecked) {
+    msgBox.textContent = '請選擇報名時段（上午／下午／全天）。';
+    msgBox.classList.add('fail');
+    return;
+  }
+  // 健康狀況必選
+  const hs = document.querySelector('input[name="healthStatus"]:checked');
+  if (!hs) {
+    msgBox.textContent = '請選擇學員健康狀況。';
+    msgBox.classList.add('fail');
+    return;
+  }
+  if (hs.value === '有特殊狀況' && !document.getElementById('healthDetail').value.trim()) {
+    document.getElementById('healthDetail').classList.add('err');
+    msgBox.textContent = '請填寫健康狀況說明。';
+    msgBox.classList.add('fail');
+    return;
+  }
+  // 照片同意必選
+  if (!document.querySelector('input[name="photoConsent"]:checked')) {
+    msgBox.textContent = '請選擇是否同意照片使用。';
+    msgBox.classList.add('fail');
+    return;
+  }
+  // 緊急醫療授權必勾
+  if (!document.getElementById('medicalConsent').checked) {
+    msgBox.textContent = '請勾選緊急醫療授權。';
+    msgBox.classList.add('fail');
+    return;
+  }
+  // 法定代理人聲明必勾
+  if (!document.getElementById('guardianConsent').checked) {
+    msgBox.textContent = '請勾選法定代理人聲明。';
+    msgBox.classList.add('fail');
+    return;
+  }
+  // 全天班且代訂午餐 → 必選葷素
+  const isFull = slotChecked.value.indexOf('全天班') === 0;
+  if (isFull) {
+    const lunchPick = document.querySelector('input[name="lunch"]:checked');
+    if (lunchPick && lunchPick.value === '代訂午餐' &&
+        !document.querySelector('input[name="mealType"]:checked')) {
+      msgBox.textContent = '請選擇餐食（葷食／素食）。';
+      msgBox.classList.add('fail');
+      return;
+    }
+  }
+  // 團報驗證
+  if (document.getElementById('discount').value === '團報（5 人以上）') {
+    const gms = ['gm1','gm2','gm3','gm4','gm5'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
+    if (gms.length < 4) {
+      msgBox.textContent = '團報資格需 5 人（含本人）以上，請至少填寫 4 位其他學員姓名。';
+      msgBox.classList.add('fail');
+      return;
+    }
+  }
+  if (!valid) {
+    msgBox.textContent = '請確認紅框欄位：必填未填，或電話 / 信箱格式有誤。';
+    msgBox.classList.add('fail');
+    return;
+  }
+
+  const data = {
+    session: document.getElementById('session').value,
+    slot: slotChecked.value,
+    studentName: document.getElementById('studentName').value.trim(),
+    gender: document.getElementById('gender').value,
+    age: document.getElementById('age').value,
+    grade: document.getElementById('grade').value.trim(),
+    classPref: document.getElementById('classPref').value,
+    phone: document.getElementById('phone').value.replace(/\s/g,''),
+    email: document.getElementById('email').value.trim(),
+    emgName: document.getElementById('emgName').value.trim(),
+    emgPhone: document.getElementById('emgPhone').value.replace(/\s/g,''),
+    payerName: document.getElementById('payerName').value.trim(),
+    payerPhone: document.getElementById('payerPhone').value.replace(/\s/g,''),
+    payerEmail: document.getElementById('payerEmail').value.trim(),
+    payerRelation: document.getElementById('payerRelation').value,
+    discount: document.getElementById('discount').value,
+    lunch: (() => {
+      if (!isFull) return '不適用（半天）';
+      const l = document.querySelector('input[name="lunch"]:checked').value;
+      if (l !== '代訂午餐') return l;
+      const m = document.querySelector('input[name="mealType"]:checked');
+      return '代訂午餐（' + (m ? m.value : '') + '）';
+    })(),
+    notes: document.getElementById('notes').value.trim() || '—',
+    photoConsent: document.querySelector('input[name="photoConsent"]:checked').value,
+    healthStatus: hs.value,
+    healthDetail: document.getElementById('healthDetail').value.trim() || '—',
+    medicalConsent: document.getElementById('medicalConsent').checked,
+    guardianConsent: document.getElementById('guardianConsent').checked,
+    contact_pref_2: document.getElementById('contact_pref_2').value,
+    groupMembers: ['gm1','gm2','gm3','gm4','gm5'].map(id => document.getElementById(id).value.trim()).filter(Boolean).join('\n') || '—',
+    submittedAt: new Date().toISOString()
+  };
+
+  // ---- 送出前確認：先給家長看一次系統試算的費用與填寫內容 ----
+  if (!previewConfirmed) { showPreview(data); return; }
+  previewConfirmed = false;
+
+  btn.disabled = true;
+  btn.textContent = '送出中…（約需 5–10 秒，請勿關閉視窗）';
+  try {
+    if (GAS_URL.indexOf('YOUR_') === 0) {
+      throw new Error('GAS_URL 尚未設定');
+    }
+    const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(data) });
+    const result = await res.json();
+    if (result.status === 'ok') {
+      const msg = result.waitlist
+        ? '報名成功！\n\n目前該時段名額已滿，您已列入候補名單，有名額釋出時將以 email 通知。\n確認信已寄至您的信箱，請留意收件匣（含垃圾郵件夾）。'
+        : '報名成功！\n\n確認信已寄至您的信箱，請留意收件匣（含垃圾郵件夾）。';
+      alert(msg);
+      window.location.href = 'index.html';
+      return;
+    } else {
+      alert('送出失敗：' + (result.message || '請稍後再試，或直接來信 stayyoung985@gmail.com 報名。'));
+      return;
+    }
+  } catch (err) {
+    alert('送出失敗，請稍後再試，或直接來信 stayyoung985@gmail.com 報名。');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '送出報名 →';
+  }
+});
+
+/* ===== 送出前的費用試算與確認 =====
+   前端試算只是給家長看的預估，計算規則必須與 gas-backend.js 的 calcAmount 一致。
+   本營隊沒有早鳥、沒有推薦人，只有「原價 → 優惠價」兩層。 */
+let previewConfirmed = false;
+
+function estimateFee(d) {
+  const full = d.slot === '全天班（09:00–17:00）';
+  const discounted = d.discount !== '一般報名';
+  const list = full ? 7600 : 4000;
+  const base = full ? (discounted ? 7000 : 7600) : (discounted ? 3500 : 4000);
+  const lines = [];
+  if (discounted) lines.push(['優惠資格（' + d.discount + '）', -(list - base)]);
+  const meal = (full && d.lunch.indexOf('代訂') >= 0) ? 500 : 0;
+  return { list: list, base: base, meal: meal, total: base + meal, lines: lines };
+}
+
+function showPreview(d) {
+  const f = estimateFee(d);
+  const money = n => 'NT$ ' + n.toLocaleString();
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const row = (label, value) =>
+    '<div style="display:flex;gap:.8rem;padding:.5rem 0;border-bottom:.5px solid var(--border-soft);font-size:13px">' +
+    '<div style="min-width:96px;color:var(--text-muted);flex-shrink:0">' + label + '</div>' +
+    '<div style="color:var(--text-2);font-weight:500;word-break:break-all">' + (value || '—') + '</div></div>';
+
+  const feeLines = f.lines.map(l =>
+    '<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--text-muted);padding:1px 0">' +
+    '<span>' + esc(l[0]) + '</span><span>−' + Math.abs(l[1]).toLocaleString() + '</span></div>').join('');
+
+  const m = document.createElement('div');
+  m.id = 'previewModal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(4,16,34,.74);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+  m.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:1.6rem 1.5rem;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 16px 48px rgba(4,16,34,.4)">' +
+      '<div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:.3rem">請確認報名資訊</div>' +
+      '<p style="font-size:12.5px;color:var(--text-muted);line-height:1.7;margin-bottom:1.1rem">確認後才會正式送出，請先核對一次。</p>' +
+
+      '<div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin:.9rem 0 .2rem">學員</div>' +
+      row('姓名', esc(d.studentName)) + row('性別', esc(d.gender)) + row('年齡', esc(d.age) + ' 歲') +
+      (d.grade ? row('年級', esc(d.grade)) : '') +
+      row('班別偏好', d.classPref ? esc(d.classPref) : '交由教練評估') +
+
+      '<div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin:.9rem 0 .2rem">聯絡</div>' +
+      row('收信信箱', esc(d.email)) + row('聯絡電話', esc(d.phone)) +
+      row('緊急聯絡人', esc(d.emgName)) + row('緊急電話', esc(d.emgPhone)) +
+      row('繳款人', esc(d.payerName)) + row('繳款人電話', esc(d.payerPhone)) + row('繳款人信箱', esc(d.payerEmail)) +
+
+      '<div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin:.9rem 0 .2rem">報名選擇</div>' +
+      row('梯次', esc(d.session)) + row('時段', esc(d.slot)) + row('優惠資格', esc(d.discount)) +
+      row('午餐', esc(d.lunch)) +
+      (d.groupMembers && d.groupMembers !== '—' ? row('團報成員', esc(d.groupMembers).replace(/\n/g, '、')) : '') +
+      row('健康狀況', esc(d.healthStatus) + (d.healthDetail && d.healthDetail !== '—' ? '：' + esc(d.healthDetail) : '')) +
+      row('照片使用', esc(d.photoConsent)) +
+      (d.notes && d.notes !== '—' ? row('備註', esc(d.notes)) : '') +
+
+      '<div style="margin-top:1.1rem;background:rgba(201,162,39,.09);border:.5px solid rgba(201,162,39,.35);border-radius:10px;padding:.9rem 1rem">' +
+        '<div style="font-size:11.5px;color:var(--text-muted);margin-bottom:.35rem">系統試算費用</div>' +
+        '<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--text-muted);padding:1px 0"><span>一般報名價</span><span>' + f.list.toLocaleString() + '</span></div>' +
+        feeLines +
+        (f.meal ? '<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--text-muted);padding:1px 0"><span>代訂午餐（五天）</span><span>+500</span></div>' : '') +
+        '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:.5rem;padding-top:.5rem;border-top:.5px solid rgba(201,162,39,.3)">' +
+          '<span style="font-size:12.5px;color:var(--text-2);font-weight:600">應繳總額</span>' +
+          '<span style="font-size:21px;font-weight:800;color:var(--accent-deep)">' + money(f.total) + '</span></div>' +
+        '<div style="font-size:11.5px;color:var(--text-muted);margin-top:.5rem;line-height:1.65">這是系統依您填寫的內容自動試算的結果，<b>實際金額以校方繳費通知為準</b>。本營隊繳費單由清華大學校方寄送與收款。確定開班前不會收取任何費用。</div>' +
+      '</div>' +
+
+      '<div style="display:flex;gap:.7rem;margin-top:1.3rem">' +
+        '<button type="button" id="pvBack" style="flex:1;background:transparent;border:.5px solid var(--border);color:var(--text-body);border-radius:8px;padding:.8rem;cursor:pointer;font-family:inherit;font-size:13.5px">返回修改</button>' +
+        '<button type="button" id="pvGo" style="flex:2;background:var(--accent);border:none;color:#fff;border-radius:8px;padding:.8rem;cursor:pointer;font-weight:700;font-family:inherit;font-size:14px">確認送出 →</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(m);
+  document.body.style.overflow = 'hidden';
+  const close = () => { m.remove(); document.body.style.overflow = ''; };
+  document.getElementById('pvBack').onclick = close;
+  document.getElementById('pvGo').onclick = () => {
+    close();
+    previewConfirmed = true;
+    form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit', { cancelable: true }));
+  };
+}
+</script>
+</body>
+</html>
