@@ -661,6 +661,23 @@ document.querySelectorAll('.faq-q').forEach((btn, i) => {
 // ⚠️ GAS_URL 必須與 signup.html 內的值相同。部署 Apps Script 後兩邊一起換。
 const GAS_URL = 'YOUR_GAS_WEB_APP_URL_HERE';
 const CAPACITY = 50, MIN_OPEN = 15;
+const BACKEND_READY = GAS_URL.indexOf('YOUR_') !== 0;
+
+// 後端還沒接上時，把「立即報名」改成「報名即將開放」，並把招生狀況換成籌備中。
+// 家長點進報名頁會看到來信登記的說明，不會填完整份表才發現送不出去。
+// 填入真實 GAS_URL 之後這段自動失效。
+if (!BACKEND_READY) {
+  document.querySelectorAll('a[href="signup.html"]').forEach(a => {
+    a.textContent = a.classList.contains('nav-register') ? '報名即將開放' : '報名即將開放 →';
+  });
+  ['Am','Pm','Full'].forEach(k => {
+    const st = document.getElementById('state' + k);
+    if (st) { st.textContent = '報名即將開放'; st.style.color = 'var(--amber-light)'; }
+  });
+  const note = document.getElementById('statusNote') || document.querySelector('#status .status-note');
+  if (note) note.innerHTML = '報名系統正在最後設定中。開放後這裡會即時顯示各時段的開班進度；' +
+    '想先登記名額請來信 <b style="color:var(--amber-light);font-weight:500">stayyoung985@gmail.com</b>。';
+}
 
 function renderStatus(d) {
   // 全天班同時佔用上午與下午，所以它的擁擠度取兩邊較滿的那一側

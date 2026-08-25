@@ -453,6 +453,25 @@ const GAS_URL = 'YOUR_GAS_WEB_APP_URL_HERE';
 const form = document.getElementById('signupForm');
 const btn = document.getElementById('submitBtn');
 const msgBox = document.getElementById('formMsg');
+
+// ── 後端尚未部署時的保護 ──
+// GAS_URL 還是佔位字串就代表 Apps Script 還沒接上，這時候讓家長把整份表填完
+// 再看到「送出失敗」是最糟的體驗。直接收起表單，改成告知即將開放並留下信箱。
+// 填入真實 URL 之後這段自動失效，不需要改其他地方。
+const BACKEND_READY = GAS_URL.indexOf('YOUR_') !== 0;
+if (!BACKEND_READY) {
+  form.style.display = 'none';
+  const notice = document.createElement('div');
+  notice.className = 'notice-box';
+  notice.style.marginBottom = '0';
+  notice.innerHTML =
+    '<strong>🛠 線上報名即將開放</strong><br>' +
+    '報名系統正在最後設定中，尚未開放線上填表。<br>' +
+    '如果您想先確保名額，或有任何問題，歡迎直接來信，我們會以人工方式為您登記：<br>' +
+    '<strong>stayyoung985@gmail.com</strong><br>' +
+    '來信請附上：學員姓名、年齡、想報名的時段（上午／下午／全天）、聯絡電話。';
+  form.parentNode.insertBefore(notice, form);
+}
 // 無障礙：必填欄位補 aria-required（表單為 novalidate，required 僅作語意標記）
 document.querySelectorAll('#signupForm [required]').forEach(el => el.setAttribute('aria-required', 'true'));
 
