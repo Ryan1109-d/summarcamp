@@ -1,84 +1,198 @@
-# 清華大學羽球夏令營 2026 — 報名網站
+# 清華大學羽球冬令營 2027
 
-https://nthu-badminton.stayyounglab.com
+https://nthu-badminton.stayyounglab.com ｜ 隸屬 [Stay Young](https://stayyounglab.com)（[主站 repo](https://github.com/Ryan1109-d/stay-young-home)）
 
-主辦單位為**清華大學羽球校隊**。本站刻意維持**獨立品牌**，與 Stay Young 冬令營系列分開，只在左上角放一枚 Stay Young 標誌連回 [stayyounglab.com](https://stayyounglab.com)。
+與另外兩個冬令營站（[football-camp](https://github.com/Ryan1109-d/football-camp) 清大足球、[badminton-camp](https://github.com/Ryan1109-d/badminton-camp) 台大羽球）為**完全獨立**的專案：獨立 repo、獨立 Apps Script、獨立 Google Sheet。
 
-與另外兩個冬令營站（[football-camp](https://github.com/Ryan1109-d/football-camp)、[badminton-camp](https://github.com/Ryan1109-d/badminton-camp)）為完全獨立的專案：獨立 repo、獨立 Apps Script、獨立 Google Sheet。
+> repo 名稱 `summarcamp` 是 2026 夏令營時期留下的，網站內容已於 2026-08 改為 2027 冬令營。
+> 名稱維持不動，避免動到 GitHub Pages 的自訂網域設定。
 
-## 檔案結構
+---
 
-| 檔案 | 用途 |
+## 這個站是什麼
+
+| | |
 |---|---|
-| `index.html` | 單頁站（介紹／梯次／報名表單），`GAS_URL` 在這個檔案裡 |
-| `gas-backend.js` | Apps Script 後端原始碼（納入版控供稽核用，實際執行的是 Apps Script 上那份） |
-| `images/` | Logo |
-| `robots.txt`、`sitemap.xml` | SEO（本站**沒有** `noindex`，已對外公開） |
-| `CNAME` | GitHub Pages 自訂網域，**請勿刪除** |
+| 營期 | 2027/1/25（一）– 1/29（五），單梯 |
+| 地點 | 清華大學南大校區　學生活動中心 1F |
+| 時段 | 上午班 09:00–12:00／下午班 14:00–17:00／全天班 09:00–17:00 |
+| 對象 | 不限年齡 |
+| 主辦 | 清華大學羽球校隊（指導：清華大學體育組） |
+| 報名截止 | 2027/1/10 |
 
-## 營隊事實
+### 收費（沿用 2026 夏令營定價）
 
-| 項目 | 內容 |
+| | 上午班 | 下午班 | 全天班 |
+|---|---|---|---|
+| 一般報名 | 4,000 | 4,000 | 7,600 |
+| 優惠價 | 3,500 | 3,500 | 7,000 |
+
+優惠資格擇一適用、不可疊加：五人以上團報／清大在校學生／清大教職員工／特約合作企業員工（聯電、台積電、工研院）。
+全天班可代訂午餐，五天共 500。
+
+> **本營隊沒有早鳥、沒有推薦人優惠、沒有紀念衫**——這三項是另外兩個冬令營站才有的。
+> 改動定價或優惠邏輯時，不要直接從 badminton-camp 複製，那邊的 `CONFIG` 帶早鳥與推薦人。
+
+---
+
+## 檔案
+
+```
+index.html        首頁（含招生狀況即時看板）
+signup.html       報名表單（noindex，不進搜尋結果）
+gas-backend.js    Google Apps Script 後端的參考副本
+images/           logo 與場地照
+CNAME             nthu-badminton.stayyounglab.com　⚠️ 不能刪
+robots.txt / sitemap.xml
+```
+
+純靜態 HTML/CSS/JS，沒有 build step。GitHub Pages 從 `main` 分支根目錄部署。
+
+---
+
+## 名額與候補：與另外兩站不同，改動前請詳讀
+
+名額以**時段**為單位計算，每個時段上限 50 人（`CONFIG.CAPACITY`），滿 15 人（`CONFIG.MIN_OPEN`）確定開班。
+
+**全天班同時佔用上午與下午兩個時段的名額**，所以：
+
+```
+上午佔用 = 上午班人數 + 全天班人數
+下午佔用 = 下午班人數 + 全天班人數
+```
+
+判定方式：
+
+| 報名時段 | 正取條件 |
 |---|---|
-| 期間 | 7/06–8/28，共**八梯次**，每梯週一至週五 09:00–17:00 |
-| 班別 | 初階／進階／菁英 |
-| 師資 | 甲組選手與持證教練 |
-| 主辦 | 清華大學羽球校隊 |
-| 聯絡 | stayyoung985@gmail.com |
+| 上午班 | 上午佔用 < 50 |
+| 下午班 | 下午佔用 < 50 |
+| 全天班 | 上午佔用 < 50 **且** 下午佔用 < 50 |
 
-## 後端部署（Google Apps Script）
+舉例：全天班 20 人、上午班 30 人、下午班 5 人 → 上午佔用 50（滿）、下午佔用 25。
+此時再報上午班或全天班都是候補，只有下午班還能正取。
 
-1. Google Sheet 需有兩個分頁：`報名資料`（原始報名）與 `自動總表`（程式自動產生，不存在會自動建立）
-2. `報名資料` 第一列填**這 28 欄**。程式**按位置**寫入，順序不能動：
+台大羽球站（badminton-camp）已於 2026-08-21 同步改成這套邏輯。足球站只有整天班一個時段，兩種算法結果相同，未改動。
 
-   ```
-    1 報名時間      2 學員姓名     3 性別        4 年齡         5 年級
-    6 電話          7 收信信箱     8 緊急聯絡人   9 緊急聯絡人電話
-   10 繳款人姓名   11 繳款人電話  12 繳款人信箱  13 與學員關係
-   14 報名梯次     15 時段        16 班別        17 優惠身份
-   18 （停用）     19 （停用）
-   20 團報成員     21 備註        22 繳費狀態    23 系統訊息
-   24 健康狀況     25 健康說明    26 緊急醫療授權 27 法定代理人聲明  28 照片同意
-   ```
+---
 
-   > 欄位名稱以現有 Sheet 為準（程式只有 `報名梯次`、`時段` 兩欄是靠名稱查找，其餘按位置）。
-   >
-   > ⚠️ **第 18、19 欄是已停用的聯電員工編號／姓名，不可刪除。** 前端早已移除這兩個欄位、新報名固定寫「—」，但歷史報名資料還在那兩欄裡，刪掉會遺失既有紀錄，也會讓後面所有欄位錯位。
+## 後端（Google Apps Script）
 
-3. 擴充功能 → Apps Script → 貼上 `gas-backend.js`
-4. 填 `SHEET_ID`（repo 內是 `YOUR_SHEET_ID_HERE` 佔位字串，真值只填在 Apps Script）
-5. 部署為網頁應用程式（執行身分：我；存取權：所有人），複製 Web App URL 填進 `index.html` 的 `GAS_URL`
-6. 函式下拉選 `installDailyBackupTrigger` → 執行，裝每日 23:00–00:00 備份
+`gas-backend.js` 是**參考副本**，改它不會影響線上行為。要生效必須：
 
-> ⚠️ **重貼原始碼前先複製 Apps Script 上現有的 `SHEET_ID`。** repo 這份是佔位字串，直接覆蓋會讓後端寫不進 Sheet。
+1. 貼進 Apps Script 編輯器
+2. 儲存
+3. **部署 → 管理部署作業 → 編輯 → 版本選「新版本」→ 部署**
 
-## 主要函式
+只按儲存無效。
+
+### 主要函式
 
 | 函式 | 作用 |
 |---|---|
-| `doPost` | 接收報名，寫入 `報名資料`、同步 `自動總表`、寄確認信 |
-| `sendConfirmEmail` | 報名確認信 |
-| `updateSummary` | 重建 `自動總表`。含「健康狀況」欄，有特殊狀況會帶出說明並加 ⚠️ 前綴 |
-| `readManual_` | 保留總表上手填的三欄（繳費狀態／個別 Line 群／繳費回信），鍵為「姓名\|梯次\|時段」 |
-| `normBatch_` | 梯次字串正規化 |
-| `onOpen` | Sheet 開啟時掛上自訂選單 |
-| `testEmail` / `testProgress` | 授權與進度測試 |
-| `installDailyBackupTrigger` / `listTriggers` / `dailyBackup` | 每日備份（只留最近 14 份） |
+| `checkSetup()` | 檢查 SHEET_ID、分頁、標題列逐欄比對、各時段佔用數。不寫資料不寄信，隨時可跑 |
+| `doPost` | 接收報名 → 寫 Sheet → 判定正取／候補 → 寄家長信 → 寄自己通知信。另處理 `action:'progress'` 的招生狀況查詢（唯讀，不含個資） |
+| `notifyOwner_` | 新報名通知寄 stayyoung985，主旨帶【清大羽球】 |
+| `calcAmount` | 兩層計價：原價 → 優惠價，另計午餐 |
+| `sendCancelNotice(時段)` | 未達開班門檻時，通知該時段的報名者 |
+| `installDailyBackupTrigger()` / `dailyBackup()` | 每日備份到 Drive，保留 14 份 |
 
-`updateSummary` 只清內容、不動欄寬與格式，手動調過的欄寬會保留。
+### 繳費：刻意不寄
 
-## 安全機制
+**本營隊的繳費單由清華大學校方寄送與收款，本系統不參與。**
 
-`safeCell`（Sheet 公式注入防護，`=` 開頭前置單引號）｜`safeText`（信件標頭注入防護）｜`LockService` 併發鎖｜必填／email／電話格式／重複報名驗證｜寄信失敗只寫進第 23 欄，不讓家長看到「送出失敗」（資料其實已寫入）｜錯誤訊息不原樣回傳前端
+`CONFIG.PAYMENT.ACCOUNT_NAME` 固定為
+`'（測試）清大羽球營繳費由學校辦理，本系統不寄繳費通知'`，
+讓 `paymentIsPlaceholder()` 永遠成立、`sendPaymentNotice()` 永遠中止。
 
-**已移除的端點**：舊版有 `action === 'updateStatus'`，任何人知道 Web App 網址就能改任意一列的狀態與備註，零驗證，且前端早已無人呼叫。已刪除，要改狀態請直接開 Sheet。
+**不要「好心」把它換成真實戶名**——那會解除防呆，誤觸就把個人帳戶寄給家長。
+`checkSetup()` 回報「收款防呆生效中」是正確結果。
 
-## 待處理
+（清大足球站是同樣的設計，理由相同。）
 
-- `index.html` 內有**公開的 LINE 家長群組邀請連結**（`LINE_GROUP_URL`）。移除連結之外，還要到 LINE 後台關閉「允許使用邀請網址加入」，否則舊連結仍然有效。
-- git 歷史仍含舊管理密碼與 Web3Forms 金鑰，需確認已在對應後台作廢。
-- 電話格式驗證為 `/^0\d{1,3}-?\d{6,8}$/`。舊版完全沒驗證，家長可能填過 `0912 345 678`（含空格）或 `+886` 開頭，這類格式現在會被擋下。
+---
 
-## 部署
+## 個資保護
 
-GitHub Pages（`main` / root）。push 後約 1–3 分鐘生效，用 curl 輪詢驗證。修改前先 `git pull`。
+報名資料含姓名、電話、信箱、緊急聯絡人，以及**健康狀況**——後者屬於敏感個資，外洩的代價比一般欄位高。以下是目前的防護與你該定期做的事。
+
+### 對外只有一個入口
+
+| 端點 | 開放對象 | 回傳什麼 |
+|---|---|---|
+| `doPost`（報名） | 所有人（必要，否則收不到報名） | 只回成功／失敗與是否候補 |
+| `doPost` + `action:'progress'` | 所有人 | **只有各時段人數**，不含任何個資 |
+| `doGet` | 所有人 | 固定字串 `API alive` |
+
+**後端沒有任何「讀取報名資料」的對外端點。** 拿到 Web App 網址的人只能送報名，不能撈資料。日後要加後台，務必走 Google 帳號授權，不要做成「知道網址就能看」。
+
+### 防濫用
+
+| 機制 | 擋什麼 |
+|---|---|
+| honeypot 欄位 | 自動填表機器人 |
+| 全域流量上限（`MAX_SUBMITS_PER_MINUTE`，預設 12） | 有人寫腳本狂送，把 Sheet 灌爆 |
+| 重複送出冷卻（10 分鐘） | 同一人重複點送出 |
+| 白名單驗證（時段、優惠資格） | 竄改前端後送出不合法的值 |
+| `safeCell()` | Google Sheets 公式注入（`=IMPORTXML(...)` 偷資料） |
+| `safeText()` | 信件標頭注入 |
+| `LockService` | 兩人同時送出造成漏算 |
+
+### 要定期執行的函式
+
+| 函式 | 什麼時候跑 | 會不會動到資料 |
+|---|---|---|
+| `checkPrivacy()` | **每隔一陣子跑一次**，尤其在把 Sheet 分享給別人之後 | 唯讀，安全 |
+| `lockDownSharing()` | `checkPrivacy()` 報紅的時候 | 會改共用設定 |
+| `purgeOldData()` | 到期後 | 試算模式，不刪 |
+| `purgeOldData(true)` | 確認試算結果後 | **會真的刪，不可逆** |
+
+`checkPrivacy()` 檢查三件事：報名 Sheet 有沒有被設成「知道連結的人可以看」、每日備份的副本有沒有跟著外流、除了你以外還有誰有存取權。
+
+**備份副本是最容易漏掉的破口**——它會繼承來源 Sheet 的共用設定。來源只要曾經開放過一次，之後每天的備份都會跟著開放。`dailyBackup()` 現在每次都明確把副本壓成私有，不倚賴繼承。
+
+### 保留期限
+
+報名表上寫「活動結束後六個月內刪除」。這個承諾由 `CONFIG.DATA_PURGE_AFTER` 記錄（`2027-07-29`，營期結束 + 6 個月），`purgeOldData()` 拿它當基準，未到期不會執行。
+
+到期後請執行 `purgeOldData()` 看試算，確認筆數無誤再執行 `purgeOldData(true)`。刪除後 Drive 垃圾桶內仍留有副本，確定不需要請一併清空。
+
+### 前端
+
+兩頁都有 Content-Security-Policy，限制可載入與可連線的來源——萬一頁面被塞進第三方腳本，它也連不出去，報名資料帶不走。**換字型、換圖床、換 GAS 網址時要同步更新 CSP**，否則資源會被瀏覽器擋掉。
+
+`frame-ancestors` 只能透過 HTTP 標頭設定，GitHub Pages 設不了，因此未納入。
+
+---
+
+## 部署前的必要步驟
+
+前端的 `GAS_URL` 目前是佔位字串 `YOUR_GAS_WEB_APP_URL_HERE`，**index.html 與 signup.html 兩處都要換成同一個值**：
+
+- signup.html：沒換就送不出報名（會直接跳送出失敗）
+- index.html：沒換就不會去讀招生狀況，三個時段維持顯示「熱烈招生中」
+
+`CONFIG.LINE_GROUP_URL` 維持佔位字串時，確認信會自動略過整段 LINE 說明，不會寄出壞掉的連結。
+
+真實的 SHEET_ID 與 LINE 群連結放在 repo 外的 `STAY_YOUNG_SHEET_IDS.txt`，不進 git。
+
+---
+
+## Sheet 欄位（28 欄）
+
+分頁名稱 `報名名單`。順序即 `appendRow` 的寫入順序，`checkSetup()` 會逐欄比對：
+
+```
+報名時間 | 梯次 | 時段 | 學員姓名 | 性別 | 年齡 | 年級 | 聯絡電話 | 收信信箱 |
+緊急聯絡人 | 緊急聯絡人電話 | 繳款人姓名 | 繳款人電話 | 繳款人信箱 | 與學員關係 |
+優惠資格 | 班別偏好 | 午餐 | 狀態 | 團報成員 | 備註 | 照片同意 |
+健康狀況 | 健康說明 | 緊急醫療授權 | 法定代理人聲明 | 繳費通知 | 系統訊息
+```
+
+---
+
+## 改前端時的注意事項
+
+`signup.html` 的時段與優惠資格 option value，必須與 `gas-backend.js` 的 `VALID_SLOTS`、`VALID_DISCOUNTS` **逐字一致**，否則合法報名會被後端白名單擋掉。改一邊就要改另一邊。
+
+同理，`signup.html` 的 `estimateFee()` 是給家長看的試算，規則必須與後端 `calcAmount()` 一致。

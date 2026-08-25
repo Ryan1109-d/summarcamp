@@ -3,6 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 內容安全政策：限制這個頁面能載入 / 連線到哪些來源。
+     萬一頁面上被塞進第三方腳本，它也連不出去，報名個資帶不走。
+     ⚠️ 改動外部資源（換字型、換圖床、換 GAS 網址）時要同步更新這裡，
+        否則資源會被瀏覽器擋掉。frame-ancestors 只能靠 HTTP 標頭，
+        GitHub Pages 設不了，故未列入。 -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://www.googletagmanager.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data: https://res.cloudinary.com https://www.googletagmanager.com https://*.google-analytics.com;
+  connect-src 'self' https://script.google.com https://script.googleusercontent.com https://*.googleusercontent.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com;
+  form-action 'none';
+  base-uri 'self';
+  object-src 'none';
+">
 <!-- Google tag (gtag.js) -->
 <!-- 內部流量開關：在任一頁網址後加 ?ga_off=1 造訪一次，這台瀏覽器在「四個子網域」都不再送出 GA 資料。要恢復：改加 ?ga_on=1
      旗標存成根網域 cookie（localStorage 不跨子網域，只作為輔助） -->
@@ -37,33 +53,31 @@
   window.gtag('config', 'G-XP3DQR7BCT');
 })();
 </script>
-<title>清華大學羽球夏令營 2026</title>
-<meta name="description" content="國立清華大學羽球夏令營 2026，清華大學羽球校隊主辦。7/06–8/28 共八梯次，每梯週一至週五 09:00–17:00，由甲組選手與持證教練指導，第一次拿球拍也適合。">
+<title>清華大學羽球冬令營 2027</title>
+<meta name="description" content="國立清華大學羽球冬令營 2027，清華大學羽球校隊主辦。1/25–1/29 共五天，上午／下午／全天三時段，由甲組選手與持證教練指導，不限年齡，第一次拿球拍也適合。">
 <link rel="canonical" href="https://nthu-badminton.stayyounglab.com/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="清華大學羽球夏令營">
+<meta property="og:site_name" content="清華大學羽球冬令營">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:url" content="https://nthu-badminton.stayyounglab.com/">
-<meta property="og:title" content="清華大學羽球夏令營 2026">
-<meta property="og:description" content="國立清華大學羽球夏令營 2026，清華大學羽球校隊主辦。7/06–8/28 共八梯次，每梯週一至週五 09:00–17:00，由甲組選手與持證教練指導，第一次拿球拍也適合。">
-<!-- TODO: 補 og:image，需要 1200×630 的圖放進 images/ -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="清華大學羽球夏令營 2026">
-<meta name="twitter:description" content="國立清華大學羽球夏令營 2026，清華大學羽球校隊主辦。7/06–8/28 共八梯次，每梯週一至週五 09:00–17:00，由甲組選手與持證教練指導，第一次拿球拍也適合。">
+<meta property="og:title" content="清華大學羽球冬令營 2027">
+<meta property="og:description" content="國立清華大學羽球冬令營 2027，清華大學羽球校隊主辦。1/25–1/29 共五天，上午／下午／全天三時段，由甲組選手與持證教練指導，不限年齡，第一次拿球拍也適合。">
+<meta property="og:image" content="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139578/%E7%B5%90%E6%A5%AD%E5%A4%A7%E5%90%88%E7%85%A7_g2sypl.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="清華大學羽球冬令營 2027">
+<meta name="twitter:description" content="國立清華大學羽球冬令營 2027，清華大學羽球校隊主辦。1/25–1/29 共五天，上午／下午／全天三時段，由甲組選手與持證教練指導，不限年齡，第一次拿球拍也適合。">
+<meta name="twitter:image" content="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139578/%E7%B5%90%E6%A5%AD%E5%A4%A7%E5%90%88%E7%85%A7_g2sypl.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #0C447C; --navy-dark: #0A3660; --navy-deep: #071F3A;
     --blue: #185FA5; --blue-light: #378ADD; --blue-pale: #B5D4F4;
     --amber: #EF9F27; --amber-light: #FAC775;
-    --white: #FFFFFF; --text-muted: #85B7EB; --teal: #1D9E75;
+    --white: #FFFFFF; --text-light: #FFFFFF; --text-muted: #85B7EB; --teal: #1D9E75;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { font-family: 'Noto Sans TC', sans-serif; background: var(--navy-deep); color: var(--white); overflow-x: hidden; }
-
-  .page { display: none; min-height: 100vh; }
-  .page.active { display: block; }
 
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -72,7 +86,7 @@
     padding: 0 2rem; height: 60px;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .nav-logo { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: 0.05em; cursor: pointer; }
+  .nav-logo { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: 0.05em; text-decoration: none; }
   .nav-logo span { color: var(--amber); }
   .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
   .sy-home { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; transition: opacity 0.2s; }
@@ -82,7 +96,7 @@
   .sy-text { font-family: 'Noto Serif TC', serif; font-size: 0.85rem; font-weight: 900; color: var(--white); letter-spacing: 0.03em; white-space: nowrap; }
   .nav-div { width: 1px; height: 20px; background: rgba(255,255,255,0.25); flex-shrink: 0; }
   @media (max-width: 700px) { .sy-text { display: none; } }
-  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
   nav a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.05em; transition: color 0.2s; cursor: pointer; }
   nav a:hover { color: var(--white); }
   .nav-register { background: var(--amber); color: #412402 !important; padding: 0.4rem 1.2rem; border-radius: 6px; font-weight: 700; }
@@ -103,7 +117,7 @@
 
   .btn-primary { background: var(--amber); color: #412402; font-weight: 700; font-size: 1rem; padding: 0.85rem 2.5rem; border-radius: 8px; text-decoration: none; letter-spacing: 0.05em; transition: transform 0.2s, background 0.2s; display: inline-block; cursor: pointer; border: none; font-family: inherit; }
   .btn-primary:hover { background: var(--amber-light); transform: translateY(-2px); }
-  .btn-secondary { background: transparent; color: var(--blue-pale); font-size: 1rem; padding: 0.85rem 2rem; border-radius: 8px; border: 1px solid rgba(181,212,244,0.3); text-decoration: none; letter-spacing: 0.05em; transition: border-color 0.2s, color 0.2s; cursor: pointer; font-family: inherit; }
+  .btn-secondary { background: transparent; color: var(--blue-pale); font-size: 1rem; padding: 0.85rem 2rem; border-radius: 8px; border: 1px solid rgba(181,212,244,0.3); text-decoration: none; letter-spacing: 0.05em; transition: border-color 0.2s, color 0.2s; cursor: pointer; font-family: inherit; display: inline-block; }
   .btn-secondary:hover { border-color: var(--blue-pale); color: var(--white); }
 
   section { padding: 6rem 2rem; max-width: 960px; margin: 0 auto; }
@@ -125,6 +139,10 @@
   .schedule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 2.5rem; }
   .schedule-item { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 10px; padding: 1rem 1.4rem; display: flex; align-items: center; gap: 1rem; transition: border-color 0.2s; }
   .schedule-item:hover { border-color: rgba(239,159,39,0.4); }
+  .schedule-num { font-family: 'Noto Serif TC', serif; font-size: 1.5rem; font-weight: 900; color: rgba(55,138,221,0.3); min-width: 2rem; }
+  .schedule-dates { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; }
+  .schedule-time { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+  .schedule-note { margin-top: 1.5rem; padding: 1rem 1.4rem; background: rgba(239,159,39,0.08); border: 1px solid rgba(239,159,39,0.2); border-radius: 10px; font-size: 0.85rem; color: var(--amber-light); line-height: 1.6; }
 
   /* coaches */
   .coaches-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 3rem; }
@@ -141,10 +159,10 @@
   .coach-achievements li { list-style: none; padding-left: 0.7rem; position: relative; margin-bottom: 0.25rem; }
   .coach-achievements li::before { content: '▸'; position: absolute; left: 0; color: var(--amber); }
 
-
-  /* gallery */
+  /* gallery（往期回顧） */
   .gallery-grid { display: grid; grid-template-columns: 1.6fr 1fr; grid-template-rows: 1fr 1fr; gap: 0.8rem; margin-top: 3rem; }
-  .gallery-item { border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid rgba(55,138,221,0.15); transition: border-color 0.25s, transform 0.25s; position: relative; }
+  /* min-height:0 讓直式大圖不會把整列撐高，右邊兩欄才對得齊 */
+  .gallery-item { border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid rgba(55,138,221,0.15); transition: border-color 0.25s, transform 0.25s; position: relative; min-height: 0; }
   .gallery-item:hover { border-color: rgba(239,159,39,0.5); transform: translateY(-3px); }
   .gallery-item.gallery-big { grid-row: 1 / 3; }
   .gallery-item:not(.gallery-big) { aspect-ratio: 16/10; }
@@ -164,17 +182,15 @@
   .venue-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; overflow: hidden; transition: border-color 0.25s; }
   .venue-card:hover { border-color: rgba(239,159,39,0.4); }
   .venue-card.full { grid-column: 1 / -1; }
-  .venue-photo { width: 100%; aspect-ratio: 16/9; overflow: hidden; }
+  .venue-photo { width: 100%; aspect-ratio: 16/9; overflow: hidden; cursor: zoom-in; }
   .venue-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .venue-photo.map img { object-fit: contain; background: #fff; }
+  /* 平面圖要看得清楚字，不能裁切，所以整張縮進去、底色補白 */
   .venue-photo.map { aspect-ratio: auto; }
-  .venue-label { padding: 0.7rem 1rem 0.9rem; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid rgba(55,138,221,0.15); }
+  .venue-photo.map img { object-fit: contain; background: #fff; height: auto; }
+  .venue-label { padding: 0.7rem 1rem 0.9rem; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid rgba(55,138,221,0.15); line-height: 1.8; }
   .venue-label b { color: var(--text-light); font-weight: 500; }
-  .schedule-num { font-family: 'Noto Serif TC', serif; font-size: 1.5rem; font-weight: 900; color: rgba(55,138,221,0.3); min-width: 2rem; }
-  .schedule-dates { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; }
-  .schedule-time { font-size: 0.8rem; color: var(--text-muted); }
-  .schedule-note { margin-top: 1.5rem; padding: 1rem 1.4rem; background: rgba(239,159,39,0.08); border: 1px solid rgba(239,159,39,0.2); border-radius: 10px; font-size: 0.85rem; color: var(--amber-light); line-height: 1.6; }
 
+  /* pricing */
   .pricing-wrap { margin-top: 2.5rem; background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 16px; overflow: hidden; }
   .pricing-header { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; background: var(--blue); padding: 0.9rem 1.5rem; font-size: 0.85rem; font-weight: 700; text-align: center; }
   .pricing-header div:first-child { text-align: left; }
@@ -186,6 +202,48 @@
   .pricing-row.discount .label { color: var(--amber-light); }
   .discount-note { padding: 1rem 1.5rem; border-top: 1px solid rgba(55,138,221,0.1); font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
 
+  /* 特約合作企業 */
+  .partner-box { margin-top: 2rem; background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 14px; padding: 1.4rem 1.8rem; }
+  .partner-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; color: var(--amber); margin-bottom: 1rem; }
+  .partner-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.8; }
+  .partner-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; }
+  .partner-item { background: rgba(55,138,221,0.07); border: 1px solid rgba(55,138,221,0.2); border-radius: 10px; padding: 1rem 1.2rem; }
+  .partner-item .pn { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .partner-item .ps { font-size: 0.78rem; color: var(--text-muted); }
+  .partner-note { font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem; line-height: 1.7; }
+
+  /* 招生狀況 */
+  .status-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-top: 2.5rem; }
+  .status-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 10px; padding: 1rem 1.3rem; }
+  .status-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.7rem; }
+  .status-name { font-weight: 700; font-size: 0.95rem; }
+  .status-time { font-size: 0.78rem; color: var(--text-muted); }
+  .status-track { background: rgba(255,255,255,0.07); border-radius: 4px; height: 8px; overflow: hidden; }
+  .status-fill { height: 100%; border-radius: 4px; background: var(--blue-light); width: 0; transition: width 0.5s ease; }
+  .status-fill.done { background: var(--teal); }
+  .status-fill.full { background: #E24B4A; }
+  .status-state { font-size: 0.82rem; margin-top: 0.6rem; font-weight: 700; line-height: 1.6; }
+  .status-note { margin-top: 1.5rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.8; }
+
+  /* 退費 */
+  .refund-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 0.8rem; margin-top: 1.6rem; }
+  .refund-item { background: rgba(55,138,221,0.07); border: 1px solid rgba(55,138,221,0.2); border-radius: 10px; padding: 1rem 1.2rem; text-align: center; }
+  .refund-when { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .refund-amt { font-weight: 700; font-size: 1.05rem; color: #9FE1CB; }
+  .refund-amt.low { color: var(--amber); }
+  .refund-amt.zero { color: #F09595; }
+  .refund-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 1.2rem; line-height: 1.8; }
+
+  /* FAQ */
+  .faq-list { margin-top: 2.5rem; max-width: 720px; }
+  .faq-item { border-bottom: 1px solid rgba(55,138,221,0.15); }
+  .faq-q { width: 100%; background: none; border: none; text-align: left; padding: 1.1rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-family: 'Noto Serif TC', serif; font-size: 1.05rem; font-weight: 700; color: var(--white); }
+  .faq-mark { color: var(--amber); font-size: 1.1rem; font-weight: 400; flex-shrink: 0; transition: transform 0.25s; }
+  .faq-item.open .faq-mark { transform: rotate(45deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; font-size: 0.88rem; color: var(--text-muted); line-height: 1.9; }
+  .faq-item.open .faq-a { max-height: 460px; padding-bottom: 1.1rem; }
+  .faq-a b { color: var(--blue-pale); font-weight: 500; }
+
   .register-cta { margin-top: 2.5rem; background: var(--blue); border-radius: 16px; padding: 3rem 2.5rem; text-align: center; }
   .register-cta h3 { font-family: 'Noto Serif TC', serif; font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; }
   .register-cta p { color: var(--blue-pale); font-size: 0.9rem; margin-bottom: 2rem; }
@@ -194,126 +252,11 @@
 
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-  /* REGISTER PAGE */
-  .reg-page-wrap { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
-  .reg-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; margin-bottom: 2rem; transition: color 0.2s; background: none; border: none; font-family: inherit; }
-  .reg-back:hover { color: var(--white); }
-  .reg-title { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
-  .reg-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.8; }
-
-  .notice-box { background: rgba(239,159,39,0.08); border: 1px solid rgba(239,159,39,0.25); border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 2rem; font-size: 0.875rem; color: var(--amber-light); line-height: 2; }
-  .notice-box strong { color: var(--amber); }
-
-  .form-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 14px; padding: 1.8rem; margin-bottom: 1.2rem; }
-  .form-card-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 1.4rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(239,159,39,0.15); }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-  .form-group.full { grid-column: 1 / -1; }
-  .form-group label { font-size: 0.82rem; color: var(--blue-pale); }
-  .req { color: var(--amber); }
-  .form-group input, .form-group select, .form-group textarea {
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(181,212,244,0.18);
-    border-radius: 8px; padding: 0.7rem 1rem; color: white;
-    font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s; appearance: none; width: 100%;
-  }
-  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(181,212,244,0.35); }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue-light); background: rgba(255,255,255,0.09); }
-  .form-group select option { background: var(--navy-dark); color: white; }
-  .form-group textarea { resize: vertical; min-height: 80px; }
-  .submit-btn { width: 100%; padding: 1.1rem; font-size: 1.05rem; border: none; cursor: pointer; border-radius: 10px; margin-top: 0.8rem; }
-
-  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.2rem; }
-  .check-grid.three { grid-template-columns: 1fr 1fr 1fr; }
-  .check-item { display: flex; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(181,212,244,0.15); border-radius: 8px; padding: 0.65rem 0.9rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; }
-  .check-item:hover { border-color: rgba(181,212,244,0.35); background: rgba(255,255,255,0.08); }
-  .check-item input[type=checkbox], .check-item input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
-  .check-box { width: 18px; height: 18px; flex-shrink: 0; border: 2px solid rgba(181,212,244,0.35); border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-  .check-box::after { content: ''; display: none; width: 5px; height: 9px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) translateY(-1px); }
-  .check-item:has(input:checked) .check-box { background: var(--amber); border-color: var(--amber); }
-  .check-item:has(input:checked) .check-box::after { display: block; }
-  .check-item span { font-size: 0.85rem; color: var(--blue-pale); line-height: 1.4; }
-  .check-item:has(input:checked) { border-color: var(--amber); background: rgba(239,159,39,0.1); }
-  .check-item:has(input:checked) span { color: white; }
-  .check-item.disabled { opacity: 0.35; pointer-events: none; }
-
-  /* UMC verification box */
-  .umc-verify-box {
-    background: rgba(29,158,117,0.08);
-    border: 1px solid rgba(29,158,117,0.3);
-    border-radius: 10px;
-    padding: 1.2rem 1.4rem;
-    margin-top: 0.8rem;
-    display: none;
-  }
-  .umc-verify-box .umc-title {
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
-    color: #9FE1CB; margin-bottom: 0.8rem;
-  }
-  .umc-verify-box .form-grid { gap: 0.8rem; }
-
-  /* ADMIN upgraded */
-  .loading-overlay { position: fixed; inset: 0; background: rgba(7,31,58,0.85); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; }
-  .spinner { width: 48px; height: 48px; border: 4px solid rgba(55,138,221,0.2); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-overlay p { color: var(--blue-pale); font-size: 0.9rem; letter-spacing: 0.05em; }
-  .admin-section { margin-bottom: 2.5rem; }
-  .admin-section-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(239,159,39,0.15); }
-  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1rem; }
-  .stats-row.two { grid-template-columns: repeat(2,1fr); }
-  .mini-bar-wrap { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; padding: 1.2rem 1.4rem; }
-  .mini-bar-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.7rem; font-size: 0.83rem; }
-  .mini-bar-row:last-child { margin-bottom: 0; }
-  .mini-bar-label { min-width: 140px; color: var(--blue-pale); }
-  .mini-bar-track { flex: 1; background: rgba(255,255,255,0.07); border-radius: 4px; height: 8px; overflow: hidden; }
-  .mini-bar-fill { height: 100%; border-radius: 4px; background: var(--blue-light); transition: width 0.4s ease; }
-  .mini-bar-fill.amber { background: var(--amber); }
-  .mini-bar-fill.teal { background: var(--teal); }
-  .mini-bar-num { min-width: 28px; text-align: right; font-weight: 700; font-size: 0.85rem; }
-  .filter-row { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.2rem; align-items: center; }
-  .filter-row select, .filter-row input { background: rgba(255,255,255,0.07); border: 1px solid rgba(181,212,244,0.2); border-radius: 8px; padding: 0.5rem 0.9rem; color: white; font-family: inherit; font-size: 0.85rem; appearance: none; }
-  .filter-row select option { background: var(--navy-dark); }
-  .badge { display: inline-block; font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700; }
-  .badge.am { background: rgba(55,138,221,0.2); color: #B5D4F4; }
-  .badge.pm { background: rgba(29,158,117,0.2); color: #9FE1CB; }
-  .badge.full { background: rgba(239,159,39,0.2); color: #FAC775; }
-  .status-select { background: transparent; border: 1px solid rgba(181,212,244,0.2); border-radius: 6px; padding: 0.25rem 0.5rem; color: white; font-size: 0.8rem; font-family: inherit; cursor: pointer; appearance: none; min-width: 80px; }
-  .status-select.paid { border-color: var(--teal); color: #9FE1CB; background: rgba(29,158,117,0.1); }
-  .status-select.pending { border-color: var(--amber); color: var(--amber-light); background: rgba(239,159,39,0.1); }
-  .status-select.waitlist { border-color: #85B7EB; color: #85B7EB; background: rgba(55,138,221,0.1); }
-  .status-select.cancelled { border-color: #E24B4A; color: #F09595; background: rgba(226,75,74,0.1); }
-  .note-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(181,212,244,0.15); border-radius: 6px; padding: 0.3rem 0.6rem; color: white; font-size: 0.8rem; font-family: inherit; width: 130px; }
-  .note-input:focus { outline: none; border-color: var(--blue-light); background: rgba(255,255,255,0.09); }
-  .save-btn { background: rgba(55,138,221,0.2); border: 1px solid rgba(55,138,221,0.3); color: #B5D4F4; border-radius: 6px; padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer; font-family: inherit; transition: background 0.15s; white-space: nowrap; }
-  .save-btn:hover { background: rgba(55,138,221,0.35); }
-  .save-btn.saving { opacity: 0.5; pointer-events: none; }
-  .save-btn.saved { background: rgba(29,158,117,0.2); border-color: var(--teal); color: #9FE1CB; }
-
-  .success-wrap { text-align: center; padding: 4rem 2rem; max-width: 560px; margin: 0 auto; }
-  .success-wrap .icon { font-size: 4rem; margin-bottom: 1.5rem; }
-  .success-wrap h2 { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 900; margin-bottom: 1rem; }
-  .success-wrap p { color: var(--blue-pale); line-height: 2; font-size: 0.95rem; margin-bottom: 2rem; }
-  .success-info { background: var(--navy-dark); border-radius: 12px; padding: 1.2rem 1.6rem; font-size: 0.85rem; color: var(--text-muted); line-height: 2.2; margin-bottom: 2rem; text-align: left; }
-  .success-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-
-  /* ADMIN */
-  .admin-wrap { max-width: 1100px; margin: 0 auto; padding: 6rem 2rem 4rem; }
-  .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
-  .admin-header h2 { font-family: 'Noto Serif TC', serif; font-size: 1.6rem; font-weight: 900; }
-  .admin-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
-  .stat-card { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 10px; padding: 1rem 1.2rem; }
-  .stat-card .num { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 900; color: var(--amber); }
-  .stat-card .lbl { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
-  .admin-table-wrap { background: var(--navy-dark); border: 1px solid rgba(55,138,221,0.15); border-radius: 12px; overflow: auto; }
-  .admin-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 1000px; }
-  .admin-table th { background: var(--blue); padding: 0.75rem 1rem; text-align: left; font-weight: 700; white-space: nowrap; }
-  .admin-table td { padding: 0.7rem 1rem; border-top: 1px solid rgba(55,138,221,0.1); color: var(--blue-pale); }
-  .admin-table tr:hover td { background: rgba(55,138,221,0.05); }
+  @media (prefers-reduced-motion: reduce) { .fade-up { opacity: 1; transform: none; transition: none; } .shuttlecock { animation: none; } }
 
   @media (max-width: 900px) {
     .about-grid { grid-template-columns: 1fr 1fr; }
-    .admin-stats { grid-template-columns: repeat(2,1fr); }
-    .stats-row { grid-template-columns: repeat(2,1fr); }
+    .partner-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     nav ul { display: none; }
@@ -324,25 +267,14 @@
     .schedule-grid { grid-template-columns: 1fr; }
     .coaches-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
     .venue-grid { grid-template-columns: 1fr; }
+    .status-grid { grid-template-columns: 1fr; }
     .pricing-header, .pricing-row { grid-template-columns: 1.4fr 1fr 1fr; font-size: 0.82rem; }
-    .form-grid { grid-template-columns: 1fr; }
-    .check-grid.three { grid-template-columns: 1fr 1fr; }
-    .reg-page-wrap { padding: 5rem 1rem 3rem; }
-    .form-card { padding: 1.2rem; }
-    .admin-stats { grid-template-columns: 1fr 1fr; }
-    .stats-row { grid-template-columns: 1fr 1fr; }
     section { padding: 4rem 1.2rem; }
     .register-cta { padding: 2rem 1.2rem; }
-    .success-btns { flex-direction: column; align-items: center; }
-    .success-btns button { width: 100%; max-width: 320px; }
-    .notice-box { font-size: 0.82rem; }
-    .umc-verify-box .form-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 400px) {
     .hero h1 { font-size: 1.9rem; }
-    .check-grid, .check-grid.three { grid-template-columns: 1fr; }
     .pricing-header div:nth-child(3), .pricing-row div:nth-child(3) { display: none; }
-    .reg-page-wrap { padding: 4.5rem 0.8rem 2rem; }
   }
 </style>
 </head>
@@ -355,1003 +287,444 @@
       <span class="sy-text">Stay Young</span>
     </a>
     <span class="nav-div"></span>
-    <div class="nav-logo" onclick="showPage('main')">清大<span>羽球</span>夏令營</div>
+    <a class="nav-logo" href="#top">清大<span>羽球</span>冬令營</a>
   </div>
   <ul>
-    <li><a onclick="goTo('about')">活動介紹</a></li>
-    <li><a onclick="goTo('gallery')">營隊實錄</a></li>
-    <li><a onclick="goTo('coaches')">教練團</a></li>
-    <li><a onclick="goTo('venue')">場地</a></li>
-    <li><a onclick="goTo('schedule')">梯次時間</a></li>
-    <li><a onclick="goTo('pricing')">費用</a></li>
-    <li><a onclick="goTo('refund')">退費</a></li>
-    <li><a onclick="showPage('register')" class="nav-register">立即報名</a></li>
+    <li><a href="#about">活動介紹</a></li>
+    <li><a href="#venue">場地</a></li>
+    <li><a href="#coaches">教練團</a></li>
+    <li><a href="#schedule">課程</a></li>
+    <li><a href="#pricing">費用</a></li>
+    <li><a href="#status">招生狀況</a></li>
+    <li><a href="signup.html" class="nav-register">立即報名</a></li>
   </ul>
 </nav>
 
-<!-- ══ 主頁 ══ -->
-<div id="page-main" class="page active">
-  <section class="hero" style="max-width:100%; padding-top:5rem;">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="shuttlecock">🏸</div>
-    <div class="hero-tag">BADMINTON SUMMER CAMP 2026</div>
-    <h1>國立清華大學<br><span class="accent">羽球夏令營</span></h1>
-    <p class="hero-sub">南大校區體健大樓五樓體育館</p>
-    <p class="hero-location">清華大學羽球校隊 主辦</p>
-    <div class="hero-badge">揮拍釋放活力　迎接最熱血的夏天</div>
-    <div class="hero-cta">
-      <button onclick="showPage('register')" class="btn-primary">立即報名 →</button>
-      <button onclick="goTo('schedule')" class="btn-secondary">查看梯次</button>
+<section class="hero" id="top" style="max-width:100%;">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="shuttlecock">🏸</div>
+  <div class="hero-tag">BADMINTON WINTER CAMP 2027</div>
+  <h1>國立清華大學<br><span class="accent">羽球冬令營</span></h1>
+  <p class="hero-sub">南大校區 學生活動中心一樓</p>
+  <p class="hero-location">清華大學羽球校隊 主辦</p>
+  <div class="hero-badge">1/25 – 1/29　揮拍過個不一樣的寒假</div>
+  <div class="hero-cta">
+    <a href="signup.html" class="btn-primary">立即報名 →</a>
+    <a href="#pricing" class="btn-secondary">查看費用</a>
+  </div>
+</section>
+
+<hr class="section-line">
+
+<section id="about" style="padding-top:5rem;">
+  <div class="fade-up">
+    <div class="section-label">關於活動</div>
+    <h2 class="section-title">以球會友，揮灑寒假汗水</h2>
+    <p class="section-desc">清華大學羽球校隊致力於將羽球運動帶入社區，讓更多人體驗運動的樂趣。不論是第一次拿起球拍，還是想在寒假保持規律訓練，這裡都有適合你的位置。本營隊不限年齡，教練依實際程度分階帶領，老少皆宜。</p>
+  </div>
+  <div class="about-grid fade-up" style="transition-delay:0.15s;">
+    <div class="about-card blue"><h3>專業教練</h3><p>清大羽球校隊甲組選手與持證教練親自帶領，依程度分組，讓每位學員都能在合適的步調下穩定進步。</p></div>
+    <div class="about-card amber"><h3>五天課程</h3><p>涵蓋步法、技術與體能訓練，每日追蹤學習進度，最後以結業對抗賽展現一週成果。</p></div>
+    <div class="about-card teal"><h3>三種時段</h3><p>上午、下午、全天任選，配合家庭作息彈性安排。全天班另有午休與代訂午餐服務。</p></div>
+  </div>
+</section>
+
+<hr class="section-line">
+
+<section id="venue">
+  <div class="fade-up">
+    <div class="section-label">場地介紹</div>
+    <h2 class="section-title">清華大學南大校區　學生活動中心 1F</h2>
+    <p class="section-desc">活動於清華大學南大校區學生活動中心一樓室內場地進行，全程室內、空間寬敞、地板與設備完善，不受天候影響。校區位於新竹市東區南大路，交通便利、停車方便。</p>
+  </div>
+  <div class="venue-grid fade-up" style="transition-delay:0.15s;">
+    <div class="venue-card full">
+      <div class="venue-photo zoomable"><img src="images/venue-hall-1f.jpg" alt="學生活動中心 1F 室內場地"></div>
+      <div class="venue-label"><b>學生活動中心 1F</b>　室內木地板場地，空間寬敞、照明充足，全程室內不受天候影響</div>
     </div>
-  </section>
-
-  <hr class="section-line">
-
-  <section id="about" style="padding-top:5rem;">
-    <div class="fade-up">
-      <div class="section-label">關於活動</div>
-      <h2 class="section-title">以球會友，揮灑夏日汗水</h2>
-      <p class="section-desc">清華大學羽球校隊致力於將羽球運動帶入社區，讓更多人體驗運動的樂趣。不論是第一次拿起球拍，還是想在暑假保持規律訓練，這裡都有適合你的位置。</p>
+    <div class="venue-card">
+      <div class="venue-photo zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor2_f8v02z.jpg" alt="清華大學南大校區外觀" loading="lazy"></div>
+      <div class="venue-label"><b>校區環境</b>　寧靜清幽的大學校園，綠地與田徑場環繞</div>
     </div>
-    <div class="about-grid fade-up" style="transition-delay:0.15s;">
-      <div class="about-card blue"><h3>專業教練</h3><p>清大羽球校隊學員親自帶領，依程度分組，讓每位學員都能在合適的步調下穩定進步。</p></div>
-      <div class="about-card amber"><h3>五天課程</h3><p>涵蓋步法、技術與體能訓練，每日追蹤學習進度，最後以結業對抗賽展現一週成果。</p></div>
-      <div class="about-card teal"><h3>活力滿載</h3><p>輕鬆無壓力的學習氛圍，在揮灑汗水的同時交到新朋友，培養長期運動的好習慣。</p></div>
+    <div class="venue-card">
+      <div class="venue-photo map zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724467/venue_campus_bwfyha.jpg" alt="清華大學南大校區平面圖" loading="lazy"></div>
+      <div class="venue-label"><b>校區平面圖</b>　可對照正門、側門與地下停車場（B2–B3）位置</div>
     </div>
-  </section>
-
-  <hr class="section-line">
-
-
-  <section id="gallery">
-    <div class="fade-up">
-      <div class="section-label">營隊實錄</div>
-      <h2 class="section-title">揮灑汗水的每一刻</h2>
-      <p class="section-desc">每一梯的努力與笑容，都是我們最珍貴的回憶。以下為歷梯活動花絮與結業合照。</p>
+    <div class="venue-card full">
+      <div class="venue-label" style="border-top:none;"><b>地址</b>　新竹市東區南大路 521 號　|　<b>交通</b>　地下停車場可停放車輛，正門 / 側門皆可進入</div>
     </div>
-    <div class="gallery-grid fade-up" style="transition-delay:0.15s;">
-      <div class="gallery-item gallery-big" onclick="openLightbox('https://res.cloudinary.com/du9nntlc0/image/upload/v1785139578/%E7%B5%90%E6%A5%AD%E5%A4%A7%E5%90%88%E7%85%A7_g2sypl.jpg')">
-        <img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139578/%E7%B5%90%E6%A5%AD%E5%A4%A7%E5%90%88%E7%85%A7_g2sypl.jpg" alt="結業大合照" loading="lazy">
-      </div>
-      <div class="gallery-item" onclick="openLightbox('https://res.cloudinary.com/du9nntlc0/image/upload/v1785139566/%E6%B4%BB%E5%8B%95%E7%85%A7_%E6%95%99%E7%B7%B4%E7%A4%BA%E7%AF%84_qjhp9m.jpg')">
-        <img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139566/%E6%B4%BB%E5%8B%95%E7%85%A7_%E6%95%99%E7%B7%B4%E7%A4%BA%E7%AF%84_qjhp9m.jpg" alt="活動花絮 教練示範" loading="lazy">
-      </div>
-      <div class="gallery-item" onclick="openLightbox('https://res.cloudinary.com/du9nntlc0/image/upload/v1785139572/%E6%B4%BB%E5%8B%95%E7%85%A7_%E5%AD%B8%E5%93%A1%E7%86%B1%E8%BA%AB_x1aj1p.jpg')">
-        <img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139572/%E6%B4%BB%E5%8B%95%E7%85%A7_%E5%AD%B8%E5%93%A1%E7%86%B1%E8%BA%AB_x1aj1p.jpg" alt="活動花絮 學員熱身" loading="lazy">
-      </div>
-    </div>
-  </section>
+  </div>
+  <p class="status-note fade-up">確切集合地點與報到位置，將於開課前一週以 email 與家長群組通知。</p>
+</section>
 
-  <hr class="section-line">
+<hr class="section-line">
 
-  <section id="coaches">
-    <div class="fade-up">
-      <div class="section-label">教練團</div>
-      <h2 class="section-title">清大羽球校隊　甲組選手親自帶隊</h2>
-      <p class="section-desc">本營隊師資皆由清華大學羽球甲組選手、持證教練及清華大學全大運代表隊組成，依各梯次規模採輪派制配置教練群，確保每梯課程皆有相當資歷的教練親自指導。以下為本屆教練群部分代表（實際梯次教練配置以開課當週公告為準）：</p>
-    </div>
-    <div class="coaches-grid fade-up" style="transition-delay:0.15s;">
-      <div class="coach-card">
-        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723133/ryan_wq7nbw.jpg" alt="張軒瑀教練"></div>
-        <div class="coach-info">
-          <div class="coach-name">張軒瑀</div>
-          <div class="coach-title">甲組球員．清大羽球校隊</div>
-          <div class="coach-meta"><b>球齡</b>　12 年<br><b>教學經驗</b>　2 年<br><b>經歷</b>　清華大學校本部夏令營教練</div>
-          <ul class="coach-achievements">
-            <li>113 年全國羽球排名賽　男乙雙第一（晉升甲組）</li>
-            <li>113 年全中運高中男雙第二</li>
-            <li>112 年 BWF 世青羽球錦標賽　團體亞軍</li>
-          </ul>
-        </div>
-      </div>
-      <div class="coach-card">
-        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723133/will_gorg0x.jpg" alt="陳崇瑋教練"></div>
-        <div class="coach-info">
-          <div class="coach-name">陳崇瑋</div>
-          <div class="coach-title">甲組球員．C 級教練證</div>
-          <div class="coach-meta"><b>球齡</b>　15 年<br><b>教學經驗</b>　5 年<br><b>執照</b>　中華民國羽協 C 級教練證</div>
-          <ul class="coach-achievements">
-            <li>110 年全國羽球排名賽　男乙雙第一（晉升甲組）</li>
-            <li>108 年全中運高中男雙第二</li>
-          </ul>
-        </div>
-      </div>
-      <div class="coach-card">
-        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723132/yuchen_myas4c.jpg" alt="陳宥蓁教練"></div>
-        <div class="coach-info">
-          <div class="coach-name">陳宥蓁</div>
-          <div class="coach-title">甲組球員．C 級教練證</div>
-          <div class="coach-meta"><b>球齡</b>　15 年<br><b>教學經驗</b>　3 年<br><b>經歷</b>　羽協育樂營、新竹國小羽球隊、清大校本部夏令營</div>
-          <ul class="coach-achievements">
-            <li>111 年全國羽球排名賽　第三（晉升甲組）</li>
-            <li>111 年全國高中盃女雙季軍</li>
-          </ul>
-        </div>
-      </div>
-      <div class="coach-card">
-        <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723131/hong_ujz44c.jpg" alt="洪紹中教練"></div>
-        <div class="coach-info">
-          <div class="coach-name">洪紹中</div>
-          <div class="coach-title">清大羽球校隊</div>
-          <div class="coach-meta"><b>球齡</b>　12 年<br><b>教學經驗</b>　2 年<br><b>經歷</b>　清華大學校本部夏令營教練</div>
-          <ul class="coach-achievements">
-            <li>112 年全國高中盃　個人雙打第三</li>
-            <li>109 年全國國中盃　個人雙打第二</li>
-          </ul>
-        </div>
+<section id="coaches">
+  <div class="fade-up">
+    <div class="section-label">教練團</div>
+    <h2 class="section-title">清大羽球校隊　甲組選手親自帶隊</h2>
+    <p class="section-desc">本營隊師資皆由清華大學羽球甲組選手、持證教練及清華大學全大運代表隊組成，依營隊規模採輪派制配置教練群，確保每堂課皆有相當資歷的教練親自指導。以下為本屆教練群部分代表（實際教練配置以開課當週公告為準）：</p>
+  </div>
+  <div class="coaches-grid fade-up" style="transition-delay:0.15s;">
+    <div class="coach-card">
+      <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723133/ryan_wq7nbw.jpg" alt="張軒瑀教練"></div>
+      <div class="coach-info">
+        <div class="coach-name">張軒瑀</div>
+        <div class="coach-title">甲組球員．清大羽球校隊</div>
+        <div class="coach-meta"><b>球齡</b>　12 年<br><b>教學經驗</b>　2 年<br><b>經歷</b>　清華大學校本部夏令營教練</div>
+        <ul class="coach-achievements">
+          <li>113 年全國羽球排名賽　男乙雙第一（晉升甲組）</li>
+          <li>113 年全中運高中男雙第二</li>
+          <li>112 年 BWF 世青羽球錦標賽　團體亞軍</li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <hr class="section-line">
-
-  <!-- ══ 場地介紹（照片順序已修正）══ -->
-  <section id="venue">
-    <div class="fade-up">
-      <div class="section-label">場地介紹</div>
-      <h2 class="section-title">清華大學南大校區體健大樓</h2>
-      <p class="section-desc">活動於清華大學南大校區體健大樓五樓專業體育館進行，全程室內、空間寬敞、地板與設備完善，不受天候影響。校區位於新竹市東區南大路，交通便利、停車方便。</p>
-    </div>
-    <div class="venue-grid fade-up" style="transition-delay:0.15s;">
-      <div class="venue-card">
-        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor1_pntblf.jpg" alt="體育館內部一"></div>
-        <div class="venue-label"><b>體育館內部一</b>　專業木地板、自然採光、設備完善</div>
-      </div>
-      <div class="venue-card">
-        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724466/venue_map_zonyhx.jpg" alt="體育館內部二"></div>
-        <div class="venue-label"><b>體育館內部二</b>　空間寬敞，可容納 3 面標準羽球場地</div>
-      </div>
-      <div class="venue-card full">
-        <div class="venue-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor2_f8v02z.jpg" alt="校區外觀"></div>
-        <div class="venue-label"><b>校區外觀</b>　寧靜清幽的大學環境，校園綠地與田徑場環繞</div>
-      </div>
-      <div class="venue-card full">
-        <div class="venue-photo map"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724467/venue_campus_bwfyha.jpg" alt="校區平面圖"></div>
-        <div class="venue-label"><b>校區平面圖</b>　活動地點：體健大樓五樓體育館（地圖右側標示）<br>地址：新竹市東區南大路 521 號　|　交通：地下停車場可停放車輛，正門 / 側門 / 體健入口皆可進入</div>
+    <div class="coach-card">
+      <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723133/will_gorg0x.jpg" alt="陳崇瑋教練"></div>
+      <div class="coach-info">
+        <div class="coach-name">陳崇瑋</div>
+        <div class="coach-title">甲組球員．C 級教練證</div>
+        <div class="coach-meta"><b>球齡</b>　15 年<br><b>教學經驗</b>　5 年<br><b>執照</b>　中華民國羽協 C 級教練證</div>
+        <ul class="coach-achievements">
+          <li>110 年全國羽球排名賽　男乙雙第一（晉升甲組）</li>
+          <li>108 年全中運高中男雙第二</li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <hr class="section-line">
-
-  <section id="schedule">
-    <div class="fade-up">
-      <div class="section-label">活動梯次</div>
-      <h2 class="section-title">2026 年夏季　共 8 梯次</h2>
-      <p class="section-desc">每梯次為期五天，週一至週五，09:00 – 17:00，可依個人行程彈性選擇。</p>
-    </div>
-    <div class="schedule-grid fade-up" style="transition-delay:0.1s;">
-      <div class="schedule-item"><div class="schedule-num">01</div><div><div class="schedule-dates">7/06（一）－ 7/10（五）</div><div class="schedule-time">09:00 – 17:00　第一梯次</div></div></div>
-      <div class="schedule-item"><div class="schedule-num">02</div><div><div class="schedule-dates">7/13（一）－ 7/17（五）</div><div class="schedule-time">09:00 – 17:00　第二梯次</div></div></div>
-      <div class="schedule-item"><div class="schedule-num">03</div><div><div class="schedule-dates">7/20（一）－ 7/24（五）</div><div class="schedule-time">09:00 – 17:00　第三梯次</div></div></div>
-      <div class="schedule-item"><div class="schedule-num">04</div><div><div class="schedule-dates">7/27（一）－ 7/31（五）</div><div class="schedule-time">09:00 – 17:00　第四梯次</div></div></div>
-      <div class="schedule-item"><div class="schedule-num">05</div><div><div class="schedule-dates">8/03（一）－ 8/07（五）</div><div class="schedule-time">09:00 – 17:00　第五梯次</div></div></div>
-      <div class="schedule-item"><div class="schedule-num">06</div><div><div class="schedule-dates">8/10（一）－ 8/14（五）</div><div class="schedule-time">09:00 – 17:00　第六梯次</div></div></div>
-      <div class="schedule-item"><div class="schedule-num">07</div><div><div class="schedule-dates">8/17（一）－ 8/21（五）</div><div class="schedule-time">09:00 – 17:00　第七梯次</div></div></div>
-      <div class="schedule-item"><div class="schedule-num">08</div><div><div class="schedule-dates">8/24（一）－ 8/28（五）</div><div class="schedule-time">09:00 – 17:00　第八梯次</div></div></div>
-    </div>
-    <div class="schedule-note fade-up" style="transition-delay:0.2s;">
-      ※ 每梯次限額 30 名，額滿即止。各梯次報名人數滿 6 人即確定開班。
-    </div>
-
-    <!-- 報名招生狀況 -->
-    <div class="fade-up" style="margin-top:2rem; transition-delay:0.25s;">
-      <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.2em; color:var(--amber); margin-bottom:0.4rem;">📊 各梯次招生狀況</div>
-      <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.2rem;">滿 6 人即確定開班</div>
-      <div style="display:flex; flex-direction:column; gap:0.75rem;" id="progressBars">
+    <div class="coach-card">
+      <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723132/yuchen_myas4c.jpg" alt="陳宥蓁教練"></div>
+      <div class="coach-info">
+        <div class="coach-name">陳宥蓁</div>
+        <div class="coach-title">甲組球員．C 級教練證</div>
+        <div class="coach-meta"><b>球齡</b>　15 年<br><b>教學經驗</b>　3 年<br><b>經歷</b>　羽協育樂營、新竹國小羽球隊、清大校本部夏令營</div>
+        <ul class="coach-achievements">
+          <li>111 年全國羽球排名賽　第三（晉升甲組）</li>
+          <li>111 年全國高中盃女雙季軍</li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <hr class="section-line">
-
-  <section id="pricing">
-    <div class="fade-up">
-      <div class="section-label">報名費用</div>
-      <h2 class="section-title">費用一覽</h2>
-      <p class="section-desc">提供上午班、下午班及全天班三種選擇，符合資格者享有優惠價格。</p>
-    </div>
-    <div class="pricing-wrap fade-up" style="transition-delay:0.1s;">
-      <div class="pricing-header"><div>方案</div><div>上午班</div><div>下午班</div><div>全天班</div></div>
-      <div class="pricing-row"><div class="label">一般報名</div><div class="price">$4,000</div><div class="price">$4,000</div><div class="price">$7,600</div></div>
-      <div class="pricing-row discount"><div class="label">⭐ 優惠價<br><span style="font-size:0.72rem; color:var(--amber-light); font-weight:400;">團體／清大師生／特約企業</span></div><div class="price">$3,500</div><div class="price">$3,500</div><div class="price">$7,000</div></div>
-      <div class="discount-note">⭐ 優惠適用：五人（含）以上團體報名 / 清大在校學生 / 清大教職員工 / 特約合作企業員工（含為子女報名）<br>上午班 09:00–12:00　·　下午班 14:00–17:00　·　全天班 09:00–17:00</div>
-    </div>
-
-    <div class="fade-up" style="margin-top:2rem; background:var(--navy-dark); border:1px solid rgba(55,138,221,0.15); border-radius:14px; padding:1.4rem 1.8rem; transition-delay:0.15s;">
-      <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.2em; color:var(--amber); margin-bottom:1rem;">🤝 特約合作企業</div>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.2rem; line-height:1.8;">以下企業員工（含為子女報名）無需湊滿五人，即可直接享有優惠價格。</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8rem;">
-        <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem;">
-          <div style="font-weight:700; font-size:0.95rem; margin-bottom:0.3rem;">工業技術研究院</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">工研院　ITRI</div>
-        </div>
-        <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem;">
-          <div style="font-weight:700; font-size:0.95rem; margin-bottom:0.3rem;">聯華電子股份有限公司</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">聯電　UMC</div>
-        </div>
-        <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem;">
-          <div style="font-weight:700; font-size:0.95rem; margin-bottom:0.3rem;">台灣積體電路製造</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">台積電　TSMC</div>
-        </div>
-      </div>
-      <p style="font-size:0.78rem; color:var(--text-muted); margin-top:1rem; line-height:1.7;">※ 報名時請選擇對應企業並填寫員工資訊，主辦方將進行身份核驗後確認優惠資格。</p>
-    </div>
-  </section>
-
-  <hr class="section-line">
-
-  <section id="refund">
-    <div class="fade-up">
-      <div class="section-label">退費規則</div>
-      <h2 class="section-title">繳費後的退費標準</h2>
-      <p class="section-desc">依短期補習班設立及管理準則之退費基準辦理，開課前皆不低於七成。</p>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:0.8rem; margin-top:1.6rem;">
-        <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem; text-align:center;">
-          <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">開課 15 天前</div>
-          <div style="font-weight:700; font-size:1.05rem; color:#9FE1CB;">全額退費</div>
-        </div>
-        <div style="background:rgba(55,138,221,0.07); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem; text-align:center;">
-          <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">開課前 6–14 天</div>
-          <div style="font-weight:700; font-size:1.05rem; color:#9FE1CB;">退 90%</div>
-        </div>
-        <div style="background:rgba(239,159,39,0.07); border:1px solid rgba(239,159,39,0.25); border-radius:10px; padding:1rem 1.2rem; text-align:center;">
-          <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">開課前 5 天內</div>
-          <div style="font-weight:700; font-size:1.05rem; color:var(--amber);">退 70%</div>
-        </div>
-        <div style="background:rgba(226,75,74,0.07); border:1px solid rgba(226,75,74,0.25); border-radius:10px; padding:1rem 1.2rem; text-align:center;">
-          <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">開課後</div>
-          <div style="font-weight:700; font-size:1.05rem; color:#F09595;">恕不退費</div>
-        </div>
-      </div>
-      <p style="font-size:0.8rem; color:var(--text-muted); margin-top:1.2rem; line-height:1.8;">
-        ※ 單日缺席可與教練協調擇期補課，惟不提供單日退費，費用以整梯計算。<br>
-        ※ 如遇天災（颱風、地震等），依新竹市政府停課公告辦理，停課日將另行協調補課或按比例退費。<br>
-        ※ 退費請來信 stayyoung985@gmail.com，我們將於 7 個工作天內處理。
-      </p>
-    </div>
-  </section>
-
-  <hr class="section-line">
-
-  <section>
-    <div class="register-cta fade-up">
-      <h3>🏸 準備好了嗎？</h3>
-      <p>名額有限，填寫報名表後我們將於一週內寄送確認通知至您的信箱。</p>
-      <button onclick="showPage('register')" class="btn-primary">前往報名頁面 →</button>
-    </div>
-  </section>
-
-  <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026</div>
-    <div style="margin-top:0.4rem;">主辦單位：Stay Young 運動團隊｜指導單位：清華大學體育組</div>
-    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com</div>
-    <div style="margin-top:0.5rem; font-size:0.75rem; opacity:0.6;">實際課程內容以現場教練安排為主，主辦單位保有調整活動內容之權利</div>
-  </footer>
-</div>
-
-
-<!-- ══ 報名頁 ══ -->
-<div id="page-register" class="page">
-  <div class="reg-page-wrap">
-    <button class="reg-back" onclick="showPage('main')">← 返回首頁</button>
-
-    <div id="regFormArea">
-      <div class="section-label">立即報名</div>
-      <h1 class="reg-title">填寫報名資料</h1>
-      <p class="reg-subtitle">請確實填寫以下資料，送出後我們將於<strong style="color:white;">一週內</strong>寄送成班通知。若該梯次額滿，將另行寄送候補通知，請收到確認信後再完成繳費。</p>
-
-      <div class="notice-box">
-        <strong>📋 報名前請注意</strong><br>
-        活動地點：清華大學南大校區體健大樓五樓體育館，請提前確認前往方式。<br>
-        上課當天請攜帶球拍、球鞋、運動服及水壺，現場設有飲水機。<br>
-        選擇全天班者可自備環保餐具；如需代訂午餐（五天共 $500），請於第一天課程時告知教練並繳交餐費。<br>
-        <strong>團體報名請注意：每位學員皆須個別填寫本表單。</strong><br>
-        班別分配將由教練依學員實際程度決定，報名時選填的班別僅供參考。
-      </div>
-
-      <form id="regForm" onsubmit="submitForm(event)">
-        <div class="form-card">
-          <div class="form-card-title">🧒 學員資訊</div>
-          <div class="form-grid">
-            <div class="form-group"><label>學員姓名 <span class="req">*</span></label><input type="text" name="name" placeholder="請輸入學員姓名" required></div>
-            <div class="form-group"><label>性別 <span class="req">*</span></label><select name="gender" required><option value="">請選擇</option><option>男</option><option>女</option><option>不便透露</option></select></div>
-            <div class="form-group"><label>年齡 <span class="req">*</span></label><input type="number" name="age" placeholder="例：10" min="4" max="60" required></div>
-            <div class="form-group"><label>就讀年級</label><input type="text" name="grade" placeholder="例：國小四年級"></div>
-          </div>
-        </div>
-
-        <div class="form-card">
-          <div class="form-card-title">📱 聯絡資訊</div>
-          <div class="form-grid">
-            <div class="form-group"><label>聯絡電話 <span class="req">*</span></label><input type="tel" name="phone" placeholder="請輸入聯絡電話" required></div>
-            <div class="form-group"><label>電子信箱 <span class="req">*</span></label><input type="email" name="email" placeholder="用於接收成班通知" required></div>
-            <div class="form-group"><label>緊急聯絡人姓名 <span class="req">*</span></label><input type="text" name="emergency_name" placeholder="請輸入姓名" required></div>
-            <div class="form-group"><label>緊急聯絡人電話 <span class="req">*</span></label><input type="tel" name="emergency_phone" placeholder="請輸入電話" required></div>
-          </div>
-        </div>
-
-        <div class="form-card">
-          <div class="form-card-title">💳 繳款人資料</div>
-          <label class="check-item" id="samePayerWrap" style="margin-bottom:1rem;" onclick="setTimeout(handleSamePayer,0)">
-            <input type="checkbox" id="samePayer"><div class="check-box"></div>
-            <span>繳款人同緊急聯絡人</span>
-          </label>
-          <div class="form-grid">
-            <div class="form-group"><label>繳款人姓名 <span class="req">*</span></label><input type="text" name="payer_name" id="payerName" placeholder="若與學員相同請重填" required></div>
-            <div class="form-group"><label>繳款人電話 <span class="req">*</span></label><input type="tel" name="payer_phone" id="payerPhone" placeholder="請輸入電話" required></div>
-            <div class="form-group"><label>繳款人信箱 <span class="req">*</span></label><input type="email" name="payer_email" id="payerEmail" placeholder="用於繳費確認通知" required></div>
-            <div class="form-group"><label>與學員關係</label><select name="payer_relation"><option value="">請選擇</option><option>本人</option><option>父母</option><option>監護人</option><option>其他</option></select></div>
-          </div>
-        </div>
-
-        <div class="form-card">
-          <div class="form-card-title">🏸 報名選擇</div>
-          <div class="form-grid">
-
-            <div class="form-group full">
-              <label>報名梯次 <span class="req">*</span>（可複選）</label>
-              <div class="check-grid" id="sessionChecks">
-                <label class="check-item"><input type="checkbox" name="sessions" value="第1梯｜7/06－7/10"><div class="check-box"></div><span>第 1 梯｜7/06（一）－ 7/10（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第2梯｜7/13－7/17"><div class="check-box"></div><span>第 2 梯｜7/13（一）－ 7/17（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第3梯｜7/20－7/24"><div class="check-box"></div><span>第 3 梯｜7/20（一）－ 7/24（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第4梯｜7/27－7/31"><div class="check-box"></div><span>第 4 梯｜7/27（一）－ 7/31（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第5梯｜8/03－8/07"><div class="check-box"></div><span>第 5 梯｜8/03（一）－ 8/07（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第6梯｜8/10－8/14"><div class="check-box"></div><span>第 6 梯｜8/10（一）－ 8/14（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第7梯｜8/17－8/21"><div class="check-box"></div><span>第 7 梯｜8/17（一）－ 8/21（五）</span></label>
-                <label class="check-item"><input type="checkbox" name="sessions" value="第8梯｜8/24－8/28"><div class="check-box"></div><span>第 8 梯｜8/24（一）－ 8/28（五）</span></label>
-              </div>
-            </div>
-
-            <div class="form-group full">
-              <label>上下午班 <span class="req">*</span></label>
-              <div class="check-grid three">
-                <label class="check-item" id="slot-am"><input type="radio" name="time_slots" value="上午班" required><span>上午班<br>09:00–12:00</span></label>
-                <label class="check-item" id="slot-pm"><input type="radio" name="time_slots" value="下午班"><span>下午班<br>14:00–17:00</span></label>
-                <label class="check-item" id="slot-full"><input type="radio" name="time_slots" value="全天班"><span>全天班<br>09:00–17:00</span></label>
-              </div>
-            </div>
-
-            <!-- 費用速查 -->
-            <div class="form-group full">
-              <div style="background:rgba(55,138,221,0.08); border:1px solid rgba(55,138,221,0.2); border-radius:10px; padding:1rem 1.2rem; font-size:0.85rem; line-height:2;">
-                <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; color:var(--amber); margin-bottom:0.5rem;">💰 費用一覽</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem; text-align:center; margin-bottom:0.8rem;">
-                  <div style="background:rgba(255,255,255,0.05); border-radius:8px; padding:0.5rem;">
-                    <div style="font-size:0.75rem; color:var(--text-muted);">上午班</div>
-                    <div style="font-weight:700; color:white;">$4,000</div>
-                    <div style="font-size:0.72rem; color:var(--amber);">優惠 $3,500</div>
-                  </div>
-                  <div style="background:rgba(255,255,255,0.05); border-radius:8px; padding:0.5rem;">
-                    <div style="font-size:0.75rem; color:var(--text-muted);">下午班</div>
-                    <div style="font-weight:700; color:white;">$4,000</div>
-                    <div style="font-size:0.72rem; color:var(--amber);">優惠 $3,500</div>
-                  </div>
-                  <div style="background:rgba(255,255,255,0.05); border-radius:8px; padding:0.5rem;">
-                    <div style="font-size:0.75rem; color:var(--text-muted);">全天班</div>
-                    <div style="font-weight:700; color:white;">$7,600</div>
-                    <div style="font-size:0.72rem; color:var(--amber);">優惠 $7,000</div>
-                  </div>
-                </div>
-                <div style="color:var(--text-muted); font-size:0.78rem;">⭐ 優惠適用：五人以上團體報名 / 清大在校學生 / 教職員工 / 特約合作企業員工</div>
-              </div>
-            </div>
-
-            <div class="form-group full">
-              <label>班別（教練將依程度最終決定）</label>
-              <div class="check-grid three">
-                <label class="check-item"><input type="radio" name="class_pref" value="探索班"><div class="check-box"></div><span>探索班<br>零基礎 / 初學</span></label>
-                <label class="check-item"><input type="radio" name="class_pref" value="進階班"><div class="check-box"></div><span>進階班<br>已有基礎</span></label>
-                <label class="check-item"><input type="radio" name="class_pref" value="菁英班"><div class="check-box"></div><span>菁英班<br>競賽經驗</span></label>
-              </div>
-            </div>
-
-            <div class="form-group full">
-              <label>優惠資格</label>
-              <select name="discount" id="discountSelect" onchange="handleDiscountChange(this.value)">
-                <option value="">請選擇優惠資格</option>
-                <option value="無">不符合，以一般價格報名</option>
-                <option value="五人以上團體報名">五人以上團體報名</option>
-                <option value="清大在校學生">清大在校學生</option>
-                <option value="清大教職員工">清大教職員工</option>
-                <option value="特約合作企業員工（聯華電子（聯電））">特約合作企業員工 — 聯華電子（聯電）</option>
-                <option value="特約合作企業員工（台積電）">特約合作企業員工 — 台積電</option>
-                <option value="特約合作企業員工（工研院）">特約合作企業員工 — 工研院</option>
-              </select>
-            </div>
-
-            <div class="form-group full">
-              <label>學員健康狀況 <span class="req">*</span></label>
-              <div class="check-grid">
-                <label class="check-item"><input type="radio" name="healthStatus" value="無特殊狀況" required><div class="check-box"></div><span>無特殊狀況</span></label>
-                <label class="check-item"><input type="radio" name="healthStatus" value="有特殊狀況"><div class="check-box"></div><span>有特殊狀況，請說明</span></label>
-              </div>
-            </div>
-            <div class="form-group full" id="healthDetailWrap" style="display:none">
-              <label>健康狀況說明 <span class="req">*</span></label>
-              <input type="text" name="healthDetail" placeholder="例如：花生過敏、氣喘、蠶豆症、需定時服藥等">
-            </div>
-            <div class="form-group full">
-              <label class="check-item">
-                <input type="checkbox" name="medicalConsent" required>
-                <div class="check-box"></div>
-                <span>學員於活動中發生緊急傷病時，同意營隊人員先行採取必要之急救或送醫措施，並同時聯繫家長 <span class="req">*</span></span>
-              </label>
-            </div>
-
-            <div class="form-group full" id="groupMemberWrap" style="display:none;">
-              <label>同行團報成員姓名 <span class="req">*</span></label>
-              <textarea name="group_members" placeholder="請填寫同行成員的姓名，每人一行&#10;例：&#10;王小明&#10;李小華&#10;陳大中"></textarea>
-              <span style="font-size:0.78rem; color:var(--text-muted); margin-top:0.3rem;">每位成員皆需個別填寫報名表單，此欄僅供核對團體資格</span>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="form-card">
-          <div class="form-card-title">📝 其他說明</div>
-          <div class="form-group full"><label>運動傷害或注意事項（選填）</label><textarea name="notes" placeholder="如有舊傷、過敏或其他需告知教練的事項，請填寫於此"></textarea></div>
-        </div>
-
-        <div class="form-card">
-          <div class="form-card-title">✅ 同意與確認</div>
-          <div class="form-group full">
-            <label class="check-item">
-              <input type="checkbox" name="guardianConsent" required>
-              <div class="check-box"></div>
-              <span>本人為學員之法定代理人，或已取得法定代理人同意，得以代為完成本報名程序 <span class="req">*</span></span>
-            </label>
-          </div>
-          <div class="form-group full">
-            <label>照片使用同意 <span class="req">*</span>　<span style="font-size:0.78rem;color:var(--text-muted);font-weight:400">本營隊活動期間拍攝之照片，將用於分享至家長群組</span></label>
-            <div class="check-grid">
-              <label class="check-item"><input type="radio" name="photoConsent" value="同意" required><div class="check-box"></div><span>同意</span></label>
-              <label class="check-item"><input type="radio" name="photoConsent" value="不同意"><div class="check-box"></div><span>不同意（拍攝時將迴避）</span></label>
-            </div>
-          </div>
-          <div class="form-group full" style="background:rgba(106,165,221,.06);border:1px solid rgba(106,165,221,.15);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.8;color:var(--text-muted)">
-            <strong style="color:white">本表單蒐集之個人資料，</strong><br>
-            僅用於本營隊報名、聯繫、保險投保及活動安全管理，活動結束後六個月內刪除，不作其他用途。
-          </div>
-          <div class="form-group full" style="background:rgba(240,147,15,.06);border:1px solid rgba(240,147,15,.15);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.8;color:var(--text-muted)">
-            <strong style="color:white">💰 退費條款</strong><br>
-            報名後因故無法參加，依下列條款辦理退費：<br>
-            • 開課前 15 天以上：全額退費<br>
-            • 開課前 6–14 天：退費 90%<br>
-            • 開課前 5 天內：退費 70%<br>
-            • 實際開課後：不予退費
-          </div>
-        </div>
-
-        <button type="button" onclick="previewForm()" class="btn-primary submit-btn">預覽並確認報名資訊 →</button>
-      </form>
-    </div>
-
-    <div id="successArea" style="display:none;">
-      <div class="success-wrap">
-        <div class="icon">🎉</div>
-        <h2>報名完成！</h2>
-        <p>感謝您的報名，我們已收到您的資料。</p>
-        <div class="success-info">
-          📬 接下來將陸續寄送繳費通知，請留意信箱。<br>
-          🔔 若該梯次名額已滿，將另寄候補通知，請於收到確認信後再完成繳費。<br><br>
-          <strong style="color:white;">立即加入學員家長群組，第一時間掌握開班通知：</strong><br>
-          <a href="https://line.me/ti/g/bVkHhe8Xzb" target="_blank" style="display:inline-block; margin-top:0.6rem; background:#06C755; color:white; font-weight:700; font-size:0.95rem; padding:0.6rem 1.8rem; border-radius:8px; text-decoration:none; letter-spacing:0.05em;">💬 加入 LINE 群組</a><br><br>
-          <strong style="color:white;">如有任何問題，歡迎聯繫我們：</strong><br>
-          📧 stayyoung985@gmail.com
-        </div>
-        <div class="success-btns">
-          <button onclick="showPage('main')" class="btn-secondary">返回首頁</button>
-          <button onclick="registerAnother()" class="btn-primary">再填一份</button>
-        </div>
+    <div class="coach-card">
+      <div class="coach-photo"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778723131/hong_ujz44c.jpg" alt="洪紹中教練"></div>
+      <div class="coach-info">
+        <div class="coach-name">洪紹中</div>
+        <div class="coach-title">清大羽球校隊</div>
+        <div class="coach-meta"><b>球齡</b>　12 年<br><b>教學經驗</b>　2 年<br><b>經歷</b>　清華大學校本部夏令營教練</div>
+        <ul class="coach-achievements">
+          <li>112 年全國高中盃　個人雙打第三</li>
+          <li>109 年全國國中盃　個人雙打第二</li>
+        </ul>
       </div>
     </div>
   </div>
+</section>
 
-  <footer>
-    <div>國立清華大學南大校區 羽球夏令營 2026</div>
-    <div style="margin-top:0.4rem;">主辦單位：Stay Young 運動團隊｜指導單位：清華大學體育組</div>
-    <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com</div>
-  </footer>
-</div>
+<hr class="section-line">
 
+<section id="schedule">
+  <div class="fade-up">
+    <div class="section-label">課程內容</div>
+    <h2 class="section-title">2027/1/25（一）－ 1/29（五）　共五天</h2>
+    <p class="section-desc">五天由個人技術走向實戰應用。實際課程以教練現場依程度安排為主。</p>
+  </div>
+  <div class="schedule-grid fade-up" style="transition-delay:0.1s;">
+    <div class="schedule-item"><div class="schedule-num">01</div><div><div class="schedule-dates">Day 1　1/25（一）　握拍與基礎</div><div class="schedule-time">握拍手法・基礎步法・熱身與分組</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">02</div><div><div class="schedule-dates">Day 2　1/26（二）　發球與擊球</div><div class="schedule-time">發球練習・正反拍擊球・分站訓練</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">03</div><div><div class="schedule-dates">Day 3　1/27（三）　步法與移動</div><div class="schedule-time">場上移動・回位概念・多球練習</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">04</div><div><div class="schedule-dates">Day 4　1/28（四）　高遠與殺球</div><div class="schedule-time">高遠球・殺球入門・對打演練</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">05</div><div><div class="schedule-dates">Day 5　1/29（五）　實戰與結業</div><div class="schedule-time">綜合對打・結業對抗賽・大合照</div></div></div>
+  </div>
 
+  <div class="fade-up" style="margin-top:3rem; transition-delay:0.15s;">
+    <div class="section-label">每日時程</div>
+    <h2 class="section-title" style="font-size:clamp(1.4rem,3vw,1.8rem);">一天怎麼過</h2>
+  </div>
+  <div class="schedule-grid fade-up" style="transition-delay:0.2s;">
+    <div class="schedule-item"><div class="schedule-num">08:30</div><div><div class="schedule-dates">開放報到</div><div class="schedule-time">送達、簽到、換裝準備</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">09:00</div><div><div class="schedule-dates">上午訓練　09:00 – 12:00</div><div class="schedule-time">技術拆解與分站練習（上午班・全天班）</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">12:00</div><div><div class="schedule-dates">午餐與午休　12:00 – 14:00</div><div class="schedule-time">營隊代訂或自備餐食，餐後充分休息（全天班）</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">14:00</div><div><div class="schedule-dates">下午訓練　14:00 – 17:00</div><div class="schedule-time">實戰演練與綜合練習（下午班・全天班）</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">17:00</div><div><div class="schedule-dates">放學</div><div class="schedule-time">結束一日課程</div></div></div>
+  </div>
+  <div class="schedule-note fade-up" style="transition-delay:0.25s;">
+    ※ 每個時段限額 50 名，報名滿 15 人即確定開班。額滿後仍可送出報名登記候補。
+  </div>
+</section>
 
+<hr class="section-line">
 
+<section id="pricing">
+  <div class="fade-up">
+    <div class="section-label">報名費用</div>
+    <h2 class="section-title">費用一覽</h2>
+    <p class="section-desc">提供上午班、下午班及全天班三種選擇，符合資格者享有優惠價格。</p>
+  </div>
+  <div class="pricing-wrap fade-up" style="transition-delay:0.1s;">
+    <div class="pricing-header"><div>方案</div><div>上午班</div><div>下午班</div><div>全天班</div></div>
+    <div class="pricing-row"><div class="label">一般報名</div><div class="price">$4,000</div><div class="price">$4,000</div><div class="price">$7,600</div></div>
+    <div class="pricing-row discount"><div class="label">⭐ 優惠價<br><span style="font-size:0.72rem; color:var(--amber-light); font-weight:400;">團報／清大學生／清大教職員工／特約企業</span></div><div class="price">$3,500</div><div class="price">$3,500</div><div class="price">$7,000</div></div>
+    <div class="discount-note">⭐ 優惠適用（擇一，不可疊加）：五人（含）以上團體報名 / 清大在校學生 / 清大教職員工 / 特約合作企業員工（含為子女報名）<br>上午班 09:00–12:00　·　下午班 14:00–17:00　·　全天班 09:00–17:00（含午休）　·　價格為每人五天全程<br>全天班可代訂午餐，五天共 $500，於報名表勾選；半天班不含午餐。</div>
+  </div>
 
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()" aria-label="關閉">&times;</button>
-  <img id="lightboxImg" src="" alt="放大檢視">
+  <div class="partner-box fade-up" style="transition-delay:0.15s;">
+    <div class="partner-title">🤝 特約合作企業</div>
+    <p class="partner-desc">以下企業員工（含為子女報名）無需湊滿五人，即可直接享有優惠價格。</p>
+    <div class="partner-grid">
+      <div class="partner-item"><div class="pn">工業技術研究院</div><div class="ps">工研院　ITRI</div></div>
+      <div class="partner-item"><div class="pn">聯華電子股份有限公司</div><div class="ps">聯電　UMC</div></div>
+      <div class="partner-item"><div class="pn">台灣積體電路製造</div><div class="ps">台積電　TSMC</div></div>
+    </div>
+    <p class="partner-note">※ 報名時請選擇對應企業，主辦方將進行身份核驗後確認優惠資格。</p>
+  </div>
+
+  <div class="schedule-note fade-up" style="transition-delay:0.2s;">
+    ※ 本營隊的繳費單與收款由清華大學校方統一辦理。確認開班後才會通知繳費，未達開班門檻不收取任何費用。報名截止 2027/1/10（日）。
+  </div>
+</section>
+
+<hr class="section-line">
+
+<section id="status">
+  <div class="fade-up">
+    <div class="section-label">招生狀況</div>
+    <h2 class="section-title">各時段目前開班進度</h2>
+    <p class="section-desc">每個時段滿 15 人即確定開班，上限 50 人，額滿後可登記候補。全天班同時佔用上午與下午的名額，因此全天班報滿時，半天班的名額也會跟著變少。</p>
+  </div>
+  <div class="status-grid fade-up" style="transition-delay:0.15s;" id="statusGrid">
+    <div class="status-card">
+      <div class="status-head"><span class="status-name">上午班</span><span class="status-time">09:00 – 12:00</span></div>
+      <div class="status-track"><div class="status-fill" id="fillAm"></div></div>
+      <div class="status-state" id="stateAm" style="color:var(--blue-pale);font-weight:400;">熱烈招生中</div>
+    </div>
+    <div class="status-card">
+      <div class="status-head"><span class="status-name">下午班</span><span class="status-time">14:00 – 17:00</span></div>
+      <div class="status-track"><div class="status-fill" id="fillPm"></div></div>
+      <div class="status-state" id="statePm" style="color:var(--blue-pale);font-weight:400;">熱烈招生中</div>
+    </div>
+    <div class="status-card">
+      <div class="status-head"><span class="status-name">全天班</span><span class="status-time">09:00 – 17:00</span></div>
+      <div class="status-track"><div class="status-fill" id="fillFull"></div></div>
+      <div class="status-state" id="stateFull" style="color:var(--blue-pale);font-weight:400;">熱烈招生中</div>
+    </div>
+  </div>
+  <p class="status-note fade-up">名額狀況每次開啟頁面時即時更新。若顯示額滿，仍可送出報名登記候補，有人取消時我們會依序通知。</p>
+</section>
+
+<hr class="section-line">
+
+<section id="refund">
+  <div class="fade-up">
+    <div class="section-label">退費規則</div>
+    <h2 class="section-title">繳費後的退費標準</h2>
+    <p class="section-desc">依短期補習班設立及管理準則之退費基準辦理，開課前皆不低於七成。</p>
+    <div class="refund-grid">
+      <div class="refund-item"><div class="refund-when">開課 15 天前</div><div class="refund-amt">全額退費</div></div>
+      <div class="refund-item"><div class="refund-when">開課前 6–14 天</div><div class="refund-amt">退 90%</div></div>
+      <div class="refund-item"><div class="refund-when">開課前 5 天內</div><div class="refund-amt low">退 70%</div></div>
+      <div class="refund-item"><div class="refund-when">開課後</div><div class="refund-amt zero">恕不退費</div></div>
+    </div>
+    <p class="refund-note">
+      ※ 單日缺席可與教練協調擇期補課，惟不提供單日退費，費用以整梯計算。<br>
+      ※ 如遇天災（颱風、地震等），依新竹市政府停課公告辦理，停課日將另行協調補課或按比例退費。<br>
+      ※ 退費請來信 stayyoung985@gmail.com，我們將於 7 個工作天內處理。
+    </p>
+  </div>
+</section>
+
+<hr class="section-line">
+
+<section id="gallery">
+  <div class="fade-up">
+    <div class="section-label">往期回顧</div>
+    <h2 class="section-title">2026 夏令營的現場</h2>
+    <p class="section-desc">同一支教練團隊、同樣的帶法。以下為 2026 清華大學羽球夏令營的活動花絮與結業合照。</p>
+  </div>
+  <div class="gallery-grid fade-up" style="transition-delay:0.15s;">
+    <div class="gallery-item gallery-big zoomable">
+      <img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139578/%E7%B5%90%E6%A5%AD%E5%A4%A7%E5%90%88%E7%85%A7_g2sypl.jpg" alt="2026 夏令營結業大合照" loading="lazy">
+    </div>
+    <div class="gallery-item zoomable">
+      <img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139566/%E6%B4%BB%E5%8B%95%E7%85%A7_%E6%95%99%E7%B7%B4%E7%A4%BA%E7%AF%84_qjhp9m.jpg" alt="2026 夏令營 教練示範" loading="lazy">
+    </div>
+    <div class="gallery-item zoomable">
+      <img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139572/%E6%B4%BB%E5%8B%95%E7%85%A7_%E5%AD%B8%E5%93%A1%E7%86%B1%E8%BA%AB_x1aj1p.jpg" alt="2026 夏令營 學員熱身" loading="lazy">
+    </div>
+  </div>
+
+  <!-- 夏令營用的是體健大樓五樓體育館，冬令營改在學生活動中心 1F，是不同的房間。
+       照片保留下來，但獨立成一排並標明年份，避免家長誤以為是今年的場地而走錯。 -->
+  <div class="fade-up" style="margin-top:3rem;">
+    <div class="section-label">2026 夏令營場地</div>
+    <h2 class="section-title" style="font-size:clamp(1.3rem,3vw,1.7rem);">體健大樓五樓體育館</h2>
+  </div>
+  <div class="venue-grid fade-up" style="margin-top:1.2rem; transition-delay:0.1s;">
+    <div class="venue-card">
+      <div class="venue-photo zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor1_pntblf.jpg" alt="2026 夏令營場地 體育館內部一" loading="lazy"></div>
+      <div class="venue-label"><b>體育館內部一</b>　專業木地板、自然採光、設備完善</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-photo zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724466/venue_map_zonyhx.jpg" alt="2026 夏令營場地 體育館內部二" loading="lazy"></div>
+      <div class="venue-label"><b>體育館內部二</b>　空間寬敞，可容納 3 面標準羽球場地</div>
+    </div>
+  </div>
+  <div class="schedule-note fade-up" style="transition-delay:0.15s;">
+    ※ 以上為 2026 夏令營使用的場地。<b>2027 冬令營改在學生活動中心 1F</b>，請以上方「場地介紹」為準。
+  </div>
+</section>
+
+<hr class="section-line">
+
+<section id="faq">
+  <div class="fade-up">
+    <div class="section-label">常見問題</div>
+    <h2 class="section-title">報名前想先知道的事</h2>
+  </div>
+  <div class="faq-list fade-up" style="transition-delay:0.1s;">
+    <div class="faq-item"><button class="faq-q" type="button">完全沒打過羽球可以參加嗎？<span class="faq-mark">＋</span></button><div class="faq-a">當然可以，而且很多學員都是第一次拿拍。我們從握拍、揮拍、腳步這些最基本的開始教，教練會照每個人的節奏走，不會有跟不上的問題。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">真的不限年齡嗎？<span class="faq-mark">＋</span></button><div class="faq-a">是的，本營隊老少皆宜。教練依<b>實際程度</b>分階，不是依年齡分組，所以國小生、國高中生、成人都能找到適合自己的組別。年紀較小的孩子第一次參加，可在報名表備註欄告訴我們，教練會多留意。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">半天班和全天班差在哪裡？<span class="faq-mark">＋</span></button><div class="faq-a">半天班是上午或下午三小時，適合作息比較彈性、或想先試試看的人。全天班六小時含午休，訓練最完整，寒假整天有地方去，安排工作也比較好抓時間。全天班可另外代訂午餐。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">需要自備羽球裝備嗎？<span class="faq-mark">＋</span></button><div class="faq-a">穿好活動的運動服和室內運動鞋就可以了。球拍想自己帶沒問題，沒有的話現場也備有球拍，羽球全部由營隊提供。記得帶水壺，現場設有飲水機。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">優惠可以一起用嗎？<span class="faq-mark">＋</span></button><div class="faq-a">不好意思，優惠資格沒辦法疊加。團報、清大在校學生、清大教職員工、特約合作企業員工，只要符合其中任何一種就享同一個優惠價，不會因為同時符合兩種而更便宜。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">報名後何時繳費？<span class="faq-mark">＋</span></button><div class="faq-a">先報名就好，不用馬上付錢。送出後您會收到一封報名確認信，等報名人數達到開班標準、確定開班之後才會通知繳費。<b>本營隊的繳費單與收款由清華大學校方統一辦理</b>，屆時請依校方通知完成繳費。確定開班前不會收取任何費用。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">沒收到確認信怎麼辦？<span class="faq-mark">＋</span></button><div class="faq-a">先麻煩您到「垃圾郵件」或「促銷內容」資料夾找一下，系統信有時會被自動分類過去。如果找過還是沒有，很可能是報名時信箱有誤，請直接來信 stayyoung985@gmail.com 告訴我們學員姓名，我們會幫您確認報名狀態並補寄一次。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">額滿後如何候補？<span class="faq-mark">＋</span></button><div class="faq-a">如果該時段名額滿了，您的報名會自動排進候補名單，一樣不會收任何費用。只要有人取消釋出名額，我們會立刻用 email 通知您，依序遞補。其他時段若還有名額，也可以回信告訴我們，我們可協助改到有空位的時段。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">團體報名怎麼算？<span class="faq-mark">＋</span></button><div class="faq-a">五人（含本人）以上即可適用團報優惠。要注意的是，<b>每位成員都必須各自填寫一份報名表</b>，並在報名表的「團報學員名單」列出其他成員姓名，供我們核對團體資格。</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="register-cta fade-up">
+    <h3>🏸 準備好了嗎？</h3>
+    <p>每時段限額 50 名，滿 15 人即確定開班。報名截止 2027/1/10（日），額滿可登記候補。</p>
+    <a href="signup.html" class="btn-primary">前往報名頁面 →</a>
+  </div>
+</section>
+
+<footer>
+  <div>國立清華大學南大校區 羽球冬令營 2027</div>
+  <div style="margin-top:0.4rem;">主辦單位：清華大學羽球校隊｜指導單位：清華大學體育組</div>
+  <div style="margin-top:0.4rem;">聯繫我們：stayyoung985@gmail.com</div>
+  <div style="margin-top:0.5rem; font-size:0.75rem; opacity:0.6;">實際課程內容以現場教練安排為主，主辦單位保有調整活動內容之權利</div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" type="button" aria-label="關閉">&times;</button>
+  <img id="lightboxImg" alt="放大檢視">
 </div>
 
 <script>
-
-// ── 繳款人同聯絡人 ──
-function handleSamePayer() {
-  const same = document.getElementById('samePayer').checked;
-  const pName = document.getElementById('payerName');
-  const pPhone = document.getElementById('payerPhone');
-  const pEmail = document.getElementById('payerEmail');
-  const form = document.getElementById('regForm');
-  if (same) {
-    pName.value = form.emergency_name.value;
-    pPhone.value = form.phone.value;
-    pEmail.value = form.email.value;
-    [pName, pPhone, pEmail].forEach(el => { el.readOnly = true; el.style.opacity = '0.6'; });
-  } else {
-    [pName, pPhone, pEmail].forEach(el => { el.readOnly = false; el.style.opacity = '1'; });
-  }
-}
-// 聯絡資訊變動時，若已勾選則同步更新
-document.addEventListener('input', function(e){
-  if (['emergency_name','phone','email'].includes(e.target.name)) {
-    const sp = document.getElementById('samePayer');
-    if (sp && sp.checked) handleSamePayer();
-  }
-});
-
-// ── 相簿燈箱 ──
-function openLightbox(src) {
-  const lb = document.getElementById('lightbox');
-  document.getElementById('lightboxImg').src = src;
-  lb.classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-
-// ── 報名進度條（從 GAS 即時拉取）──
-const OPEN_MIN = 6, MAX = 30;
-const BATCH_META = [
-  { key: '第1梯', label: '第 1 梯', date: '7/06－7/10' },
-  { key: '第2梯', label: '第 2 梯', date: '7/13－7/17' },
-  { key: '第3梯', label: '第 3 梯', date: '7/20－7/24' },
-  { key: '第4梯', label: '第 4 梯', date: '7/27－7/31' },
-  { key: '第5梯', label: '第 5 梯', date: '8/03－8/07' },
-  { key: '第6梯', label: '第 6 梯', date: '8/10－8/14' },
-  { key: '第7梯', label: '第 7 梯', date: '8/17－8/21' },
-  { key: '第8梯', label: '第 8 梯', date: '8/24－8/28' },
-];
-
-// 確定取消開班的時段清單
-const CLOSED_SLOTS = {
-  '第1梯': ['pm'],
-  '第2梯': ['pm'],
-  '第4梯': ['am', 'pm'],
-  '第6梯': ['pm'],
-  '第7梯': ['pm'],
-};
-
-// 各梯起訖日期（自動判斷「進行中 / 圓滿結束」用）
-const BATCH_DATES = {
-  '第1梯': { start: '2026-07-06', end: '2026-07-10' },
-  '第2梯': { start: '2026-07-13', end: '2026-07-17' },
-  '第3梯': { start: '2026-07-20', end: '2026-07-24' },
-  '第4梯': { start: '2026-07-27', end: '2026-07-31' },
-  '第5梯': { start: '2026-08-03', end: '2026-08-07' },
-  '第6梯': { start: '2026-08-10', end: '2026-08-14' },
-  '第7梯': { start: '2026-08-17', end: '2026-08-21' },
-  '第8梯': { start: '2026-08-24', end: '2026-08-28' },
-};
-
-function batchTimeState(key) {
-  const d = BATCH_DATES[key];
-  if (!d) return 'enroll';
-  const now = new Date();
-  const start = new Date(d.start + 'T00:00:00');
-  const end = new Date(d.end + 'T23:59:59');
-  if (now > end) return 'finished';
-  if (now >= start && now <= end) return 'ongoing';
-  return 'enroll';
-}
-
-function renderProgressData(progress) {
-  const wrap = document.getElementById('progressBars');
-  if (!wrap) return;
-  const labelFor = (pure, closed) => {
-    if (closed) return '<span style="color:#F09595;font-weight:700;">🔴 取消開班</span>';
-    if (pure >= 6) return '<span style="color:#9FE1CB;font-weight:700;">✅ 確定開班</span>';
-    if (pure >= 3) return `<span style="color:var(--amber);font-weight:700;">差 ${6 - pure} 人開班</span>`;
-    return '<span style="color:var(--blue-pale);">熱烈招生中</span>';
-  };
-  wrap.innerHTML = BATCH_META.map(({ key, label, date }) => {
-    const d = progress[key] || { am: 0, pm: 0, ft: 0 };
-    const closed = CLOSED_SLOTS[key] || [];
-    const amClosed = closed.includes('am');
-    const pmClosed = closed.includes('pm');
-    const allClosed = amClosed && pmClosed;
-    const dim = c => c ? 'opacity:0.6;' : '';
-    const timeState = batchTimeState(key);
-
-    const cardWrap = (borderColor, opacity, inner) => `
-      <div style="background:var(--navy-dark);border:1px solid ${borderColor};border-radius:10px;padding:0.9rem 1.2rem;${opacity}">
-        <div style="display:flex;justify-content:space-between;align-items:center;${inner.grid ? 'margin-bottom:0.5rem;' : ''}">
-          <span style="font-weight:700;font-size:0.95rem;">${label}</span>
-          <span style="font-size:0.78rem;color:var(--text-muted);">${date}</span>
-        </div>
-        ${inner.body}
-      </div>`;
-
-    // 1. 整梯取消 → 一律顯示取消（優先級最高，不看日期）
-    if (allClosed) {
-      return cardWrap('rgba(226,75,74,0.3)', 'opacity:0.75;', {
-        body: `<div style="text-align:center;padding:0.5rem 0 0.1rem;"><span style="color:#F09595;font-weight:700;font-size:0.95rem;letter-spacing:0.05em;">🔴 取消開班</span></div>`
-      });
+// ── 捲動淡入 ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.addEventListener('transitionend', () => {
+        e.target.classList.remove('fade-up', 'visible');
+        e.target.style.opacity = '';
+        e.target.style.transform = '';
+        io.unobserve(e.target);
+      }, { once: true });
     }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
-    // 2. 圓滿結束
-    if (timeState === 'finished') {
-      return cardWrap('rgba(29,158,117,0.3)', 'opacity:0.85;', {
-        body: `<div style="text-align:center;padding:0.5rem 0 0.1rem;"><span style="color:#9FE1CB;font-weight:700;font-size:0.95rem;letter-spacing:0.05em;">🎉 圓滿結束！</span></div>`
-      });
-    }
-
-    // 3. 進行中 → 註明哪個時段進行（單時段取消時只標開的那個）
-    if (timeState === 'ongoing') {
-      let slotText;
-      if (amClosed) slotText = '下午班進行中';
-      else if (pmClosed) slotText = '上午班進行中';
-      else slotText = '進行中';
-      return cardWrap('rgba(239,159,39,0.4)', '', {
-        body: `<div style="text-align:center;padding:0.5rem 0 0.1rem;"><span style="color:var(--amber-light);font-weight:700;font-size:0.95rem;letter-spacing:0.05em;">🏸 ${slotText}</span></div>`
-      });
-    }
-
-    // 4. 尚未開始 → 顯示上下午開班狀態
-    return cardWrap('rgba(55,138,221,0.15)', '', {
-      grid: true,
-      body: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.82rem;">
-          <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;${dim(amClosed)}">
-            <span style="color:var(--text-muted);">上午班</span>
-            ${labelFor(d.am, amClosed)}
-          </div>
-          <div style="display:flex;justify-content:space-between;background:rgba(255,255,255,0.04);border-radius:6px;padding:0.4rem 0.8rem;${dim(pmClosed)}">
-            <span style="color:var(--text-muted);">下午班</span>
-            ${labelFor(d.pm, pmClosed)}
-          </div>
-        </div>`
-    });
-  }).join('');
-}
-
-async function loadProgress() {
-  const wrap = document.getElementById('progressBars');
-  if (!wrap) return;
-  // 由主辦方手動維護，數字包含線上報名與現場報名，需與 Sheet 對照後更新
-  const PROGRESS = {'第1梯':{am:8,pm:0},'第2梯':{am:9,pm:0},'第3梯':{am:11,pm:5},'第4梯':{am:0,pm:0},'第5梯':{am:7,pm:10},'第6梯':{am:5,pm:0},'第7梯':{am:7,pm:0},'第8梯':{am:6,pm:6}};
-  renderProgressData(PROGRESS);
-}
-
-// ── PAGES ──
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  window.scrollTo(0, 0);
-  if (name === 'main') setTimeout(initFade, 50);
-}
-function goTo(id) {
-  if (!document.getElementById('page-main').classList.contains('active')) {
-    showPage('main');
-  }
-  setTimeout(() => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 80);
-}
-
-// ── FADE ──
-// observer 只建一次；initFade 每次返回首頁只補觀察「尚未播放過」的元素，
-// 避免每次切頁都疊加一個新的 IntersectionObserver。
-let fadeObserver = null;
-function initFade() {
-  if (!fadeObserver) {
-    fadeObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          e.target.addEventListener('transitionend', () => {
-            e.target.classList.remove('fade-up', 'visible');
-            e.target.style.opacity = '';
-            e.target.style.transform = '';
-            fadeObserver.unobserve(e.target);
-          }, { once: true });
-        }
-      });
-    }, { threshold: 0.1 });
-  }
-  document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
-}
-initFade();
-
-// ── 優惠資格聯動 ──
-function handleDiscountChange(val) {
-  // 團報成員框
-  const groupWrap = document.getElementById('groupMemberWrap');
-  groupWrap.style.display = val.includes('團體') ? 'flex' : 'none';
-}
-
-// ── 無障礙強化 ──
-// 1) 以 div 實作的可點擊元素（導覽、相簿縮圖）補上鍵盤操作與角色
-//    #lightbox 是整片遮罩，不該進 tab 順序，因此排除
-document.querySelectorAll('div[onclick]').forEach(el => {
-  if (el.id === 'lightbox') return;
-  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
-  if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
-  el.addEventListener('keydown', ev => {
-    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); el.click(); }
+// ── 照片放大檢視 ──
+const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lightboxImg');
+document.querySelectorAll('.zoomable img').forEach(img => {
+  img.style.cursor = 'zoom-in';
+  img.addEventListener('click', () => {
+    lbImg.src = img.src; lbImg.alt = img.alt;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
   });
 });
-// 2) 必填欄位補 aria-required
-document.querySelectorAll('#regForm [required]').forEach(el => el.setAttribute('aria-required', 'true'));
+function closeLightbox(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+lb.addEventListener('click', closeLightbox);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-// 健康狀況欄位條件顯示
-document.addEventListener('change', function(e) {
-  if (e.target.name === 'healthStatus') {
-    const healthDetailWrap = document.getElementById('healthDetailWrap');
-    const healthDetail = document.querySelector('input[name="healthDetail"]');
-    if (e.target.value === '有特殊狀況') {
-      healthDetailWrap.style.display = 'flex';
-      healthDetail.required = true;
+// ── FAQ 手風琴（含 aria-expanded，讓螢幕閱讀器知道展開與否）──
+document.querySelectorAll('.faq-q').forEach((btn, i) => {
+  const panel = btn.nextElementSibling;
+  btn.setAttribute('aria-expanded', 'false');
+  if (panel) {
+    if (!panel.id) panel.id = 'faq-a-' + i;
+    btn.setAttribute('aria-controls', panel.id);
+  }
+  btn.addEventListener('click', () => {
+    const open = btn.parentElement.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+});
+
+// ── 招生狀況（向 GAS 取各時段正取人數，回傳不含任何個資）──
+// ⚠️ GAS_URL 必須與 signup.html 內的值相同。部署 Apps Script 後兩邊一起換。
+const GAS_URL = 'YOUR_GAS_WEB_APP_URL_HERE';
+const CAPACITY = 50, MIN_OPEN = 15;
+const BACKEND_READY = GAS_URL.indexOf('YOUR_') !== 0;
+
+// 後端還沒接上時，把「立即報名」改成「報名即將開放」，並把招生狀況換成籌備中。
+// 家長點進報名頁會看到來信登記的說明，不會填完整份表才發現送不出去。
+// 填入真實 GAS_URL 之後這段自動失效。
+if (!BACKEND_READY) {
+  document.querySelectorAll('a[href="signup.html"]').forEach(a => {
+    a.textContent = a.classList.contains('nav-register') ? '報名即將開放' : '報名即將開放 →';
+  });
+  ['Am','Pm','Full'].forEach(k => {
+    const st = document.getElementById('state' + k);
+    if (st) { st.textContent = '報名即將開放'; st.style.color = 'var(--amber-light)'; }
+  });
+  const note = document.getElementById('statusNote') || document.querySelector('#status .status-note');
+  if (note) note.innerHTML = '報名系統正在最後設定中。開放後這裡會即時顯示各時段的開班進度；' +
+    '想先登記名額請來信 <b style="color:var(--amber-light);font-weight:500">stayyoung985@gmail.com</b>。';
+}
+
+function renderStatus(d) {
+  // 全天班同時佔用上午與下午，所以它的擁擠度取兩邊較滿的那一側
+  const view = {
+    Am:   d.amOcc,
+    Pm:   d.pmOcc,
+    Full: Math.max(d.amOcc, d.pmOcc)
+  };
+  Object.keys(view).forEach(k => {
+    const occ = view[k];
+    const fill = document.getElementById('fill' + k);
+    const state = document.getElementById('state' + k);
+    if (!fill || !state) return;
+    fill.className = 'status-fill';
+    fill.style.width = Math.min(100, Math.round(occ / CAPACITY * 100)) + '%';
+    state.style.fontWeight = '700';
+    if (occ >= CAPACITY) {
+      fill.classList.add('full');
+      state.style.color = '#F09595';
+      state.textContent = '🔴 已額滿・可登記候補';
+    } else if (occ >= MIN_OPEN) {
+      fill.classList.add('done');
+      state.style.color = '#9FE1CB';
+      state.textContent = '✅ 確定開班　目前 ' + occ + ' 人，尚餘 ' + (CAPACITY - occ) + ' 個名額';
+    } else if (occ > 0) {
+      state.style.color = 'var(--amber)';
+      state.textContent = '差 ' + (MIN_OPEN - occ) + ' 人開班　目前 ' + occ + ' 人';
     } else {
-      healthDetailWrap.style.display = 'none';
-      healthDetail.required = false;
-      healthDetail.value = '';
-    }
-  }
-});
-
-// ── FORM ──
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwu-bdlAPH7R-l_CgYcjIURBYKt6ffTO5TSUf17CoEH775V9Tj238-mBfVmWQPS540/exec';
-
-loadProgress();
-
-// ── 已結束或已取消的梯次不可勾選 ──
-function sessionSelectable(key) {
-  const closed = CLOSED_SLOTS[key] || [];
-  if (closed.indexOf('am') >= 0 && closed.indexOf('pm') >= 0) return false;  // 整梯取消
-  const d = BATCH_DATES[key];
-  if (!d) return true;
-  const now = new Date();
-  const start = new Date(d.start + 'T00:00:00');
-  // 關閉點 = 開始日前一天 23:59:59（開始日零時的前一秒）。
-  // 不可寫成 -24h，那會讓「前一天」整天都不能報名，比規格早關一天。
-  const closeTime = new Date(start.getTime() - 1000);
-  return now <= closeTime;
-}
-function lockUnavailableSessions() {
-  document.querySelectorAll('input[name="sessions"]').forEach(cb => {
-    const key = String(cb.value).split('｜')[0];
-    if (sessionSelectable(key)) return;
-    cb.checked = false;
-    cb.disabled = true;
-    const label = cb.closest('.check-item');
-    if (label) {
-      label.classList.add('disabled');
-      const span = label.querySelector('span');
-      const closed = CLOSED_SLOTS[key] || [];
-      const why = (closed.indexOf('am') >= 0 && closed.indexOf('pm') >= 0) ? '（未開班）'
-                : (batchTimeState(key) === 'finished' ? '（已結束）' : '（進行中）');
-      if (span && span.textContent.indexOf('（') === -1) span.textContent += ' ' + why;
+      state.style.color = 'var(--blue-pale)';
+      state.style.fontWeight = '400';
+      state.textContent = '熱烈招生中';
     }
   });
 }
-lockUnavailableSessions();
 
-function previewForm() {
-  const form = document.getElementById('regForm');
-  const fd = new FormData(form);
-
-  // 基本驗證
-  const required = ['name','gender','age','phone','email','emergency_name','emergency_phone','payer_name','payer_phone','payer_email'];
-  for (const f of required) {
-    if (!fd.get(f)) { alert('請填寫所有必填欄位（標示 * 的欄位）'); form.reportValidity(); return; }
-  }
-  const sessions = fd.getAll('sessions');
-  const badSession = sessions.map(v => String(v).split('｜')[0]).filter(k => !sessionSelectable(k));
-  if (badSession.length) {
-    alert('您選擇的梯次（' + badSession.join('、') + '）已結束或未開班，請重新選擇。');
-    return;
-  }
-  if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
-  const slot = fd.get('time_slots');
-  if (!slot) { alert('請選擇上下午班'); return; }
-
-  const discount = fd.get('discount') || '未選擇';
-
-  // 健康狀況、醫療授權、法定代理人、照片同意
-  const health = fd.get('healthStatus');
-  if (!health) { alert('請選擇學員健康狀況'); return; }
-  if (health === '有特殊狀況' && !String(fd.get('healthDetail') || '').trim()) {
-    alert('請填寫健康狀況說明'); return;
-  }
-  if (!fd.get('medicalConsent')) { alert('請勾選緊急醫療授權'); return; }
-  if (!fd.get('guardianConsent')) { alert('請勾選法定代理人聲明'); return; }
-  if (!fd.get('photoConsent')) { alert('請勾選照片使用同意'); return; }
-
-  // 團報驗證：比照兩個冬令營站，選團體優惠就要列出同行成員
-  if (discount.includes('團體')) {
-    const gms = String(fd.get('group_members') || '')
-      .split('\n').map(s => s.trim()).filter(Boolean);
-    if (gms.length < 4) {
-      alert('團體報名需 5 人（含本人）以上，請至少填寫 4 位同行成員姓名，每人一行。');
-      return;
-    }
-  }
-
-  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
-  const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
-  const unitPrice = priceMap[slot] || 0;
-  const price = unitPrice * sessions.length;
-
-  const row = (label, value) => `
-    <div style="display:flex; gap:0.8rem; padding:0.55rem 0; border-bottom:1px solid rgba(55,138,221,0.1); font-size:0.88rem;">
-      <div style="min-width:110px; color:var(--text-muted); flex-shrink:0;">${label}</div>
-      <div style="color:white; font-weight:500;">${value || '—'}</div>
-    </div>`;
-
-  const modal = document.createElement('div');
-  modal.id = 'previewModal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;';
-  modal.innerHTML = `
-    <div style="background:#0A3660;border:1px solid rgba(55,138,221,0.3);border-radius:16px;padding:2rem;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;">
-      <div style="font-family:'Noto Serif TC',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.4rem;">📋 請確認報名資訊</div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.2rem;">確認後資料將正式送出，請仔細核對。</p>
-
-      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">學員資訊</div>
-      ${row('姓名', fd.get('name'))}
-      ${row('性別', fd.get('gender'))}
-      ${row('年齡', fd.get('age') + ' 歲')}
-      ${row('年級', fd.get('grade') || '未填')}
-
-      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">聯絡資訊</div>
-      ${row('電話', fd.get('phone'))}
-      ${row('Email', fd.get('email'))}
-      ${row('緊急聯絡人', fd.get('emergency_name'))}
-      ${row('緊急電話', fd.get('emergency_phone'))}
-
-      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">繳款人</div>
-      ${row('姓名', fd.get('payer_name'))}
-      ${row('電話', fd.get('payer_phone'))}
-      ${row('信箱', fd.get('payer_email'))}
-      ${row('關係', fd.get('payer_relation') || '未填')}
-
-      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;color:var(--amber);margin:1rem 0 0.4rem;">報名選擇</div>
-      ${row('梯次', sessions.join('、'))}
-      ${row('時段', slot)}
-      ${row('班別偏好', fd.get('class_pref') || '待評估')}
-      ${row('優惠資格', discount)}
-      ${fd.get('group_members') ? row('團報成員', fd.get('group_members')) : ''}
-      ${fd.get('notes') ? row('備注', fd.get('notes')) : ''}
-      ${row('健康狀況', health === '有特殊狀況' ? '有特殊狀況：' + String(fd.get('healthDetail') || '').trim() : '無特殊狀況')}
-      ${row('緊急醫療授權', '同意')}
-      ${row('法定代理人聲明', '同意')}
-      ${row('照片使用同意', fd.get('photoConsent') || '—')}
-
-      <div style="margin-top:1.2rem;background:rgba(239,159,39,0.1);border:1px solid rgba(239,159,39,0.3);border-radius:10px;padding:0.9rem 1.1rem;font-size:0.9rem;">
-        <div style="color:var(--text-muted);font-size:0.78rem;margin-bottom:0.3rem;">預估費用</div>
-        <div style="font-family:'Noto Serif TC',serif;font-size:1.6rem;font-weight:900;color:var(--amber);">$${price.toLocaleString()}</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">$${unitPrice.toLocaleString()} × ${sessions.length} 梯次　${isDiscount ? '已套用優惠價格' : '一般報名價格'}，繳費後完成報名</div>
-      </div>
-
-      <div style="display:flex;gap:0.8rem;margin-top:1.5rem;">
-        <button onclick="document.getElementById('previewModal').remove()" style="flex:1;background:transparent;border:1px solid rgba(181,212,244,0.3);color:#B5D4F4;border-radius:8px;padding:0.85rem;cursor:pointer;font-family:inherit;font-size:0.9rem;">返回修改</button>
-        <button onclick="confirmSubmit()" style="flex:2;background:var(--amber);border:none;color:#412402;border-radius:8px;padding:0.85rem;cursor:pointer;font-weight:700;font-family:inherit;font-size:0.95rem;">確認送出 →</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-}
-
-async function confirmSubmit() {
-  document.getElementById('previewModal').remove();
-  document.getElementById('regForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-}
-
-async function submitForm(e) {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const sessions = fd.getAll('sessions');
-  const badSession2 = sessions.map(v => String(v).split('｜')[0]).filter(k => !sessionSelectable(k));
-  if (badSession2.length) {
-    alert('您選擇的梯次（' + badSession2.join('、') + '）已結束或未開班，請重新選擇。');
-    return;
-  }
-  if (!sessions.length) { alert('請至少選擇一個梯次'); return; }
-  const slot = fd.get('time_slots');
-  if (!slot) { alert('請選擇一個時段'); return; }
-
-  const discount = fd.get('discount') || '未選擇';
-
-  // 健康狀況、醫療授權、法定代理人、照片同意
-  const health = fd.get('healthStatus');
-  if (!health) { alert('請選擇學員健康狀況'); return; }
-  if (health === '有特殊狀況' && !String(fd.get('healthDetail') || '').trim()) {
-    alert('請填寫健康狀況說明'); return;
-  }
-  if (!fd.get('medicalConsent')) { alert('請勾選緊急醫療授權'); return; }
-  if (!fd.get('guardianConsent')) { alert('請勾選法定代理人聲明'); return; }
-  if (!fd.get('photoConsent')) { alert('請勾選照片使用同意'); return; }
-
-  // 團報驗證：比照兩個冬令營站，選團體優惠就要列出同行成員
-  if (discount.includes('團體')) {
-    const gms = String(fd.get('group_members') || '')
-      .split('\n').map(s => s.trim()).filter(Boolean);
-    if (gms.length < 4) {
-      alert('團體報名需 5 人（含本人）以上，請至少填寫 4 位同行成員姓名，每人一行。');
-      return;
-    }
-  }
-
-  const isDiscount = discount.includes('團體') || discount.includes('學生') || discount.includes('教職') || discount.includes('特約');
-  const priceMap = { '上午班': isDiscount ? 3500 : 4000, '下午班': isDiscount ? 3500 : 4000, '全天班': isDiscount ? 7000 : 7600 };
-
-  const entry = {
-    time: new Date().toLocaleString('zh-TW'),
-    name: fd.get('name'), gender: fd.get('gender'), age: fd.get('age'), grade: fd.get('grade') || '—',
-    phone: fd.get('phone'), email: fd.get('email'),
-    emergency_name: fd.get('emergency_name'), emergency_phone: fd.get('emergency_phone'),
-    payer_name: fd.get('payer_name'), payer_phone: fd.get('payer_phone'),
-    payer_email: fd.get('payer_email') || '—',
-    payer_relation: fd.get('payer_relation') || '—',
-    sessions: sessions.join('、'),
-    time_slots: slot,
-    class_prefs: fd.get('class_pref') || '待評估',
-    discount: discount,
-    group_members: fd.get('group_members') || '—',
-    notes: fd.get('notes') || '—',
-    healthStatus: health,
-    healthDetail: String(fd.get('healthDetail') || '').trim() || '—',
-    medicalConsent: fd.get('medicalConsent') ? '同意' : '',
-    guardianConsent: fd.get('guardianConsent') ? '同意' : '',
-    photoConsent: fd.get('photoConsent') || '',
-    price: `$${((priceMap[slot] || 0) * sessions.length).toLocaleString()}`
-  };
-
-  const btn = e.target.querySelector('.submit-btn');
-  const origText = btn.textContent;
-  btn.textContent = '送出中...';
-  btn.disabled = true;
-
-  // 寫入 Google Sheets
-  let sheetOk = false;
+(async function loadStatus(){
+  // 後端還沒部署時不要發請求，維持「熱烈招生中」的預設畫面
+  if (GAS_URL.indexOf('YOUR_') === 0) return;
   try {
-    const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(entry) });
+    const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'progress' }) });
     const json = await res.json();
-    sheetOk = json.success === true;
-    if (!sheetOk) console.warn('Sheets 回傳：', json);
-  } catch(err) { console.warn('Sheets 寫入失敗：', err); }
-
-  // Web3Forms Email — 通知給管理員
-  // 管理員通知已改由 GAS 端寄出（信中不含個資），不再送往任何第三方服務
-
-  btn.textContent = origText;
-  btn.disabled = false;
-
-  if (!sheetOk) {
-    alert('資料送出失敗，請稍後再試或聯繫 stayyoung985@gmail.com');
-    return;
+    if (json && json.status === 'ok') renderStatus(json);
+  } catch (err) {
+    // 取不到就維持預設畫面。招生狀況只是輔助資訊，不該讓它擋住報名動線。
+    console.warn('招生狀況讀取失敗：', err);
   }
-
-  document.getElementById('regFormArea').style.display = 'none';
-  document.getElementById('successArea').style.display = 'block';
-  window.scrollTo(0, 0);
-}
-
-function registerAnother() {
-  document.getElementById('regForm').reset();
-  document.querySelectorAll('#regForm input[type=checkbox], #regForm input[type=radio]').forEach(cb => cb.checked = false);
-  ['payerName','payerPhone','payerEmail'].forEach(id => { const el=document.getElementById(id); if(el){el.readOnly=false; el.style.opacity='1';} });
-  document.getElementById('groupMemberWrap').style.display = 'none';
-  // 健康狀況說明欄一併收合，避免上一筆的展開狀態殘留
-  const hdw = document.getElementById('healthDetailWrap');
-  if (hdw) hdw.style.display = 'none';
-  const hd = document.querySelector('input[name="healthDetail"]');
-  if (hd) hd.required = false;
-  document.getElementById('regFormArea').style.display = 'block';
-  document.getElementById('successArea').style.display = 'none';
-  window.scrollTo(0, 0);
-}
-
+})();
 </script>
 </body>
 </html>
