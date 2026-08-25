@@ -161,7 +161,8 @@
 
   /* gallery（往期回顧） */
   .gallery-grid { display: grid; grid-template-columns: 1.6fr 1fr; grid-template-rows: 1fr 1fr; gap: 0.8rem; margin-top: 3rem; }
-  .gallery-item { border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid rgba(55,138,221,0.15); transition: border-color 0.25s, transform 0.25s; position: relative; }
+  /* min-height:0 讓直式大圖不會把整列撐高，右邊兩欄才對得齊 */
+  .gallery-item { border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid rgba(55,138,221,0.15); transition: border-color 0.25s, transform 0.25s; position: relative; min-height: 0; }
   .gallery-item:hover { border-color: rgba(239,159,39,0.5); transform: translateY(-3px); }
   .gallery-item.gallery-big { grid-row: 1 / 3; }
   .gallery-item:not(.gallery-big) { aspect-ratio: 16/10; }
@@ -183,6 +184,9 @@
   .venue-card.full { grid-column: 1 / -1; }
   .venue-photo { width: 100%; aspect-ratio: 16/9; overflow: hidden; cursor: zoom-in; }
   .venue-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* 平面圖要看得清楚字，不能裁切，所以整張縮進去、底色補白 */
+  .venue-photo.map { aspect-ratio: auto; }
+  .venue-photo.map img { object-fit: contain; background: #fff; height: auto; }
   .venue-label { padding: 0.7rem 1rem 0.9rem; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid rgba(55,138,221,0.15); line-height: 1.8; }
   .venue-label b { color: var(--text-light); font-weight: 500; }
 
@@ -337,7 +341,18 @@
   <div class="venue-grid fade-up" style="transition-delay:0.15s;">
     <div class="venue-card full">
       <div class="venue-photo zoomable"><img src="images/venue-hall-1f.jpg" alt="學生活動中心 1F 室內場地"></div>
-      <div class="venue-label"><b>學生活動中心 1F</b>　室內木地板場地，空間寬敞、照明充足<br>地址：新竹市東區南大路 521 號　|　交通：地下停車場可停放車輛，正門 / 側門皆可進入</div>
+      <div class="venue-label"><b>學生活動中心 1F</b>　室內木地板場地，空間寬敞、照明充足，全程室內不受天候影響</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-photo zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor2_f8v02z.jpg" alt="清華大學南大校區外觀" loading="lazy"></div>
+      <div class="venue-label"><b>校區環境</b>　寧靜清幽的大學校園，綠地與田徑場環繞</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-photo map zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724467/venue_campus_bwfyha.jpg" alt="清華大學南大校區平面圖" loading="lazy"></div>
+      <div class="venue-label"><b>校區平面圖</b>　可對照正門、側門與地下停車場（B2–B3）位置</div>
+    </div>
+    <div class="venue-card full">
+      <div class="venue-label" style="border-top:none;"><b>地址</b>　新竹市東區南大路 521 號　|　<b>交通</b>　地下停車場可停放車輛，正門 / 側門皆可進入</div>
     </div>
   </div>
   <p class="status-note fade-up">確切集合地點與報到位置，將於開課前一週以 email 與家長群組通知。</p>
@@ -534,6 +549,26 @@
     <div class="gallery-item zoomable">
       <img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1785139572/%E6%B4%BB%E5%8B%95%E7%85%A7_%E5%AD%B8%E5%93%A1%E7%86%B1%E8%BA%AB_x1aj1p.jpg" alt="2026 夏令營 學員熱身" loading="lazy">
     </div>
+  </div>
+
+  <!-- 夏令營用的是體健大樓五樓體育館，冬令營改在學生活動中心 1F，是不同的房間。
+       照片保留下來，但獨立成一排並標明年份，避免家長誤以為是今年的場地而走錯。 -->
+  <div class="fade-up" style="margin-top:3rem;">
+    <div class="section-label">2026 夏令營場地</div>
+    <h2 class="section-title" style="font-size:clamp(1.3rem,3vw,1.7rem);">體健大樓五樓體育館</h2>
+  </div>
+  <div class="venue-grid fade-up" style="margin-top:1.2rem; transition-delay:0.1s;">
+    <div class="venue-card">
+      <div class="venue-photo zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724468/venue_indoor1_pntblf.jpg" alt="2026 夏令營場地 體育館內部一" loading="lazy"></div>
+      <div class="venue-label"><b>體育館內部一</b>　專業木地板、自然採光、設備完善</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-photo zoomable"><img src="https://res.cloudinary.com/du9nntlc0/image/upload/v1778724466/venue_map_zonyhx.jpg" alt="2026 夏令營場地 體育館內部二" loading="lazy"></div>
+      <div class="venue-label"><b>體育館內部二</b>　空間寬敞，可容納 3 面標準羽球場地</div>
+    </div>
+  </div>
+  <div class="schedule-note fade-up" style="transition-delay:0.15s;">
+    ※ 以上為 2026 夏令營使用的場地。<b>2027 冬令營改在學生活動中心 1F</b>，請以上方「場地介紹」為準。
   </div>
 </section>
 
