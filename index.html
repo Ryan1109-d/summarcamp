@@ -259,7 +259,10 @@
     .partner-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
-    nav ul { display: none; }
+    /* 手機只收起選單項目，保留最後一個「立即報名」——導覽列是固定的，
+       這是滑過首屏之後唯一還看得到的報名入口（台大／足球站也是這個行為）。 */
+    nav ul { gap: 0; }
+    nav ul li:not(:last-child) { display: none; }
     .hero h1 { font-size: 2.4rem; }
     .hero-cta { flex-direction: column; align-items: center; }
     .hero-cta .btn-primary, .hero-cta .btn-secondary { width: 240px; text-align: center; }
