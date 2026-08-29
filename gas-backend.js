@@ -220,7 +220,8 @@ function lineSection() {
   const url = String(CONFIG.LINE_GROUP_URL || '').trim();
   if (!url || url.indexOf('http') !== 0) return '';
   return '\n\n── 加入家長社群 ──\n' +
-         '請加入本營隊的 LINE 家長社群，開班通知、繳費提醒與每日花絮都會在這裡發布：\n' +
+         // 不提「繳費提醒」：本營隊的繳費單由清大校方寄送，不從這個群通知
+         '請加入本營隊的 LINE 家長社群，開班通知、行前提醒與每日花絮都會在這裡發布：\n' +
          url + '\n' +
          '※ 此連結僅提供給已報名的家長，請勿轉發給無關人士。' + '\n';
 }
