@@ -1,15 +1,8 @@
 # 清華大學羽球冬令營 2027
 
-https://nthu-badminton.stayyounglab.com
+https://nthu-badminton.stayyounglab.com ｜ 隸屬 [Stay Young](https://stayyounglab.com)（[主站 repo](https://github.com/Ryan1109-d/stay-young-home)）
 
-> **2026-08 起，本營隊已自 Stay Young 撤出，為獨立營隊。**
-> 主辦：清華大學羽球校隊｜指導：清華大學體育組｜聯絡：wcsports02@gmail.com
->
-> 站上與信件中的 Stay Young 標誌、字樣、連結皆已移除。
-> **目前仍暫時使用 `stayyounglab.com` 的子網域**，待新網域確定後遷出——
-> 在那之前 `CNAME`、canonical、og:url、GA 追蹤碼都還指向 Stay Young 的資源。
-
-與 Stay Young 旗下的兩個冬令營站（清大足球、台大羽球）**完全無關**：獨立 repo、獨立 Apps Script、獨立 Google Sheet、獨立聯絡信箱。程式碼結構相似是因為同源，營運上已經分開。
+與另外兩個冬令營站（[football-camp](https://github.com/Ryan1109-d/football-camp) 清大足球、[badminton-camp](https://github.com/Ryan1109-d/badminton-camp) 台大羽球）為**完全獨立**的專案：獨立 repo、獨立 Apps Script、獨立 Google Sheet。
 
 > repo 名稱 `summarcamp` 是 2026 夏令營時期留下的，網站內容已於 2026-08 改為 2027 冬令營。
 > 名稱維持不動，避免動到 GitHub Pages 的自訂網域設定。
@@ -48,7 +41,7 @@ https://nthu-badminton.stayyounglab.com
 index.html        首頁（含招生狀況即時看板）
 signup.html       報名表單（noindex，不進搜尋結果）
 gas-backend.js    Google Apps Script 後端的參考副本
-images/           場地照（Stay Young 標誌已於撤出時移除）
+images/           logo 與場地照
 CNAME             nthu-badminton.stayyounglab.com　⚠️ 不能刪
 robots.txt / sitemap.xml
 ```
@@ -99,7 +92,7 @@ robots.txt / sitemap.xml
 |---|---|
 | `checkSetup()` | 檢查 SHEET_ID、分頁、標題列逐欄比對、各時段佔用數。不寫資料不寄信，隨時可跑 |
 | `doPost` | 接收報名 → 寫 Sheet → 判定正取／候補 → 寄家長信 → 寄自己通知信。另處理 `action:'progress'` 的招生狀況查詢（唯讀，不含個資） |
-| `notifyOwner_` | 新報名通知寄 wcsports02，主旨帶【清大羽球】 |
+| `notifyOwner_` | 新報名通知寄 stayyoung985，主旨帶【清大羽球】 |
 | `calcAmount` | 兩層計價：原價 → 優惠價，另計午餐 |
 | `sendCancelNotice(時段)` | 未達開班門檻時，通知該時段的報名者 |
 | `installDailyBackupTrigger()` / `dailyBackup()` | 每日備份到 Drive，保留 14 份 |
@@ -172,16 +165,16 @@ robots.txt / sitemap.xml
 
 ---
 
-## 目前的部署狀態
+## 部署前的必要步驟
 
-`GAS_URL` 已填入實際 Web App 網址，**index.html 與 signup.html 兩處必須一致**。
-前端有自動防護：偵測到 `GAS_URL` 還是 `YOUR_` 開頭時，報名頁會收起表單改顯示
-「線上報名即將開放」，不會讓家長填完才發現送不出去。
+前端的 `GAS_URL` 目前是佔位字串 `YOUR_GAS_WEB_APP_URL_HERE`，**index.html 與 signup.html 兩處都要換成同一個值**：
 
-`CONFIG.LINE_GROUP_URL` 已填。維持佔位字串時，確認信會自動略過整段 LINE 說明。
+- signup.html：沒換就送不出報名（會直接跳送出失敗）
+- index.html：沒換就不會去讀招生狀況，三個時段維持顯示「熱烈招生中」
+
+`CONFIG.LINE_GROUP_URL` 維持佔位字串時，確認信會自動略過整段 LINE 說明，不會寄出壞掉的連結。
 
 真實的 SHEET_ID 與 LINE 群連結放在 repo 外的 `STAY_YOUNG_SHEET_IDS.txt`，不進 git。
-（檔名沿用，內容已含本營隊；本營隊撤出 Stay Young 後仍共用這個機密檔。）
 
 ---
 

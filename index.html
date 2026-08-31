@@ -89,6 +89,13 @@
   .nav-logo { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: 0.05em; text-decoration: none; }
   .nav-logo span { color: var(--amber); }
   .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .sy-home { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; transition: opacity 0.2s; }
+  .sy-home:hover { opacity: 0.7; }
+  .sy-chip { display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 50%; width: 42px; height: 42px; padding: 0; flex-shrink: 0; }
+  .sy-chip img { width: 36px; height: 36px; object-fit: contain; display: block; }
+  .sy-text { font-family: 'Noto Serif TC', serif; font-size: 0.85rem; font-weight: 900; color: var(--white); letter-spacing: 0.03em; white-space: nowrap; }
+  .nav-div { width: 1px; height: 20px; background: rgba(255,255,255,0.25); flex-shrink: 0; }
+  @media (max-width: 700px) { .sy-text { display: none; } }
   nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
   nav a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.05em; transition: color 0.2s; cursor: pointer; }
   nav a:hover { color: var(--white); }
@@ -278,7 +285,12 @@
 
 <nav>
   <div class="nav-left">
-        <a class="nav-logo" href="#top">清大<span>羽球</span>冬令營</a>
+    <a class="sy-home" href="https://stayyounglab.com/" title="回到 Stay Young 首頁">
+      <span class="sy-chip"><img src="images/logo-round.png" alt="Stay Young"></span>
+      <span class="sy-text">Stay Young</span>
+    </a>
+    <span class="nav-div"></span>
+    <a class="nav-logo" href="#top">清大<span>羽球</span>冬令營</a>
   </div>
   <ul>
     <li><a href="#about">活動介紹</a></li>

@@ -76,7 +76,14 @@
   .nav-logo { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: 0.05em; text-decoration: none; }
   .nav-logo span { color: var(--amber); }
   .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .sy-home { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; transition: opacity 0.2s; }
+  .sy-home:hover { opacity: 0.7; }
+  .sy-chip { display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 50%; width: 42px; height: 42px; flex-shrink: 0; }
+  .sy-chip img { width: 36px; height: 36px; object-fit: contain; display: block; }
+  .sy-text { font-family: 'Noto Serif TC', serif; font-size: 0.85rem; font-weight: 900; color: var(--white); letter-spacing: 0.03em; white-space: nowrap; }
+  .nav-div { width: 1px; height: 20px; background: rgba(255,255,255,0.25); flex-shrink: 0; }
   .nav-year { font-size: 0.8rem; color: var(--text-muted); }
+  @media (max-width: 700px) { .sy-text { display: none; } }
 
   .reg-page-wrap { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
   .reg-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; margin-bottom: 2rem; transition: color 0.2s; background: none; border: none; font-family: inherit; text-decoration: none; }
@@ -188,7 +195,12 @@
 
 <nav>
   <div class="nav-left">
-        <a class="nav-logo" href="index.html">清大<span>羽球</span>冬令營</a>
+    <a class="sy-home" href="https://stayyounglab.com/" title="回到 Stay Young 首頁">
+      <span class="sy-chip"><img src="images/logo-round.png" alt="Stay Young"></span>
+      <span class="sy-text">Stay Young</span>
+    </a>
+    <span class="nav-div"></span>
+    <a class="nav-logo" href="index.html">清大<span>羽球</span>冬令營</a>
   </div>
   <div class="nav-year">2027 寒假</div>
 </nav>

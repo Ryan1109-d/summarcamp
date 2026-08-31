@@ -227,7 +227,7 @@ function lineSection() {
 }
 
 /**
- * 新報名通知（寄給主辦方自己，不是家長）。
+ * 新報名通知（寄給 Stay Young 自己，不是家長）。
  * 主旨開頭固定帶【清大羽球】，三個營隊的通知在收件匣裡不會混淆。
  * 這封信寄失敗絕不能影響報名結果，呼叫端一律包在 try/catch 內。
  */
@@ -271,7 +271,7 @@ function notifyOwner_(data, clean, status, seq, c) {
     to: CONFIG.REPLY_EMAIL,
     subject: subject,
     body: body,
-    name: '清華大學羽球冬令營 報名系統'
+    name: 'Stay Young 報名系統'
   });
 }
 
@@ -535,15 +535,14 @@ function sendConfirmEmail(data) {
 開班確認前不會收取任何費用，請安心等候通知。
 若有任何問題，歡迎直接回覆本信。${lineSection()}
 
-清華大學羽球冬令營
-主辦：清華大學羽球校隊
+Stay Young 清華大學羽球冬令營
 ${CONFIG.REPLY_EMAIL}`;
   MailApp.sendEmail({
     to: data.email,
     subject: subject,
     body: body,
     replyTo: CONFIG.REPLY_EMAIL,
-    name: '清華大學羽球冬令營'
+    name: 'Stay Young 清華大學羽球冬令營'
   });
 }
 
@@ -564,15 +563,14 @@ function sendWaitlistEmail(data) {
 
 若有任何問題，歡迎直接回覆本信。
 
-清華大學羽球冬令營
-主辦：清華大學羽球校隊
+Stay Young 清華大學羽球冬令營
 ${CONFIG.REPLY_EMAIL}`;
   MailApp.sendEmail({
     to: data.email,
     subject: subject,
     body: body,
     replyTo: CONFIG.REPLY_EMAIL,
-    name: '清華大學羽球冬令營'
+    name: 'Stay Young 清華大學羽球冬令營'
   });
 }
 
@@ -656,8 +654,7 @@ ${amt.breakdown.length ? amt.breakdown.map(x => '　' + x).join('\n') + '\n' : '
 
 如需延長繳費期限或有任何問題，請直接回覆本信與我們聯繫。
 
-清華大學羽球冬令營
-主辦：清華大學羽球校隊
+Stay Young 清華大學羽球冬令營
 ${CONFIG.REPLY_EMAIL}`;
 }
 
@@ -675,7 +672,7 @@ function previewPaymentNotice() {
             ? '⚠️ 本營隊繳費由清大校方辦理，收款防呆生效中，正式寄送會被擋下。\n\n───────────\n\n'
             : '⚠️ 收款防呆已被解除，正式寄送不會被擋 —— 本營隊不該自行收款，請確認。\n\n───────────\n\n') + body,
     replyTo: CONFIG.REPLY_EMAIL,
-    name: '清華大學羽球冬令營'
+    name: 'Stay Young 清華大學羽球冬令營'
   });
   return '預覽信已寄至 ' + CONFIG.REPLY_EMAIL;
 }
@@ -702,7 +699,7 @@ function sendPaymentNotice() {
       subject: `【${CONFIG.CAMP_NAME}】確定開班・繳費通知`,
       body: body,
       replyTo: CONFIG.REPLY_EMAIL,
-      name: '清華大學羽球冬令營'
+      name: 'Stay Young 清華大學羽球冬令營'
     };
     const notifyEmail = String(r[COL.EMAIL] || '').trim();
     if (notifyEmail && notifyEmail !== payerEmail) opts.bcc = notifyEmail;
@@ -749,7 +746,7 @@ function listTriggers() {
 }
 
 /** 備份資料夾名稱。必須與另外兩站分開，否則各站的 slice(14) 會互刪對方的備份 */
-const BACKUP_FOLDER_NAME = '清大羽球冬令營 報名備份';
+const BACKUP_FOLDER_NAME = 'StayYoung 報名備份_清大羽球';
 
 /** 取得備份資料夾；新建時直接設成私有 */
 function getBackupFolder_() {
@@ -1004,9 +1001,9 @@ function sendCancelNotice(slotName) {
 '若其他時段仍有名額，歡迎回覆本信告知，我們可協助您改到有開班的時段。\n' +
 '若後續有加開梯次或其他營隊資訊，我們也會第一時間通知您。\n' +
 '造成您的不便，我們深感抱歉。\n\n' +
-'清華大學羽球冬令營\n主辦：清華大學羽球校隊\n' + CONFIG.REPLY_EMAIL,
+'Stay Young 運動團隊\n' + CONFIG.REPLY_EMAIL,
       replyTo: CONFIG.REPLY_EMAIL,
-      name: '清華大學羽球冬令營'
+      name: 'Stay Young 運動團隊'
     });
     sheet.getRange(i + 1, COL.STATUS + 1).setValue('已取消通知');
     sent++;
