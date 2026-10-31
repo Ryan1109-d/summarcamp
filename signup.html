@@ -451,6 +451,26 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwu-bdlAPH7R-l_CgYcjIURBYKt6ffTO5TSUf17CoEH775V9Tj238-mBfVmWQPS540/exec';
 
 const form = document.getElementById('signupForm');
+
+// ── 報名總開關 ──
+// 設成 false 會立刻收起整份表單，改顯示「報名已暫停」。
+// 要重新開放只要改回 true 並推上去，不需要動 Apps Script。
+// ⚠️ 這只擋住網頁入口；後端仍然收得到直接 POST 的請求。
+//    要連後端一起擋，另需把 Apps Script 的報名截止時間改到過去並重新部署。
+const REGISTRATION_OPEN = false;
+if (!REGISTRATION_OPEN) {
+  form.style.display = 'none';
+  const n = document.createElement('div');
+  n.className = 'notice-box';
+  n.style.marginBottom = '0';
+  n.innerHTML =
+    '<strong>\u23f8 \u5831\u540d\u5df2\u66ab\u505c</strong><br>' +
+    '\u672c\u71df\u968a\u7684\u7dda\u4e0a\u5831\u540d\u5df2\u66ab\u505c\uff0c\u76ee\u524d\u4e0d\u53d7\u7406\u65b0\u7684\u5831\u540d\u3002<br>' +
+    '\u5df2\u7d93\u9001\u51fa\u5831\u540d\u7684\u5b78\u54e1\u4e0d\u53d7\u5f71\u97ff\uff0c\u6211\u5011\u6703\u4f9d\u539f\u5b9a\u6d41\u7a0b\u806f\u7e6b\u60a8\u3002<br>' +
+    '\u5982\u6709\u4efb\u4f55\u554f\u984c\uff0c\u6b61\u8fce\u4f86\u4fe1\uff1a<strong>wcsports02@gmail.com</strong>';
+  form.parentNode.insertBefore(n, form);
+}
+
 const btn = document.getElementById('submitBtn');
 const msgBox = document.getElementById('formMsg');
 
