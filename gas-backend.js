@@ -867,6 +867,69 @@ function sendPreCampNotice() {
 }
 
 // ══════════════════════════════════════════
+// 候補遞補通知（有人取消、釋出名額時手動執行）
+//
+// 候補信向家長承諾「若有名額釋出，我們將立即以 email 通知您」。這支就是那封。
+// 用法：① 先把該列「狀態」從「候補」改成「正取」 ② sendPromotionNotice('張小明')
+// 刻意要求先改狀態再寄：寄信與名額是兩件事，先改狀態才不會寄完發現名額又被搶走。
+// 重跑保護：寄過會在「系統訊息」留註記。
+// ══════════════════════════════════════════
+function sendPromotionNotice(studentName) {
+  if (!studentName) throw new Error('請傳入學員姓名，例如 sendPromotionNotice("張小明")');
+  const sheet = getSheet_();
+  const rows  = sheet.getDataRange().getValues();
+  const MARK  = '遞補通知已寄';
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (String(r[COL.STUDENT]).trim() !== String(studentName).trim()) continue;
+    const status = String(r[COL.STATUS]).trim();
+    if (status !== '正取') {
+      return '⏸ ' + studentName + ' 目前狀態是「' + (status || '(空白)') + '」。\n' +
+             '請先把「狀態」欄改成「正取」再執行，這樣才不會通知完名額又被佔走。';
+    }
+    const sysmsg = String(r[SYSMSG_COL - 1] || '');
+    if (sysmsg.indexOf(MARK) >= 0) {
+      return '⏸ ' + studentName + ' 的遞補通知先前已寄過，這次不重寄。';
+    }
+    const to = String(r[COL.EMAIL] || '').trim();
+    if (!to) return '❌ 找到 ' + studentName + '，但「收信信箱」是空的。';
+    const body =
+'您好：\n' +
+'\n' +
+safeText(r[COL.STUDENT], 20) + ' 的候補已遞補成功，正式取得名額。\n' +
+'\n' +
+'── 報名資訊 ──\n' +
+'營隊：' + CONFIG.CAMP_NAME + '\n' +
+'日期：' + CONFIG.CAMP_DATE + '\n' +
+'時段：' + safeText(r[COL.SLOT], 40) + '\n' +
+'狀態：正取（由候補遞補）\n' +
+'\n' +
+'── 接下來的流程 ──\n' +
+'1. 報名人數已達開班標準，確認開班後我們會通知您\n' +
+'2. 本營隊的繳費單與收款由清華大學校方統一辦理，屆時請依校方通知完成繳費\n' +
+'3. 開課前會再寄送行前通知信\n' +
+'\n' +
+'您報名時填寫的資料我們都留著，不需要重新填表。\n' +
+'若這段時間已經另有安排、不再需要這個名額，請回覆本信告知，\n' +
+'我們會把名額讓給下一位候補的孩子。' + lineSection() + '\n' +
+'Stay Young 清華大學羽球冬令營\n' +
+CONFIG.REPLY_EMAIL;
+    MailApp.sendEmail({
+      to: to,
+      subject: '【' + CONFIG.CAMP_NAME + '】候補遞補成功通知',
+      body: body,
+      replyTo: CONFIG.REPLY_EMAIL,
+      name: 'Stay Young 清華大學羽球冬令營'
+    });
+    sheet.getRange(i + 1, SYSMSG_COL).setValue(
+      (sysmsg ? sysmsg + '；' : '') + MARK + ' ' +
+      Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm'));
+    return '✅ 遞補通知已寄給 ' + to + '（' + studentName + '）';
+  }
+  return '❌ 找不到學員「' + studentName + '」。請確認姓名與 Sheet 上完全一致。';
+}
+
+// ══════════════════════════════════════════
 // 每日自動備份
 //
 // 安裝方式（擇一）：
