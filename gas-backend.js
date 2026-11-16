@@ -3,10 +3,10 @@
  * （與足球營、台大羽球營完全分開：請用新的 Google Sheet + 新的 Apps Script 部署）
  *
  * 部署步驟：
- * 1. Google Sheet 第一列欄位標題（共 28 欄，與下方 appendRow 順序一致）：
+ * 1. Google Sheet 第一列欄位標題（共 30 欄，與下方 appendRow 順序一致）：
  *    報名時間 | 梯次 | 時段 | 學員姓名 | 性別 | 年齡 | 年級 | 聯絡電話 | 收信信箱 |
  *    緊急聯絡人 | 緊急聯絡人電話 | 繳款人姓名 | 繳款人電話 | 繳款人信箱 | 與學員關係 |
- *    優惠資格 | 班別偏好 | 午餐 | 狀態 | 團報成員 | 備註 | 照片同意 |
+ *    優惠資格 | 班別偏好 | 午餐 | 飲食禁忌 | 狀態 | 團報成員 | 備註 | 照片同意 |
  *    健康狀況 | 健康說明 | 緊急醫療授權 | 法定代理人聲明 | 繳費通知 | 行前通知 | 系統訊息
  * 2. Sheet 上方選 擴充功能 → Apps Script，貼上本檔案全部內容
  * 3. 修改下方 CONFIG 的 SHEET_ID（網址中 /d/ 和 /edit 之間那串）
@@ -74,19 +74,19 @@ const COL = {
   TIME: 0, SESSION: 1, SLOT: 2, STUDENT: 3, GENDER: 4, AGE: 5, GRADE: 6,
   PHONE: 7, EMAIL: 8, EMG_NAME: 9, EMG_PHONE: 10,
   PAYER_NAME: 11, PAYER_PHONE: 12, PAYER_EMAIL: 13, PAYER_RELATION: 14,
-  DISCOUNT: 15, CLASS_PREF: 16, LUNCH: 17, STATUS: 18, GROUP: 19,
-  NOTES: 20, PHOTO: 21,
-  HEALTH: 22, HEALTH_DETAIL: 23, MEDICAL: 24, GUARDIAN: 25
+  DISCOUNT: 15, CLASS_PREF: 16, LUNCH: 17, DIET: 18, STATUS: 19, GROUP: 20,
+  NOTES: 21, PHOTO: 22,
+  HEALTH: 23, HEALTH_DETAIL: 24, MEDICAL: 25, GUARDIAN: 26
 };
-const NOTICE_COL  = 27;   // 繳費通知（1-based）
-const PRECAMP_COL = 28;   // 行前通知（1-based）
-const SYSMSG_COL  = 29;   // 系統訊息（1-based）
+const NOTICE_COL  = 28;   // 繳費通知（1-based）
+const PRECAMP_COL = 29;   // 行前通知（1-based）
+const SYSMSG_COL  = 30;   // 系統訊息（1-based）
 
-// 標題列應有的 28 欄，順序即寫入順序。checkSetup() 會拿它逐欄比對。
+// 標題列應有的 30 欄，順序即寫入順序。checkSetup() 會拿它逐欄比對。
 const EXPECTED_HEADERS = [
   '報名時間','梯次','時段','學員姓名','性別','年齡','年級','聯絡電話','收信信箱',
   '緊急聯絡人','緊急聯絡人電話','繳款人姓名','繳款人電話','繳款人信箱','與學員關係',
-  '優惠資格','班別偏好','午餐','狀態','團報成員','備註','照片同意',
+  '優惠資格','班別偏好','午餐','飲食禁忌','狀態','團報成員','備註','照片同意',
   '健康狀況','健康說明','緊急醫療授權','法定代理人聲明','繳費通知','行前通知','系統訊息'
 ];
 
@@ -250,7 +250,6 @@ function notifyOwner_(data, clean, status, seq, c) {
     '學員：' + safeText(clean.studentName, 20) +
       '（' + dash(clean.gender) + '，' + dash(clean.age) + ' 歲）\n' +
     '年級：' + dash(clean.grade) + '\n' +
-    '衣服尺寸：—\n' +
     '健康狀況：' + dash(clean.health) +
       (String(clean.health).trim() === '有特殊狀況'
         ? '　⚠️ ' + safeText(clean.healthDetail, 200) : '') + '\n' +
@@ -262,7 +261,8 @@ function notifyOwner_(data, clean, status, seq, c) {
     '─────────────────\n' +
     '優惠資格：' + dash(clean.discount) + '\n' +
     '推薦人：—\n' +
-    '午餐：' + dash(clean.lunch) + '\n' +
+    '午餐：' + dash(clean.lunch) +
+      (String(clean.diet).indexOf('有') === 0 ? '　⚠️ ' + safeText(clean.diet, 200) : '') + '\n' +
     '班別偏好：' + dash(clean.classPref) + '\n' +
     '團報成員：' + dash(clean.groupMembers) + '\n' +
     '備註：' + dash(clean.notes) + '\n' +
@@ -425,6 +425,7 @@ function doPost(e) {
       discount:      safeCell(data.discount, 30),
       classPref:     safeCell(data.classPref, 20) || '待評估',
       lunch:         safeCell(data.lunch, 30),
+      diet:          safeCell(data.diet, 200) || '—',
       groupMembers:  safeCell(data.groupMembers, 200) || '—',
       notes:         safeCell(data.notes, 200) || '—',
       photoConsent:  safeCell(data.photoConsent, 10),
@@ -458,13 +459,13 @@ function doPost(e) {
     const status = isWaitlist ? '候補' : '正取';
     const seq = seqInSlot_(clean.slot, counts);
 
-    // ---- 寫入 Sheet（共 28 欄）----
+    // ---- 寫入 Sheet（共 30 欄）----
     sheet.appendRow([
       new Date(),
       CONFIG.SESSION_NAME, clean.slot, clean.studentName, clean.gender, clean.age, clean.grade,
       clean.phone, clean.email, clean.emgName, clean.emgPhone,
       clean.payerName, clean.payerPhone, clean.payerEmail, clean.payerRelation,
-      clean.discount, clean.classPref, clean.lunch,
+      clean.discount, clean.classPref, clean.lunch, clean.diet,
       status,
       clean.groupMembers, clean.notes, clean.photoConsent,
       clean.health, clean.healthDetail, clean.medical, clean.guardian,
@@ -526,7 +527,7 @@ function sendConfirmEmail(data) {
 學員：${safeText(data.studentName,20)}（${safeText(data.gender,20)}，${safeText(data.age,20)} 歲）
 緊急聯絡人：${safeText(data.emgName,20)}（${safeText(data.emgPhone,15)}）
 優惠資格：${safeText(data.discount,30)}
-午餐：${safeText(data.lunch,30)}${String(data.healthStatus).trim() === '有特殊狀況' ? '\n健康狀況：' + safeText(data.healthDetail,200) : ''}${data.notes && data.notes !== '—' ? '\n備註：' + safeText(data.notes,200) : ''}
+午餐：${safeText(data.lunch,30)}\n飲食禁忌：${safeText(data.diet,200)}${String(data.healthStatus).trim() === '有特殊狀況' ? '\n健康狀況：' + safeText(data.healthDetail,200) : ''}${data.notes && data.notes !== '—' ? '\n備註：' + safeText(data.notes,200) : ''}
 
 ── 接下來的流程 ──
 1. 報名人數達開班標準並確認開班後，我們會通知您

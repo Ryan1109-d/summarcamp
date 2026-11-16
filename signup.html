@@ -384,6 +384,18 @@
           <input type="text" id="healthDetail" name="healthDetail" placeholder="例如：花生過敏、氣喘、蠶豆症、需定時服藥等">
         </div>
         <div class="form-group full">
+          <label>飲食禁忌或過敏 <span class="req">*</span>　<span style="font-size:0.75rem;color:var(--text-muted);">不論是否代訂午餐都請填寫，供教練掌握學員狀況</span></label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="dietRestrict" value="無"><div class="check-box"></div><span>無</span></label>
+            <label class="check-item"><input type="radio" name="dietRestrict" value="有"><div class="check-box"></div><span>有，請說明</span></label>
+          </div>
+        </div>
+        <div class="form-group full" id="dietDetailWrap" style="display:none">
+          <label for="dietDetail">飲食禁忌說明 <span class="req">*</span></label>
+          <input type="text" id="dietDetail" name="dietDetail" placeholder="例如：花生過敏、海鮮過敏、不吃牛、奶蛋素">
+          <span style="font-size:0.72rem;color:var(--text-muted);margin-top:0.3rem;display:block">若有代訂午餐，我們會為孩子避開，<strong>不另外收費</strong>。</span>
+        </div>
+        <div class="form-group full">
           <label for="notes">運動傷害或其他注意事項（選填）</label>
           <textarea id="notes" name="notes" placeholder="如有舊傷、過敏或其他需告知教練的事項，請填寫於此"></textarea>
         </div>
@@ -543,6 +555,14 @@ document.querySelectorAll('input[name="healthStatus"]').forEach(r => {
       (picked && picked.value === '有特殊狀況') ? 'flex' : 'none';
   });
 });
+// ── 飲食禁忌說明展開聯動 ──
+document.querySelectorAll('input[name="dietRestrict"]').forEach(r => {
+  r.addEventListener('change', () => {
+    const picked = document.querySelector('input[name="dietRestrict"]:checked');
+    document.getElementById('dietDetailWrap').style.display =
+      (picked && picked.value === '有') ? 'block' : 'none';
+  });
+});
 // ── 團報名單顯示聯動 ──
 document.getElementById('discount').addEventListener('change', e => {
   document.getElementById('groupBox').classList.toggle('show', e.target.value === '團報（5 人以上）');
@@ -557,6 +577,7 @@ const fail = t => { msgBox.className = 'msg fail'; msgBox.textContent = t; msgBo
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   msgBox.className = 'msg';
+  msgBox.textContent = '';   // 連同上一輪的錯誤字一起清掉，否則送出成功後紅字還留著
   // 每次送出先清掉上一輪的紅框。只清必填清單裡的欄位不夠——像健康狀況說明、
   // 飲食禁忌說明這類條件式欄位不在清單內，補填之後紅框會一直留著。
   document.querySelectorAll('#signupForm .err').forEach(el => el.classList.remove('err'));
@@ -584,6 +605,13 @@ form.addEventListener('submit', async (e) => {
   if (hs.value === '有特殊狀況' && !document.getElementById('healthDetail').value.trim()) {
     document.getElementById('healthDetail').classList.add('err');
     return fail('請填寫健康狀況說明。');
+  }
+  // 飲食禁忌一律要問：全天班有代訂午餐，半天班也需讓教練掌握過敏狀況
+  const diet = document.querySelector('input[name="dietRestrict"]:checked');
+  if (!diet) return fail('請填寫飲食禁忌或過敏（沒有請選「無」）。');
+  if (diet.value === '有' && !document.getElementById('dietDetail').value.trim()) {
+    document.getElementById('dietDetail').classList.add('err');
+    return fail('請說明飲食禁忌或過敏內容。');
   }
   if (!document.querySelector('input[name="photoConsent"]:checked')) return fail('請選擇是否同意照片使用。');
   if (!document.getElementById('medicalConsent').checked) return fail('請勾選緊急醫療授權。');
@@ -629,6 +657,9 @@ form.addEventListener('submit', async (e) => {
     notes: document.getElementById('notes').value.trim() || '—',
     photoConsent: document.querySelector('input[name="photoConsent"]:checked').value,
     healthStatus: hs.value,
+    diet: (diet.value === '有'
+             ? '有：' + document.getElementById('dietDetail').value.trim()
+             : '無'),
     healthDetail: document.getElementById('healthDetail').value.trim() || '—',
     medicalConsent: document.getElementById('medicalConsent').checked,
     guardianConsent: document.getElementById('guardianConsent').checked,
@@ -714,6 +745,7 @@ function showPreview(d) {
       head('報名選擇') +
       row('梯次', esc(d.session)) + row('時段', esc(d.slot)) + row('優惠資格', esc(d.discount)) +
       row('午餐', esc(d.lunch)) +
+      row('飲食禁忌', esc(d.diet)) +
       (d.groupMembers !== '—' ? row('團報成員', esc(d.groupMembers).replace(/\n/g, '、')) : '') +
       row('健康狀況', esc(d.healthStatus) + (d.healthDetail !== '—' ? '：' + esc(d.healthDetail) : '')) +
       (d.notes !== '—' ? row('備註', esc(d.notes)) : '') +
