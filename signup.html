@@ -594,13 +594,11 @@ document.querySelectorAll('input[name="dietRestrict"]').forEach(r => {
      verify  這家公司可用的核對方式，選到該公司才跳出對應欄位：
                'email' 公司信箱／'name' 員工本人姓名／'id' 員工識別號
              三個欄位後端一律都收，這裡只決定前台顯示哪幾個
-   ⚠️ P02–P04 是 2026 夏令營沿用下來的特約企業，各自實際可用哪幾種核對方式
-      尚未向窗口確認，目前先全開三種（至少填一項）。確認後改這裡一行即可。 */
+   ⚠️ 2026-11-18：夏令營沿用下來的幾家特約企業本屆沒有合作，已全部移除。
+      編號 P02–P04 保留不再使用，之後新增公司請從 P06 開始編，免得跟舊資料混淆。
+      （這個註解會隨網頁原始碼公開，所以不在這裡寫出未合作廠商的名字。） */
 const PARTNERS = [
-  { id: 'P01', name: '昇陽國際半導體', domain: 'psi.com.tw', verify: ['email', 'name', 'id'] },
-  { id: 'P02', name: '工研院', domain: '', verify: ['email', 'name', 'id'] },
-  { id: 'P03', name: '聯華電子（聯電）', domain: '', verify: ['email', 'name', 'id'] },
-  { id: 'P04', name: '台積電', domain: '', verify: ['email', 'name', 'id'] }
+  { id: 'P01', name: '昇陽國際半導體', domain: 'psi.com.tw', verify: ['email', 'name', 'id'] }
   // { id: 'P05', name: '和淞科技', domain: '', verify: ['email', 'name', 'id'] }   // 和淞確認後打開
 ];
 const PARTNER_BY_ID = {};
