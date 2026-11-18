@@ -237,6 +237,18 @@ function checkSetup() {
       out.push('   現有分頁：' + ss.getSheets().map(s => s.getName()).join('、'));
     } else {
       out.push('✅ 分頁「' + CONFIG.SHEET_NAME + '」存在');
+      // 欄位不足就先補齊再檢查，否則剛部署完跑這支一定看到紅字「欄數不符」。
+      // ensureColumns_() 只在最右邊加欄、不動既有欄位；標題被改過會丟錯。
+      const colsBefore = sheet.getLastColumn();
+      try {
+        ensureColumns_(sheet);
+        if (sheet.getLastColumn() > colsBefore) {
+          out.push('🛠 已自動補上缺少的 ' + (sheet.getLastColumn() - colsBefore) +
+                   ' 欄（加在最右邊，既有資料未動）');
+        }
+      } catch (colErr) {
+        out.push('❌ ' + colErr.message);
+      }
       const lastCol = sheet.getLastColumn();
       const headers = lastCol ? sheet.getRange(1, 1, 1, lastCol).getValues()[0] : [];
       out.push((headers.length === EXPECTED_HEADERS.length ? '✅' : '❌') +
