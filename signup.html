@@ -334,11 +334,31 @@
             <option value="團報（5 人以上）">五人以上團體報名</option>
             <option value="清大在校學生">清大在校學生</option>
             <option value="清大教職員工">清大教職員工</option>
-            <option value="特約企業員工（聯電）">特約企業員工 — 聯華電子（聯電）</option>
-            <option value="特約企業員工（台積電）">特約企業員工 — 台積電</option>
-            <option value="特約企業員工（工研院）">特約企業員工 — 工研院</option>
+            <option value="特約企業員工">特約合作企業員工（含為子女報名）</option>
           </select>
-          <span class="form-hint">以上優惠資格擇一適用，彼此不可疊加。特約企業員工含為子女報名，主辦方將進行身份核驗後確認資格。</span>
+          <span class="form-hint">以上優惠資格擇一適用，彼此不可疊加。選「特約合作企業員工」後請於下方選擇公司，主辦方將進行身份核驗後確認資格。</span>
+        </div>
+        <!-- 特約合作企業：選了公司，才跳出「該公司」可用的核對方式。公司清單與各自的核對方式見下方 PARTNERS 設定 -->
+        <div class="form-group full" id="partnerBox" style="display:none">
+          <label for="partnerId">特約公司 <span class="req">*</span></label>
+          <select id="partnerId" name="partnerId">
+            <option value="">請選擇公司</option>
+          </select>
+          <span class="form-hint">選擇公司後，下方會出現該公司可用的核對方式。</span>
+        </div>
+        <div class="form-group full" id="partnerVerifyBox" style="display:none">
+          <label>員工身分核對 <span class="req">*</span>（以下至少填一項）</label>
+          <div id="pvEmail" style="display:none">
+            <input type="email" id="empEmail" name="empEmail" maxlength="254" placeholder="公司信箱，例：name@company.com.tw" style="width:100%">
+            <span id="empEmailHint" class="form-hint" style="display:block"></span>
+          </div>
+          <div id="pvName" style="display:none;margin-top:0.5rem">
+            <input type="text" id="empName" name="empName" maxlength="20" placeholder="員工本人姓名" style="width:100%">
+          </div>
+          <div id="pvId" style="display:none;margin-top:0.5rem">
+            <input type="text" id="empId" name="empId" maxlength="30" placeholder="員工識別號／員工編號" style="width:100%">
+          </div>
+          <span class="form-hint">若無特約公司專屬信箱，請填寫員工本人姓名或員工識別號，方便我們核對。此處的員工指<strong style="color:white">在該公司任職的本人</strong>，可能是家長，不一定是學員或繳款人。</span>
         </div>
         <div class="form-group full">
           <div class="group-box" id="groupBox">
@@ -426,7 +446,8 @@
         </div>
         <div class="form-group full" style="background:rgba(106,165,221,.06);border:1px solid rgba(106,165,221,.15);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.8;color:var(--text-muted);gap:0">
           <strong style="color:white">本表單蒐集之個人資料，</strong><br>
-          僅用於本營隊報名、聯繫、保險投保及活動安全管理，活動結束後六個月內刪除，不作其他用途。
+          僅用於本營隊報名、聯繫、保險投保及活動安全管理，活動結束後六個月內刪除，不作其他用途。<br>
+          選擇特約合作企業優惠者，另同意本營隊於必要時向該公司窗口核對員工身分（姓名、員工識別號或公司信箱）。
         </div>
         <div class="form-group full" style="background:rgba(240,147,15,.06);border:1px solid rgba(240,147,15,.15);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.8;color:var(--text-muted);gap:0">
           <strong style="color:white">💰 退費條款</strong><br>
@@ -563,9 +584,83 @@ document.querySelectorAll('input[name="dietRestrict"]').forEach(r => {
       (picked && picked.value === '有') ? 'block' : 'none';
   });
 });
-// ── 團報名單顯示聯動 ──
+/* ── 特約合作企業設定 ─────────────────────────────────────────────
+   新增或修改公司**只改這個陣列**。後端刻意不存公司對照表，所以多一家公司
+   不用重貼、不用重新部署 Apps Script（只要 git push，線上就生效）。
+     id      送給後端、記在 Sheet 上的編號。公司改名也不要動 id，
+             否則舊報名資料對不回去
+     name    前台顯示與信件用的名稱
+     domain  公司信箱網域。有填才檢查信箱結尾；不符只提示，不擋送出
+     verify  這家公司可用的核對方式，選到該公司才跳出對應欄位：
+               'email' 公司信箱／'name' 員工本人姓名／'id' 員工識別號
+             三個欄位後端一律都收，這裡只決定前台顯示哪幾個
+   ⚠️ P02–P04 是 2026 夏令營沿用下來的特約企業，各自實際可用哪幾種核對方式
+      尚未向窗口確認，目前先全開三種（至少填一項）。確認後改這裡一行即可。 */
+const PARTNERS = [
+  { id: 'P01', name: '昇陽國際半導體', domain: 'psi.com.tw', verify: ['email', 'name', 'id'] },
+  { id: 'P02', name: '工研院', domain: '', verify: ['email', 'name', 'id'] },
+  { id: 'P03', name: '聯華電子（聯電）', domain: '', verify: ['email', 'name', 'id'] },
+  { id: 'P04', name: '台積電', domain: '', verify: ['email', 'name', 'id'] }
+  // { id: 'P05', name: '和淞科技', domain: '', verify: ['email', 'name', 'id'] }   // 和淞確認後打開
+];
+const PARTNER_BY_ID = {};
+PARTNERS.forEach(function (p) { PARTNER_BY_ID[p.id] = p; });
+(function () {
+  const sel = document.getElementById('partnerId');
+  PARTNERS.forEach(function (p) {
+    const o = document.createElement('option');
+    o.value = p.id;
+    o.textContent = p.name;
+    sel.appendChild(o);
+  });
+})();
+const PV_INPUT = { email: 'empEmail', name: 'empName', id: 'empId' };
+const PV_WRAP  = { email: 'pvEmail',  name: 'pvName',  id: 'pvId'  };
+function currentPartner() {
+  return PARTNER_BY_ID[document.getElementById('partnerId').value] || null;
+}
+// 只顯示該公司可用的核對欄位；沒顯示的一律清空，避免把用不到的舊值送出去
+function syncPartnerVerify() {
+  const p = currentPartner();
+  document.getElementById('partnerVerifyBox').style.display = p ? 'flex' : 'none';
+  Object.keys(PV_WRAP).forEach(function (k) {
+    const on = !!p && p.verify.indexOf(k) >= 0;
+    const el = document.getElementById(PV_INPUT[k]);
+    document.getElementById(PV_WRAP[k]).style.display = on ? 'block' : 'none';
+    if (!on) el.value = '';
+    el.classList.remove('err');
+  });
+  document.getElementById('empEmailHint').textContent = '';
+}
+// 網域不符只是提示，不擋送出；後端會在 Sheet 上標「⚠️網域不符」提醒人工核對
+function partnerDomainOk() {
+  const p = currentPartner();
+  const v = document.getElementById('empEmail').value.trim().toLowerCase();
+  if (!p || !p.domain || !v) return true;
+  return v.slice(-(p.domain.length + 1)) === '@' + p.domain.toLowerCase();
+}
+document.getElementById('partnerId').addEventListener('change', syncPartnerVerify);
+document.getElementById('empEmail').addEventListener('blur', function () {
+  const p = currentPartner();
+  const hint = document.getElementById('empEmailHint');
+  if (!p || !p.domain || !document.getElementById('empEmail').value.trim()) {
+    hint.textContent = '';
+    return;
+  }
+  if (partnerDomainOk()) {
+    hint.textContent = '';
+  } else {
+    hint.textContent = '這個信箱不是 @' + p.domain + '，仍然可以送出，我們會另外與公司窗口核對。';
+    hint.style.color = 'var(--amber)';
+  }
+});
+// ── 團報名單與特約公司顯示聯動 ──
 document.getElementById('discount').addEventListener('change', e => {
   document.getElementById('groupBox').classList.toggle('show', e.target.value === '團報（5 人以上）');
+  const isPartner = e.target.value === '特約企業員工';
+  document.getElementById('partnerBox').style.display = isPartner ? 'flex' : 'none';
+  if (!isPartner) document.getElementById('partnerId').value = '';
+  syncPartnerVerify();
 });
 
 // 電話格式：與 gas-backend.js 的 PHONE_RE 一致，手機與市話都收
@@ -596,6 +691,32 @@ form.addEventListener('submit', async (e) => {
     const el = document.getElementById(id);
     if (el.value.trim() && !fn(el.value)) { el.classList.add('err'); valid = false; }
   });
+
+  // 特約企業：要選公司，且該公司可用的核對方式至少填一項
+  if (document.getElementById('discount').value === '特約企業員工') {
+    const p = currentPartner();
+    if (!p) {
+      document.getElementById('partnerId').classList.add('err');
+      fail('請選擇特約公司。');
+      return;
+    }
+    const anyFilled = p.verify.some(function (k) {
+      return document.getElementById(PV_INPUT[k]).value.trim() !== '';
+    });
+    if (!anyFilled) {
+      p.verify.forEach(function (k) {
+        document.getElementById(PV_INPUT[k]).classList.add('err');
+      });
+      fail('特約企業優惠需要核對員工身分，請至少填寫一項。');
+      return;
+    }
+    const em = document.getElementById('empEmail').value.trim();
+    if (em && !isEmail(em)) {
+      document.getElementById('empEmail').classList.add('err');
+      fail('公司信箱格式有誤，請確認後再送出。');
+      return;
+    }
+  }
 
   const slotChecked = document.querySelector('input[name="slot"]:checked');
   if (!slotChecked) return fail('請選擇報名時段（上午班／下午班／全天班）。');
@@ -630,6 +751,23 @@ form.addEventListener('submit', async (e) => {
   }
   if (!valid) return fail('請確認標紅的欄位：必填未填，或電話 / 信箱格式有誤。');
 
+  // 特約欄位：優惠資格不是特約時一律「—」；該公司沒開的核對方式也一律「—」
+  const pp = (function () {
+    const p = document.getElementById('discount').value === '特約企業員工' ? currentPartner() : null;
+    const pick = function (k) {
+      if (!p || p.verify.indexOf(k) < 0) return '—';
+      return document.getElementById(PV_INPUT[k]).value.trim() || '—';
+    };
+    return {
+      partner:     p ? p.id : '—',
+      partnerName: p ? p.name : '—',
+      empEmail:    pick('email'),
+      empName:     pick('name'),
+      empId:       pick('id'),
+      partnerDomainOk: p ? partnerDomainOk() : true
+    };
+  })();
+
   const data = {
     session: document.getElementById('session').value,
     slot: slotChecked.value,
@@ -647,6 +785,12 @@ form.addEventListener('submit', async (e) => {
     payerEmail: document.getElementById('payerEmail').value.trim(),
     payerRelation: document.getElementById('payerRelation').value,
     discount: document.getElementById('discount').value,
+    partner: pp.partner,
+    partnerName: pp.partnerName,
+    empId: pp.empId,
+    empName: pp.empName,
+    empEmail: pp.empEmail,
+    partnerDomainOk: pp.partnerDomainOk,
     lunch: (() => {
       if (!isFull) return '不適用（半天）';
       const l = document.querySelector('input[name="lunch"]:checked').value;
@@ -744,6 +888,10 @@ function showPreview(d) {
 
       head('報名選擇') +
       row('梯次', esc(d.session)) + row('時段', esc(d.slot)) + row('優惠資格', esc(d.discount)) +
+      (d.partner !== '—' ? row('特約公司', esc(d.partnerName)) : '') +
+      (d.empEmail !== '—' ? row('公司信箱', esc(d.empEmail) + (d.partnerDomainOk ? '' : '　⚠️ 網域不符')) : '') +
+      (d.empName !== '—' ? row('員工姓名', esc(d.empName)) : '') +
+      (d.empId !== '—' ? row('員工識別號', esc(d.empId)) : '') +
       row('午餐', esc(d.lunch)) +
       row('飲食禁忌', esc(d.diet)) +
       (d.groupMembers !== '—' ? row('團報成員', esc(d.groupMembers).replace(/\n/g, '、')) : '') +
