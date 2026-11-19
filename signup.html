@@ -598,8 +598,11 @@ document.querySelectorAll('input[name="dietRestrict"]').forEach(r => {
       編號 P02–P04 保留不再使用，之後新增公司請從 P06 開始編，免得跟舊資料混淆。
       （這個註解會隨網頁原始碼公開，所以不在這裡寫出未合作廠商的名字。） */
 const PARTNERS = [
-  { id: 'P01', name: '昇陽國際半導體', domain: 'psi.com.tw', verify: ['email', 'name', 'id'] }
-  // { id: 'P05', name: '和淞科技', domain: '', verify: ['email', 'name', 'id'] }   // 和淞確認後打開
+  { id: 'P01', name: '昇陽國際半導體', domain: 'psi.com.tw', verify: ['email', 'name', 'id'] },
+  // 合勤集團含 6 家公司（合勤科技／合勤投控／盟創／兆勤／智勤／黑貓資訊），
+  // 網域不只一個（zyxelgroup.com、zyxel.com.tw、mitrastar.com…），domain 只能填一個，
+  // 填了會害其他公司的同仁被誤判「網域不符」→ 這家刻意留空＝不檢查網域。
+  { id: 'P06', name: '合勤集團', domain: '', verify: ['email', 'name', 'id'] }
 ];
 const PARTNER_BY_ID = {};
 PARTNERS.forEach(function (p) { PARTNER_BY_ID[p.id] = p; });
