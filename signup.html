@@ -637,7 +637,9 @@ const PARTNERS = [
   { id: 'P06', name: '合勤集團', domain: '', verify: ['email', 'name', 'id'] },
   { id: 'P07', name: '中強光電', domain: 'coretronic.com', verify: ['email', 'name', 'id'] },
   // 資誠（PwC Taiwan）同仁信箱是 @pwc.com，不是 tw.pwc.com（2026-11-20 由窗口來信確認）。
-  { id: 'P08', name: '資誠聯合會計師事務所', domain: 'pwc.com', verify: ['email', 'name', 'id'] }
+  { id: 'P08', name: '資誠聯合會計師事務所', domain: 'pwc.com', verify: ['email', 'name', 'id'] },
+  // 世界先進積體電路（VIS）同仁信箱是 @vis.com.tw（2026-11-20 由窗口來信確認）。
+  { id: 'P09', name: '世界先進', domain: 'vis.com.tw', verify: ['email', 'name', 'id'] }
 ];
 const PARTNER_BY_ID = {};
 PARTNERS.forEach(function (p) { PARTNER_BY_ID[p.id] = p; });
