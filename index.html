@@ -211,6 +211,12 @@
   .partner-item .pn { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
   .partner-item .ps { font-size: 0.78rem; color: var(--text-muted); }
   .partner-note { font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem; line-height: 1.7; }
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.8rem; margin-top: 2rem; }
+  .contact-item { background: rgba(55,138,221,0.07); border: 1px solid rgba(55,138,221,0.2); border-radius: 10px; padding: 1rem 1.2rem; }
+  .contact-item .cl { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .contact-item .cv { font-size: 0.92rem; font-weight: 700; word-break: break-all; }
+  .contact-item .cv a { color: var(--amber-light); text-decoration: none; }
+  .contact-item .cv a:hover { text-decoration: underline; }
 
   /* 招生狀況 */
   .status-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-top: 2.5rem; }
@@ -299,6 +305,7 @@
     <li><a href="#schedule">課程</a></li>
     <li><a href="#pricing">費用</a></li>
     <li><a href="#status">招生狀況</a></li>
+    <li><a href="#contact">聯絡我們</a></li>
     <li><a href="signup.html" class="nav-register">立即報名</a></li>
   </ul>
 </nav>
@@ -572,6 +579,36 @@
   </div>
 </section>
 
+<hr class="section-line">
+
+<section id="contact">
+  <div class="fade-up">
+    <div class="section-label">聯絡我們</div>
+    <h2 class="section-title">有任何問題，歡迎聯繫</h2>
+    <p class="section-desc">營隊內容、報名流程、費用與退費相關問題，都可以透過以下方式與我們聯繫。平日來信通常一個工作天內回覆。</p>
+  </div>
+  <div class="contact-grid fade-up" style="transition-delay:0.1s;">
+    <div class="contact-item">
+      <div class="cl">Instagram</div>
+      <div class="cv"><a href="https://www.instagram.com/stay_young_lab/" target="_blank" rel="noopener">@stay_young_lab</a></div>
+    </div>
+    <div class="contact-item">
+      <div class="cl">Email</div>
+      <div class="cv"><a href="mailto:wcsports02@gmail.com">wcsports02@gmail.com</a></div>
+    </div>
+    <div class="contact-item">
+      <div class="cl">聯絡電話</div>
+      <div class="cv"><a href="tel:0979032572">0979-032-572</a></div>
+    </div>
+    <!-- LINE 官方帳號開通後，在這裡補一組（Ryan 還沒決定開不開）：
+    <div class="contact-item">
+      <div class="cl">LINE</div>
+      <div class="cv"><a href="https://lin.ee/XXXXXXX" target="_blank" rel="noopener">@stayyoung</a></div>
+    </div>
+    -->
+  </div>
+</section>
+
 <section>
   <div class="register-cta fade-up">
     <h3>🏸 準備好了嗎？</h3>
@@ -583,7 +620,8 @@
 <footer>
   <div>國立清華大學南大校區 羽球冬令營 2027</div>
   <div style="margin-top:0.4rem;">主辦單位：清華大學羽球校隊｜指導單位：清華大學體育組</div>
-  <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com</div>
+  <div style="margin-top:0.4rem;">聯繫我們：wcsports02@gmail.com｜0979-032-572</div>
+  <div style="margin-top:0.4rem;">IG <a href="https://www.instagram.com/stay_young_lab/" target="_blank" rel="noopener" style="color:inherit">@stay_young_lab</a></div>
   <div style="margin-top:0.5rem; font-size:0.75rem; opacity:0.6;">實際課程內容以現場教練安排為主，主辦單位保有調整活動內容之權利</div>
 </footer>
 
