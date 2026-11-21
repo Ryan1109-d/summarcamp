@@ -705,7 +705,7 @@ ${CONFIG.REPLY_EMAIL}`;
 // 指紋是 SHA-256 的前 8 碼，不可逆 → 不會洩漏 Sheet ID 或 LINE 邀請連結本身。
 // doGet 是公開端點（誰可以存取＝所有人），所以這裡只放不敏感的值。
 // ══════════════════════════════════════════
-const SCRIPT_VERSION = '2026-11-16';
+const SCRIPT_VERSION = '2026-11-21';
 
 /** 取字串的 SHA-256 前 8 碼（16 進位）。空值或仍是佔位字串回 'unset' */
 function fingerprint_(v) {
