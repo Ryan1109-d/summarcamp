@@ -139,6 +139,12 @@
   .form-group.full { grid-column: 1 / -1; }
   .form-group label { font-size: 0.82rem; color: var(--blue-pale); }
   .form-hint { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; margin-top: 0.2rem; }
+  /* 綜合班（上午一項、下午一項）只在報名表告知，首頁不提。
+     報名一律走足球冬令營的表單——那份表單會自動把羽球這半也報掉。 */
+  .combo-box { grid-column: 1 / -1; background: rgba(239,159,39,0.06); border: 1px solid rgba(239,159,39,0.22); border-radius: 10px; padding: 1.1rem 1.25rem; margin-top: 0.4rem; font-size: 0.78rem; color: var(--text-muted); line-height: 1.95; }
+  .combo-box .combo-h { font-size: 0.85rem; font-weight: 700; color: var(--amber); margin-bottom: 0.45rem; }
+  .combo-box strong { color: var(--white); }
+  .combo-box a { color: var(--amber); text-decoration: underline; }
   .req { color: var(--amber); }
   .form-group input, .form-group select, .form-group textarea {
     background: rgba(255,255,255,0.06); border: 1px solid rgba(181,212,244,0.18);
@@ -299,6 +305,17 @@
               <div class="slot-price">$7,600</div>
               <div class="slot-disc">優惠價 $7,000</div>
             </label>
+            <div class="combo-box">
+              <div class="combo-h">想同時報名足球與羽球？還有「綜合班」</div>
+              清華大學體育室於同期開辦<strong>足球冬令營</strong>，營期（1/25–1/29）、校區與上下午時段皆與本營隊相同，
+              因此可選擇上午一項、下午一項：<br>
+              <strong>綜合班 ①</strong>　上午足球＋下午羽球　原價 $8,250｜優惠身份 $7,500｜再加推薦人 $7,250<br>
+              <strong>綜合班 ②</strong>　上午羽球＋下午足球　原價 $8,500｜優惠身份 $7,750｜再加推薦人 $7,500<br>
+              中午 12:00–14:00 由教練照管，可代訂午餐（五天 $500，僅收取一次）；兩項課程皆於清大南大校區進行，中午由教練帶領孩子前往。<br>
+              綜合班請至 <a href="https://nthu-football.stayyounglab.com/signup.html" target="_blank" rel="noopener">足球冬令營報名表</a> 填寫一份即可，
+              系統將自動為您報名羽球冬令營的另一半天，並自動套用可適用之優惠，您會收到兩個營隊各一封報名確認信。
+              <strong>本表單請用於單獨報名羽球冬令營。</strong>
+            </div>
           </div>
         </div>
       </div>
