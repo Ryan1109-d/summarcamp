@@ -167,7 +167,8 @@
   .sy-chip img { width: 36px; height: 36px; object-fit: contain; display: block; }
   .sy-text { font-family: 'Noto Serif TC', serif; font-size: 0.85rem; font-weight: 900; color: var(--white); letter-spacing: 0.03em; white-space: nowrap; }
   .nav-div { width: 1px; height: 20px; background: rgba(255,255,255,0.25); flex-shrink: 0; }
-  @media (max-width: 700px) { .sy-text { display: none; } }
+  /* 平板寬度導覽列會擠成兩行，提早收起平台文字只留圖標 */
+  @media (max-width: 1100px) { .sy-text { display: none; } }
   nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
   nav a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.05em; transition: color 0.2s; cursor: pointer; }
   nav a:hover { color: var(--white); }
@@ -365,6 +366,11 @@
 
 <nav>
   <div class="nav-left">
+    <a class="sy-home" href="https://stayyounglab.com/" title="回到 Stay Young 營隊報名平台">
+      <span class="sy-chip"><img src="images/logo-round.png" alt="Stay Young 營隊報名平台"></span>
+      <span class="sy-text">Stay Young 報名平台</span>
+    </a>
+    <span class="nav-div"></span>
     <a class="nav-logo" href="#top">清大<span>羽球</span>冬令營</a>
   </div>
   <ul>
