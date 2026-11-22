@@ -216,6 +216,17 @@
   .schedule-dates { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; }
   .schedule-time { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
   .schedule-note { margin-top: 1.5rem; padding: 1rem 1.4rem; background: rgba(239,159,39,0.08); border: 1px solid rgba(239,159,39,0.2); border-radius: 10px; font-size: 0.85rem; color: var(--amber-light); line-height: 1.6; }
+  /* 綜合班：上午一項、下午一項，另一半是清大足球冬令營（同為體育室主辦、同期同校區）。
+     報名一律走足球站的表單，那份表單會自動把羽球這半也報掉。 */
+  .combo-panel { margin-top: 2.5rem; background: rgba(239,159,39,0.06); border: 1px solid rgba(239,159,39,0.22); border-radius: 12px; padding: 1.5rem 1.6rem; }
+  .combo-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(239,159,39,0.14); }
+  .combo-tag { font-size: 0.8rem; font-weight: 700; color: var(--amber); white-space: nowrap; }
+  .combo-name { font-size: 0.92rem; font-weight: 700; color: var(--white); white-space: nowrap; }
+  .combo-price { font-size: 0.82rem; color: var(--text-muted); }
+  .combo-price b { color: var(--amber-light); font-weight: 700; }
+  .combo-foot { margin-top: 1.1rem; font-size: 0.8rem; color: var(--text-muted); line-height: 1.95; }
+  .combo-foot b { color: var(--white); }
+  .combo-foot a { color: var(--amber); text-decoration: underline; }
 
   /* coaches */
   .coaches-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 3rem; }
@@ -411,7 +422,29 @@
   <div class="about-grid fade-up" style="transition-delay:0.15s;">
     <div class="about-card blue"><h3>專業教練</h3><p>清大羽球校隊甲組選手與持證教練親自帶領，依程度分組，讓每位學員都能在合適的步調下穩定進步。</p></div>
     <div class="about-card amber"><h3>五天課程</h3><p>涵蓋步法、技術與體能訓練，每日追蹤學習進度，最後以結業對抗賽展現一週成果。</p></div>
-    <div class="about-card teal"><h3>三種時段</h3><p>上午、下午、全天任選，配合家庭作息彈性安排。全天班另有午休與代訂午餐服務。</p></div>
+    <div class="about-card teal"><h3>三種時段</h3><p>上午、下午、全天任選，配合家庭作息彈性安排。最早 08:00 送達、最晚 18:00 接回，延長時段由教練在場照管、不另收費。全天班另有午休與代訂午餐服務。</p></div>
+  </div>
+</section>
+
+<hr class="section-line">
+
+<section id="combo">
+  <div class="fade-up">
+    <div class="section-label">羽球 × 足球</div>
+    <h2 class="section-title">一天兩種運動　還有「綜合班」</h2>
+    <p class="section-desc">清華大學體育室於同期開辦足球冬令營，營期（1/25–1/29）、校區與上下午時段皆與本營隊相同，因此可選擇上午一項、下午一項。<b>當然也可以只報本營隊的全天班</b>——整天都在球場上，訓練最完整。</p>
+  </div>
+  <div class="combo-panel fade-up" style="transition-delay:0.15s;">
+    <div class="combo-row"><span class="combo-tag">綜合班 ①</span><span class="combo-name">上午足球＋下午羽球</span><span class="combo-price">原價 $8,250　｜　優惠身份 <b>$7,500</b>　｜　再加推薦人 <b>$7,250</b></span></div>
+    <div class="combo-row"><span class="combo-tag">綜合班 ②</span><span class="combo-name">上午羽球＋下午足球</span><span class="combo-price">原價 $8,500　｜　優惠身份 <b>$7,750</b>　｜　再加推薦人 <b>$7,500</b></span></div>
+    <div class="combo-foot">
+      中午 12:00–14:00 由教練照管，與全天班使用同一處午休空間，可代訂午餐（五天 $500，<b>僅收取一次</b>）；
+      兩項課程皆於清大南大校區進行，足球在室外操場、羽球在學生活動中心 1F，中午由教練帶領孩子前往。
+      接送時間同樣為最早 08:00 送達、最晚 18:00 接回，不另收費。<br>
+      綜合班請至 <a href="https://nthu-football.stayyounglab.com/signup.html" target="_blank" rel="noopener">足球冬令營報名表</a> 填寫一份即可，
+      系統將自動為您報名羽球冬令營的另一半天，並自動套用可適用之優惠，您會收到兩個營隊各一封報名確認信。
+      <b>只報羽球請用本站的報名表。</b>
+    </div>
   </div>
 </section>
 
@@ -525,14 +558,17 @@
     <h2 class="section-title" style="font-size:clamp(1.4rem,3vw,1.8rem);">一天怎麼過</h2>
   </div>
   <div class="schedule-grid fade-up" style="transition-delay:0.2s;">
+    <div class="schedule-item"><div class="schedule-num">08:00</div><div><div class="schedule-dates">彈性提早送達</div><div class="schedule-time">最早 08:00 即可送達，由營隊教練在場照管，不另收費</div></div></div>
     <div class="schedule-item"><div class="schedule-num">08:30</div><div><div class="schedule-dates">開放報到</div><div class="schedule-time">送達、簽到、換裝準備</div></div></div>
     <div class="schedule-item"><div class="schedule-num">09:00</div><div><div class="schedule-dates">上午訓練　09:00 – 12:00</div><div class="schedule-time">技術拆解與分站練習（上午班・全天班）</div></div></div>
     <div class="schedule-item"><div class="schedule-num">12:00</div><div><div class="schedule-dates">午餐與午休　12:00 – 14:00</div><div class="schedule-time">營隊代訂或自備餐食，餐後充分休息（全天班）</div></div></div>
     <div class="schedule-item"><div class="schedule-num">14:00</div><div><div class="schedule-dates">下午訓練　14:00 – 17:00</div><div class="schedule-time">實戰演練與綜合練習（下午班・全天班）</div></div></div>
     <div class="schedule-item"><div class="schedule-num">17:00</div><div><div class="schedule-dates">放學</div><div class="schedule-time">結束一日課程</div></div></div>
+    <div class="schedule-item"><div class="schedule-num">18:00</div><div><div class="schedule-dates">彈性接回</div><div class="schedule-time">最晚 18:00 前接回皆可，延長時段一樣由教練照管</div></div></div>
   </div>
   <div class="schedule-note fade-up" style="transition-delay:0.25s;">
-    ※ 每個時段限額 50 名，報名滿 15 人即確定開班。額滿後仍可送出報名登記候補。
+    ※ 每個時段限額 50 名，報名滿 15 人即確定開班。額滿後仍可送出報名登記候補。<br>
+    ※ <b>接送彈性</b>：上午班與全天班最早 08:00 可送達；下午班與全天班最晚 18:00 前接回皆可。延長時段由營隊教練在場照管，<b>不另收費</b>。
   </div>
 </section>
 
@@ -645,6 +681,7 @@
     <div class="faq-item"><button class="faq-q" type="button">完全沒打過羽球可以參加嗎？<span class="faq-mark">＋</span></button><div class="faq-a">當然可以，而且很多學員都是第一次拿拍。我們從握拍、揮拍、腳步這些最基本的開始教，教練會照每個人的節奏走，不會有跟不上的問題。</div></div>
     <div class="faq-item"><button class="faq-q" type="button">真的不限年齡嗎？<span class="faq-mark">＋</span></button><div class="faq-a">是的，本營隊老少皆宜。教練依<b>實際程度</b>分階，不是依年齡分組，所以國小生、國高中生、成人都能找到適合自己的組別。年紀較小的孩子第一次參加，可在報名表備註欄告訴我們，教練會多留意。</div></div>
     <div class="faq-item"><button class="faq-q" type="button">半天班和全天班差在哪裡？<span class="faq-mark">＋</span></button><div class="faq-a">半天班是上午或下午三小時，適合作息比較彈性、或想先試試看的人。全天班六小時含午休，訓練最完整，寒假整天有地方去，安排工作也比較好抓時間。全天班可另外代訂午餐。</div></div>
+    <div class="faq-item"><button class="faq-q" type="button">可以早點送來、晚點接回嗎？<span class="faq-mark">＋</span></button><div class="faq-a">可以，三種時段都適用。<b>上午班與全天班最早 08:00 就能把孩子送過來；下午班與全天班最晚 18:00 前接回都沒問題</b>。延長時段一樣由營隊教練在場照管，不另外收費。這是為了配合家長的上下班時間，不必為了接送特地請假。</div></div>
     <div class="faq-item"><button class="faq-q" type="button">需要自備羽球裝備嗎？<span class="faq-mark">＋</span></button><div class="faq-a">穿好活動的運動服和室內運動鞋就可以了。球拍想自己帶沒問題，沒有的話現場也備有球拍，羽球全部由營隊提供。記得帶水壺，現場設有飲水機。</div></div>
     <div class="faq-item"><button class="faq-q" type="button">優惠可以一起用嗎？<span class="faq-mark">＋</span></button><div class="faq-a">不好意思，優惠資格沒辦法疊加。團報、清大在校學生、清大教職員工、特約合作企業員工，只要符合其中任何一種就享同一個優惠價，不會因為同時符合兩種而更便宜。</div></div>
     <div class="faq-item"><button class="faq-q" type="button">報名後何時繳費？<span class="faq-mark">＋</span></button><div class="faq-a">先報名就好，不用馬上付錢。送出後您會收到一封報名確認信，等報名人數達到開班標準、確定開班之後才會通知繳費。<b>本營隊的繳費單與收款由清華大學校方統一辦理</b>，屆時請依校方通知完成繳費。確定開班前不會收取任何費用。</div></div>
